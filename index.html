@@ -60,6 +60,20 @@
             padding-bottom: 70px
         }
 
+        @media (min-width: 1024px) {
+            body {
+                max-width: 900px;
+                margin: 0 auto;
+                background: #e0e0e0;
+            }
+            
+            .calendar-section, .filters, .content-area {
+                max-width: 860px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
         #authContainer {
             position: fixed;
             top: 0;
@@ -227,6 +241,14 @@
             height: 56px
         }
 
+        @media (min-width: 1024px) {
+            .header {
+                max-width: 900px;
+                margin: 0 auto;
+                border-radius: 0 0 8px 8px;
+            }
+        }
+
         .header-content {
             display: flex;
             justify-content: space-between;
@@ -327,10 +349,7 @@
             padding: 10px;
             margin: 6px;
             border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .08)
         }
 
         .calendar-header {
@@ -491,21 +510,18 @@
             padding: 10px;
             margin: 6px;
             border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .08)
         }
 
         .filter-buttons {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 6px;
+            display: flex;
+            gap: 4px;
+            justify-content: center;
             position: relative
         }
 
         .filter-btn {
-            padding: 12px 4px;
+            padding: 12px 8px;
             border: 2px solid #e8e8e8;
             background: #fafafa;
             border-radius: 8px;
@@ -518,7 +534,14 @@
             font-size: 13px;
             min-height: 60px;
             transition: all 0.2s;
-            position: relative
+            position: relative;
+            width: 120px
+        }
+
+        @media (max-width: 768px) {
+            .filter-btn {
+                width: 100%;
+            }
         }
 
         .filter-btn.active {
@@ -557,9 +580,7 @@
         }
 
         .content-area {
-            padding: 6px;
-            max-width: 1200px;
-            margin: 0 auto
+            padding: 6px
         }
 
         .filter-info {
@@ -704,6 +725,10 @@
 
         .action-btn.undo {
             background: var(--warning)
+        }
+
+        .action-btn.extract {
+            background: var(--purple-dark)
         }
 
         .item-badge {
@@ -911,6 +936,15 @@
             color: #fff
         }
 
+        @media (min-width: 1024px) {
+            .bottom-nav {
+                max-width: 900px;
+                left: 50%;
+                transform: translateX(-50%);
+                border-radius: 20px 20px 0 0;
+            }
+        }
+
         .nav-item {
             flex: 1;
             display: flex;
@@ -998,6 +1032,13 @@
             min-width: 200px
         }
 
+        @media (min-width: 1024px) {
+            .add-options-menu {
+                right: 50%;
+                transform: translateX(50%);
+            }
+        }
+
         .add-options-menu.show {
             display: flex
         }
@@ -1033,6 +1074,17 @@
             z-index: 1001;
             transition: left 0.3s ease;
             overflow-y: auto
+        }
+
+        @media (min-width: 1024px) {
+            .side-menu {
+                left: calc(50% - 450px);
+                border-radius: 0 8px 8px 0;
+            }
+            
+            .side-menu.open {
+                left: calc(50% - 450px);
+            }
         }
 
         .side-menu.open {
@@ -1332,6 +1384,73 @@
         .inline-calendar-day.today {
             border: 1px solid var(--purple)
         }
+
+        .extrato-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            gap: 4px
+        }
+
+        .extrato-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            color: var(--purple)
+        }
+
+        .extrato-detalhes {
+            font-size: 0.9em;
+            color: var(--gray)
+        }
+
+        .extrato-tipo {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600
+        }
+
+        .extrato-tipo.pagamento {
+            background: var(--bg-success-light);
+            color: var(--text-success)
+        }
+
+        .extrato-tipo.recebimento {
+            background: var(--bg-warning-light);
+            color: var(--text-warning)
+        }
+
+        .historico-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            gap: 4px
+        }
+
+        .historico-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            color: var(--purple)
+        }
+
+        .historico-data {
+            font-size: 0.8em;
+            color: var(--gray)
+        }
+
+        .historico-descricao {
+            font-size: 0.9em
+        }
+
+        .historico-usuario {
+            font-size: 0.8em;
+            color: var(--purple-dark);
+            font-weight: 600
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1387,6 +1506,7 @@
             <div class="side-menu-item" onclick="abrirMenuUsuarios();fecharSideMenu()"><i class="fas fa-users"></i> Usuários</div>
             <div class="side-menu-item" onclick="abrirNotificacoes();fecharSideMenu()"><i class="fas fa-bell"></i> Notificações</div>
             <div class="side-menu-item" onclick="abrirMenuSeguranca();fecharSideMenu()"><i class="fas fa-lock"></i> Segurança</div>
+            <div class="side-menu-item" onclick="abrirUltimasAcoes();fecharSideMenu()"><i class="fas fa-history"></i> Últimas Ações</div>
             <div class="side-menu-item" onclick="abrirManual();fecharSideMenu()"><i class="fas fa-book"></i> Manual</div>
         </div>
 
@@ -1631,14 +1751,26 @@
         async function registrarHistorico(tipo, descricao, detalhes) {
             if (!App.currentUser) return;
             try {
-                await App.supabase.from('historico_acoes').insert({
+                const { data, error } = await App.supabase.from('historico_acoes').insert({
                     user_id: App.currentUser.id,
                     tipo,
                     descricao,
                     detalhes: JSON.stringify(detalhes),
                     data: new Date().toISOString(),
                     usuario: App.usuarioAtual || 'desconhecido'
-                });
+                }).select();
+                
+                if (!error && data) {
+                    App.historicoAcoes.unshift({
+                        id: data[0].id,
+                        tipo,
+                        descricao,
+                        detalhes,
+                        data: new Date().toISOString(),
+                        usuario: App.usuarioAtual || 'desconhecido'
+                    });
+                    if (App.historicoAcoes.length > 100) App.historicoAcoes.pop();
+                }
             } catch (e) { }
         }
 
@@ -1656,7 +1788,6 @@
                 console.log('Permissão de notificação:', permission);
             }
 
-            // Registrar service worker para notificações em background
             if ('serviceWorker' in navigator) {
                 try {
                     const registration = await navigator.serviceWorker.register('/sw.js');
@@ -1753,7 +1884,7 @@
                     let agora = new Date();
                     let diffMs = notif.data - agora;
                     
-                    if (diffMs > 0 && diffMs <= 30 * 24 * 60 * 60 * 1000) { // Até 30 dias
+                    if (diffMs > 0 && diffMs <= 30 * 24 * 60 * 60 * 1000) {
                         setTimeout(() => {
                             App.serviceWorkerRegistration.showNotification(notif.titulo, {
                                 body: notif.corpo,
@@ -1900,13 +2031,11 @@
             let dataInicio = stringParaData(regra.data_inicio);
             let dataFim = regra.data_fim ? stringParaData(regra.data_fim) : null;
             
-            // Verificar se está dentro do período limite
             let anoLimitePassado = new Date().getFullYear() - CONFIG.anosLimite.passado;
             let anoLimiteFuturo = new Date().getFullYear() + CONFIG.anosLimite.futuro;
             
             if (anoAlvo < anoLimitePassado || anoAlvo > anoLimiteFuturo) return ocorrencias;
             
-            // Ajustar data de início para o período alvo
             let dataAtual = new Date(dataInicio);
             
             while (dataAtual.getFullYear() < anoAlvo || (dataAtual.getFullYear() === anoAlvo && dataAtual.getMonth() + 1 < mesAlvo)) {
@@ -1956,13 +2085,11 @@
             let dataInicio = stringParaData(regra.data_inicio);
             let dataFim = regra.data_fim ? stringParaData(regra.data_fim) : null;
             
-            // Verificar se está dentro do período limite
             let anoLimitePassado = new Date().getFullYear() - CONFIG.anosLimite.passado;
             let anoLimiteFuturo = new Date().getFullYear() + CONFIG.anosLimite.futuro;
             
             if (anoAlvo < anoLimitePassado || anoAlvo > anoLimiteFuturo) return ocorrencias;
             
-            // Ajustar data de início para o período alvo
             let dataAtual = new Date(dataInicio);
             
             while (dataAtual.getFullYear() < anoAlvo || (dataAtual.getFullYear() === anoAlvo && dataAtual.getMonth() + 1 < mesAlvo)) {
@@ -2039,7 +2166,6 @@
             App.dataCache.regrasContas.forEach(r => contasRecorrentes.push(...calcularOcorrenciasConta(r, mes, ano)));
             let todas = [...contasFixas, ...contasRecorrentes];
             
-            // Filtrar exceções
             todas = todas.filter(c => {
                 if (!c.id.toString().startsWith('regra_') && !c.regra_id) return true;
                 let regraId = c.regra_id || (c.id.toString().startsWith('regra_') ? c.id.split('_')[1] : null);
@@ -2062,7 +2188,19 @@
             let eventosRec = [];
             App.dataCache.regrasEventos.forEach(r => eventosRec.push(...calcularOcorrenciasEvento(r, mes, ano)));
             let todos = [...eventosFixos, ...eventosInd, ...eventosRec];
-            return todos;
+            
+            let idsUnicos = new Set();
+            let resultados = [];
+            
+            todos.forEach(e => {
+                let chave = `${e.titulo}_${e.dia}_${e.mes}_${e.ano}`;
+                if (!idsUnicos.has(chave)) {
+                    idsUnicos.add(chave);
+                    resultados.push(e);
+                }
+            });
+            
+            return resultados;
         }
 
         async function carregarDados(forceRefresh) {
@@ -2141,7 +2279,6 @@
                 atualizarListaBadge();
                 atualizarSaldoHeader();
                 
-                // Agendar notificações
                 agendarNotificacoes();
                 
                 document.getElementById('loadingState').style.display = 'none';
@@ -2296,7 +2433,7 @@
             let valor = '';
             let icone = 'fa-file-invoice-dollar';
             let botoes = '';
-            let usuario = item.added_by || 'desconhecido';
+            let usuario = item.added_by || item.usuario || 'desconhecido';
             let usuarioBadge = `<span class="usuario-badge">${usuario}</span>`;
 
             if (item.tipo === 'conta') {
@@ -2320,7 +2457,7 @@
                     botoes += `<button class="action-btn pay" onclick="event.stopPropagation();abrirModalPagamento('${item.id}','${item.descricao}',${item.valor_original || item.valor || 0},'${item.regra_id || ''}',${item.dia || item.dia_vencimento},${item.mes || mes},${item.ano || ano},${item.isRecorrente || false}, '${item.codigo_pagamento || ''}')"><i class="fas fa-dollar-sign"></i></button>`;
                 }
 
-                return `<div class="item-card ${classe}" onclick="editarItem('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.isIndividual || false},'${item.individual_id || ''}')">
+                return `<div class="item-card ${classe}" onclick="editarItem('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.isIndividual || false},'${item.individual_id || ''}',${item.dia || item.dia_vencimento},${item.mes || mes},${item.ano || ano})">
                     <div class="item-info">
                         <div class="item-title"><i class="fas ${icone}"></i> ${titulo} ${usuarioBadge}</div>
                         <div class="item-details">${detalhes}</div>
@@ -2328,7 +2465,7 @@
                     <div class="item-value">${valor}</div>
                     <div class="item-actions">
                         ${botoes}
-                        <button class="action-btn edit" onclick="event.stopPropagation();editarItem('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.isIndividual || false},'${item.individual_id || ''}')"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn edit" onclick="event.stopPropagation();editarItem('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.isIndividual || false},'${item.individual_id || ''}',${item.dia || item.dia_vencimento},${item.mes || mes},${item.ano || ano})"><i class="fas fa-edit"></i></button>
                         <button class="action-btn delete" onclick="event.stopPropagation();confirmarExclusao('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.dia || 0},${item.mes || mes},${item.ano || ano},${item.isIndividual || false},'${item.individual_id || ''}')"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>`;
@@ -2345,13 +2482,13 @@
                 if (item.hora) detalhes += ` | ${item.hora}`;
                 if (item.local) detalhes += ` | ${item.local}`;
 
-                return `<div class="item-card ${classe}" onclick="editarItem('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.isIndividual || false},'${item.individual_id || ''}')">
+                return `<div class="item-card ${classe}" onclick="editarItem('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.isIndividual || false},'${item.individual_id || ''}',${item.dia},${item.mes},${item.ano})">
                     <div class="item-info">
                         <div class="item-title"><span class="event-emoji"><i class="fas ${iconeEvento}" style="color:${corIcone}"></i></span> ${titulo} ${usuarioBadge}</div>
                         <div class="item-details">${detalhes}</div>
                     </div>
                     <div class="item-actions">
-                        <button class="action-btn edit" onclick="event.stopPropagation();editarItem('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.isIndividual || false},'${item.individual_id || ''}')"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn edit" onclick="event.stopPropagation();editarItem('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.isIndividual || false},'${item.individual_id || ''}',${item.dia},${item.mes},${item.ano})"><i class="fas fa-edit"></i></button>
                         <button class="action-btn delete" onclick="event.stopPropagation();confirmarExclusao('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.dia || 0},${item.mes || mes},${item.ano || ano},${item.isIndividual || false},'${item.individual_id || ''}')"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>`;
@@ -2419,7 +2556,7 @@
                 comprados.forEach(i => {
                     html += `<div class="item-card paga" onclick="editarItemLista('${i.id}')">
                         <div class="item-info">
-                            <div class="item-title"><span class="item-badge">${i.quantidade}x</span>${i.descricao || 'Item sem descrição'}</div>
+                            <div class="item-title"><span class="item-badge">${i.quantidade}x</span>${i.descricao || 'Item sem descrição'} <span class="usuario-badge">${i.added_by || 'desconhecido'}</span></div>
                         </div>
                         <div class="item-actions">
                             <button class="action-btn edit" onclick="event.stopPropagation();alternarComprado('${i.id}')"><i class="fas fa-undo"></i></button>
@@ -2454,6 +2591,7 @@
                         <button class="btn btn-sm btn-success" onclick="abrirAdicionarValorSaldo('${central.id}')"><i class="fas fa-plus"></i> Adicionar</button>
                         <button class="btn btn-sm btn-warning" onclick="abrirRetirarValorSaldo('${central.id}')"><i class="fas fa-minus"></i> Retirar</button>
                         <button class="btn btn-sm btn-primary" onclick="abrirAtualizarValorSaldo('${central.id}')"><i class="fas fa-sync-alt"></i> Atualizar</button>
+                        <button class="btn btn-sm btn-extract" onclick="abrirExtratoSaldo('${central.id}')" style="background:var(--purple);color:#fff"><i class="fas fa-history"></i> Extrato</button>
                     </div>
                 </div>`;
             }
@@ -2470,6 +2608,7 @@
                         <div class="item-actions">
                             <button class="action-btn update" onclick="event.stopPropagation();abrirAtualizarValorSaldo('${s.id}')"><i class="fas fa-sync-alt"></i></button>
                             <button class="action-btn edit" onclick="event.stopPropagation();editarSaldo('${s.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn extract" onclick="event.stopPropagation();abrirExtratoSaldo('${s.id}')"><i class="fas fa-history"></i></button>
                             <button class="action-btn delete" onclick="event.stopPropagation();deletarSaldo('${s.id}')"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>`;
@@ -2551,7 +2690,7 @@
             App.modalHasChanges = false;
         }
 
-        // Função para abrir nova conta com todas as correções
+        // Função para abrir nova conta
         function abrirNovaConta() {
             let { mes, ano } = getMesAnoAtual();
             let diaPadrao = App.selectedDay || new Date().getDate();
@@ -2570,8 +2709,17 @@
                     <input type="text" id="contaValor" class="form-input" placeholder="0,00" inputmode="decimal" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
                 </div>
                 <div class="form-group">
+                    <label class="form-label"><i class="fas fa-repeat"></i> Frequência</label>
+                    <select id="contaFrequencia" class="form-select" onchange="if(this.value==='unico') { document.getElementById('contaCodigoDiv').style.display='block'; document.getElementById('contaPixInfo').style.display='none'; } else { document.getElementById('contaCodigoDiv').style.display='block'; document.getElementById('contaPixInfo').style.display='block'; }">
+                        ${frequenciasHtml}
+                    </select>
+                </div>
+                <div id="contaCodigoDiv" class="form-group">
                     <label class="form-label"><i class="fas fa-barcode"></i> Código de Barras / Chave PIX</label>
                     <input type="text" id="contaCodigo" class="form-input" placeholder="Digite ou cole o código" autocomplete="off">
+                </div>
+                <div id="contaPixInfo" style="display:none; background:var(--bg-warning-light); padding:10px; border-radius:6px; margin-bottom:16px; font-size:12px">
+                    <i class="fas fa-info-circle"></i> Para contas recorrentes, recomendamos usar apenas Chave PIX, pois códigos de barras podem mudar a cada vencimento.
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-calendar-day"></i> Dia do Vencimento</label>
@@ -2585,12 +2733,6 @@
                         </select>
                         <input type="number" id="contaAno" class="form-input" value="${ano}" inputmode="numeric">
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-repeat"></i> Frequência</label>
-                    <select id="contaFrequencia" class="form-select" onchange="if(this.value==='unico') document.getElementById('contaDataFim').style.display='none'; else document.getElementById('contaDataFim').style.display='block'">
-                        ${frequenciasHtml}
-                    </select>
                 </div>
                 <div id="contaDataFim" style="display:none" class="form-group">
                     <label class="form-label"><i class="fas fa-calendar-day"></i> Data Final (opcional)</label>
@@ -2629,7 +2771,6 @@
 
             try {
                 if (frequencia === 'unico') {
-                    // Inserir conta única
                     let { data, error } = await App.supabase.from('contas').insert({
                         user_id: App.currentUser.id,
                         descricao: descricao,
@@ -2648,7 +2789,6 @@
                     
                     showToast('Conta salva com sucesso!', 'success');
                 } else {
-                    // Inserir regra de conta recorrente
                     let regraData = {
                         user_id: App.currentUser.id,
                         descricao_base: descricao,
@@ -2683,7 +2823,112 @@
             }
         }
 
-        // Função para abrir novo evento com todas as melhorias
+        // Função para editar conta
+        function editarConta(id, isRecorrente, regraId, dia, mes, ano) {
+            let conta;
+            if (isRecorrente && regraId) {
+                conta = App.dataCache.regrasContas.find(r => r.id === regraId);
+            } else {
+                conta = App.dataCache.contas.find(c => c.id === id);
+            }
+            
+            if (!conta) {
+                showToast('Conta não encontrada', 'warning');
+                return;
+            }
+
+            let frequenciasHtml = CONFIG.frequenciasConta.map(f => 
+                `<option value="${f}" ${(isRecorrente ? conta.frequencia : 'unico') === f ? 'selected' : ''}>${f.charAt(0).toUpperCase() + f.slice(1)}</option>`
+            ).join('');
+
+            let conteudo = `
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-heading"></i> Descrição</label>
+                    <input type="text" id="contaDescricaoEdit" class="form-input" value="${isRecorrente ? conta.descricao_base : conta.descricao}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-dollar-sign"></i> Valor</label>
+                    <input type="text" id="contaValorEdit" class="form-input" value="${(isRecorrente ? conta.valor : conta.valor_original || conta.valor).toFixed(2).replace('.', ',')}" inputmode="decimal" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-repeat"></i> Frequência</label>
+                    <select id="contaFrequenciaEdit" class="form-select" ${!isRecorrente ? 'disabled' : ''}>
+                        ${frequenciasHtml}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-barcode"></i> Código de Barras / Chave PIX</label>
+                    <input type="text" id="contaCodigoEdit" class="form-input" value="${conta.codigo_pagamento || ''}" placeholder="Digite ou cole o código">
+                </div>
+                ${!isRecorrente ? `
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-calendar-day"></i> Dia do Vencimento</label>
+                    <input type="number" id="contaDiaEdit" class="form-input" min="1" max="31" value="${dia}" inputmode="numeric">
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-calendar-alt"></i> Mês/Ano</label>
+                    <div style="display:flex;gap:8px">
+                        <select id="contaMesEdit" class="form-select">
+                            ${CONFIG.meses.map((m, i) => `<option value="${i + 1}" ${i + 1 === mes ? 'selected' : ''}>${m}</option>`).join('')}
+                        </select>
+                        <input type="number" id="contaAnoEdit" class="form-input" value="${ano}" inputmode="numeric">
+                    </div>
+                </div>
+                ` : ''}
+                <div class="btn-group" style="margin-top:20px">
+                    <button class="btn btn-primary" onclick="salvarEdicaoConta('${id}', ${isRecorrente}, '${regraId || ''}', ${dia}, ${mes}, ${ano})" style="flex:2"><i class="fas fa-save"></i> Salvar</button>
+                    <button class="btn" onclick="fecharModal()" style="flex:1;background:var(--gray);color:#fff">Cancelar</button>
+                </div>
+            `;
+            abrirModal('Editar Conta', 'fa-edit', conteudo);
+        }
+
+        async function salvarEdicaoConta(id, isRecorrente, regraId, dia, mes, ano) {
+            let descricao = document.getElementById('contaDescricaoEdit')?.value.trim();
+            let valor = parseCurrency(document.getElementById('contaValorEdit')?.value);
+            let codigo = document.getElementById('contaCodigoEdit')?.value.trim() || null;
+            
+            if (!descricao || !valor) {
+                showToast('Preencha todos os campos', 'warning');
+                return;
+            }
+
+            try {
+                if (isRecorrente && regraId) {
+                    await App.supabase.from('regras_contas').update({
+                        descricao_base: descricao,
+                        valor: valor,
+                        codigo_pagamento: codigo
+                    }).eq('id', regraId);
+                } else {
+                    let diaNovo = parseInt(document.getElementById('contaDiaEdit')?.value) || dia;
+                    let mesNovo = parseInt(document.getElementById('contaMesEdit')?.value) || mes;
+                    let anoNovo = parseInt(document.getElementById('contaAnoEdit')?.value) || ano;
+                    
+                    await App.supabase.from('contas').update({
+                        descricao: descricao,
+                        valor: valor,
+                        valor_original: valor,
+                        dia: diaNovo,
+                        mes: mesNovo,
+                        ano: anoNovo,
+                        codigo_pagamento: codigo
+                    }).eq('id', id);
+                }
+
+                await registrarHistorico('edicao_conta', `Conta editada: ${descricao}`, { id, usuario: App.usuarioAtual });
+                showToast('Conta atualizada!', 'success');
+                fecharModal();
+                await carregarDados(true);
+                await atualizarCalendario();
+                await mostrarConteudo();
+            } catch (error) {
+                console.error('Erro ao editar conta:', error);
+                showToast('Erro: ' + error.message, 'error');
+            }
+        }
+
+        // Função para abrir novo evento
         function abrirNovoEventoUnificado() {
             let { mes, ano } = getMesAnoAtual();
             let diaPadrao = App.selectedDay || new Date().getDate();
@@ -2704,7 +2949,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-repeat"></i> Frequência</label>
-                    <select id="eventoFrequencia" class="form-select" onchange="if(this.value==='unico') { document.getElementById('eventoDataFimDiv').style.display='block'; } else { document.getElementById('eventoDataFimDiv').style.display='none'; }">
+                    <select id="eventoFrequencia" class="form-select" onchange="if(this.value==='unico') { document.getElementById('eventoDataFimDiv').style.display='block'; } else { document.getElementById('eventoDataFimDiv').style.display='block'; }">
                         ${frequenciasHtml}
                     </select>
                 </div>
@@ -2804,7 +3049,6 @@
             try {
                 if (frequencia === 'unico') {
                     if (dataFim) {
-                        // Evento em múltiplos dias
                         let dataAtual = new Date(dataInicio);
                         while (dataAtual <= dataFim) {
                             let ano = dataAtual.getFullYear();
@@ -2831,7 +3075,6 @@
                             dataAtual.setDate(dataAtual.getDate() + 1);
                         }
                     } else {
-                        // Evento único em um dia
                         await App.supabase.from('eventos').insert({
                             user_id: App.currentUser.id,
                             titulo: titulo,
@@ -2850,7 +3093,6 @@
                         });
                     }
                 } else {
-                    // Evento recorrente
                     await App.supabase.from('regras_eventos').insert({
                         user_id: App.currentUser.id,
                         titulo_base: titulo,
@@ -2881,7 +3123,177 @@
             }
         }
 
-        // Função de pagamento com código de barras
+        // Função para editar evento
+        function editarEvento(id, isRecorrente, regraId, isIndividual, individualId, dia, mes, ano) {
+            let evento;
+            if (isRecorrente && regraId) {
+                evento = App.dataCache.regrasEventos.find(r => r.id === regraId);
+            } else if (isIndividual && individualId) {
+                evento = App.dataCache.eventosIndividuais.find(e => e.id === individualId);
+            } else {
+                evento = App.dataCache.eventos.find(e => e.id === id);
+            }
+            
+            if (!evento) {
+                showToast('Evento não encontrado', 'warning');
+                return;
+            }
+
+            let frequenciasHtml = CONFIG.frequenciasEvento.map(f => 
+                `<option value="${f}" ${(isRecorrente ? evento.frequencia : 'unico') === f ? 'selected' : ''}>${f.charAt(0).toUpperCase() + f.slice(1)}</option>`
+            ).join('');
+
+            let dataInicioStr = evento.data_inicio || dataParaString(ano, mes, dia);
+            let dataFimStr = evento.data_fim || '';
+
+            let iconesHtml = '';
+            CONFIG.iconesEventos.forEach(icone => {
+                iconesHtml += `<div class="icon-option" onclick="selecionarIconeEventoEdit('${icone.icon}', '${icone.cor}')" data-icon="${icone.icon}" data-cor="${icone.cor}"><i class="fas ${icone.icon}" style="color:${icone.cor}"></i></div>`;
+            });
+
+            let conteudo = `
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-heading"></i> Título</label>
+                    <input type="text" id="eventoTituloEdit" class="form-input" value="${isRecorrente ? evento.titulo_base : evento.titulo}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-repeat"></i> Frequência</label>
+                    <select id="eventoFrequenciaEdit" class="form-select" ${!isRecorrente ? 'disabled' : ''}>
+                        ${frequenciasHtml}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-calendar-day"></i> Data de Início</label>
+                    <input type="date" id="eventoDataInicioEdit" class="form-input" value="${dataInicioStr}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-calendar-day"></i> Data de Fim</label>
+                    <input type="date" id="eventoDataFimEdit" class="form-input" value="${dataFimStr}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-align-left"></i> Descrição</label>
+                    <textarea id="eventoDescricaoEdit" class="form-textarea" rows="2">${evento.descricao || ''}</textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-icons"></i> Ícone Atual</label>
+                    <div style="text-align:center; padding:10px; background:#f8f9fa; border-radius:8px">
+                        <i class="fas ${evento.icone || 'fa-star'}" style="font-size:32px; color:${evento.cor_icone || '#ffd700'}"></i>
+                    </div>
+                    <button class="btn btn-primary" style="width:100%; margin-top:8px" onclick="abrirSeletorIconesEdit()"><i class="fas fa-icons"></i> Trocar Ícone</button>
+                    <input type="hidden" id="eventoIconeEdit" value="${evento.icone || 'fa-star'}">
+                    <input type="hidden" id="eventoCorIconeEdit" value="${evento.cor_icone || '#ffd700'}">
+                </div>
+                <div id="seletorIconesEditModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; padding:20px; border-radius:12px; z-index:1002; width:90%; max-width:400px; max-height:80vh; overflow-y:auto; box-shadow:0 4px 20px rgba(0,0,0,0.2)">
+                    <h4 style="margin-bottom:16px; color:var(--purple)">Escolha um ícone</h4>
+                    <div class="icon-grid">${iconesHtml}</div>
+                    <div style="text-align:center; margin-top:16px">
+                        <button class="btn" onclick="fecharSeletorIconesEdit()" style="background:var(--gray); color:#fff">Fechar</button>
+                    </div>
+                </div>
+                <div style="display:flex;gap:8px">
+                    <div class="form-group" style="flex:1">
+                        <label class="form-label"><i class="fas fa-clock"></i> Hora</label>
+                        <input type="time" id="eventoHoraEdit" class="form-input" value="${evento.hora || ''}">
+                    </div>
+                    <div class="form-group" style="flex:1">
+                        <label class="form-label"><i class="fas fa-map-marker-alt"></i> Local</label>
+                        <input type="text" id="eventoLocalEdit" class="form-input" value="${evento.local || ''}">
+                    </div>
+                </div>
+                <div class="btn-group" style="margin-top:20px">
+                    <button class="btn btn-primary" onclick="salvarEdicaoEvento('${id}', ${isRecorrente}, '${regraId || ''}', ${isIndividual}, '${individualId || ''}', ${dia}, ${mes}, ${ano})" style="flex:2"><i class="fas fa-save"></i> Salvar</button>
+                    <button class="btn" onclick="fecharModal()" style="flex:1;background:var(--gray);color:#fff">Cancelar</button>
+                </div>
+            `;
+            abrirModal('Editar Evento', 'fa-edit', conteudo);
+        }
+
+        function abrirSeletorIconesEdit() {
+            document.getElementById('seletorIconesEditModal').style.display = 'block';
+        }
+
+        function fecharSeletorIconesEdit() {
+            document.getElementById('seletorIconesEditModal').style.display = 'none';
+        }
+
+        function selecionarIconeEventoEdit(icone, cor) {
+            document.getElementById('eventoIconeEdit').value = icone;
+            document.getElementById('eventoCorIconeEdit').value = cor;
+            fecharSeletorIconesEdit();
+        }
+
+        async function salvarEdicaoEvento(id, isRecorrente, regraId, isIndividual, individualId, dia, mes, ano) {
+            let titulo = document.getElementById('eventoTituloEdit')?.value.trim();
+            let desc = document.getElementById('eventoDescricaoEdit')?.value.trim();
+            let dataInicioStr = document.getElementById('eventoDataInicioEdit')?.value;
+            let dataFimStr = document.getElementById('eventoDataFimEdit')?.value || null;
+            let hora = document.getElementById('eventoHoraEdit')?.value;
+            let local = document.getElementById('eventoLocalEdit')?.value.trim();
+            let icone = document.getElementById('eventoIconeEdit')?.value || 'fa-star';
+            let corIcone = document.getElementById('eventoCorIconeEdit')?.value || '#ffd700';
+
+            if (!titulo || !dataInicioStr) {
+                showToast('Preencha título e data de início', 'warning');
+                return;
+            }
+
+            try {
+                if (isRecorrente && regraId) {
+                    await App.supabase.from('regras_eventos').update({
+                        titulo_base: titulo,
+                        descricao: desc || '',
+                        hora: hora || null,
+                        local: local || null,
+                        icone: icone,
+                        cor_icone: corIcone,
+                        data_inicio: dataInicioStr,
+                        data_fim: dataFimStr
+                    }).eq('id', regraId);
+                } else if (isIndividual && individualId) {
+                    let dataInicio = new Date(dataInicioStr + 'T12:00:00');
+                    await App.supabase.from('eventos_individuais').update({
+                        titulo: titulo,
+                        descricao: desc || '',
+                        dia: dataInicio.getDate(),
+                        mes: dataInicio.getMonth() + 1,
+                        ano: dataInicio.getFullYear(),
+                        hora: hora || null,
+                        local: local || null,
+                        icone: icone,
+                        cor_icone: corIcone,
+                        data_inicio: dataInicioStr,
+                        data_fim: dataFimStr
+                    }).eq('id', individualId);
+                } else {
+                    let dataInicio = new Date(dataInicioStr + 'T12:00:00');
+                    await App.supabase.from('eventos').update({
+                        titulo: titulo,
+                        descricao: desc || '',
+                        dia: dataInicio.getDate(),
+                        mes: dataInicio.getMonth() + 1,
+                        ano: dataInicio.getFullYear(),
+                        hora: hora || null,
+                        local: local || null,
+                        icone: icone,
+                        cor_icone: corIcone,
+                        data_inicio: dataInicioStr,
+                        data_fim: dataFimStr
+                    }).eq('id', id);
+                }
+
+                await registrarHistorico('edicao_evento', `Evento editado: ${titulo}`, { id, usuario: App.usuarioAtual });
+                showToast('Evento atualizado!', 'success');
+                fecharModal();
+                await carregarDados(true);
+                await atualizarCalendario();
+                await mostrarConteudo();
+            } catch (error) {
+                console.error('Erro ao editar evento:', error);
+                showToast('Erro: ' + error.message, 'error');
+            }
+        }
+
+        // Função de pagamento
         function abrirModalPagamento(id, desc, valor, regraId, dia, mes, ano, isRecorrente, codigoPagamento) {
             let codigoHtml = codigoPagamento ? `
                 <div class="payment-info">
@@ -2923,7 +3335,6 @@
 
             try {
                 if (isRecorrente && regraId) {
-                    // Para conta recorrente, criar exceção de pagamento
                     await App.supabase.from('excecoes_recorrencia').insert({
                         user_id: App.currentUser.id,
                         regra_id: regraId,
@@ -2932,7 +3343,6 @@
                         added_by: App.usuarioAtual || 'desconhecido'
                     });
                 } else {
-                    // Para conta única, atualizar diretamente
                     await App.supabase.from('contas').update({
                         valor_pago: valor,
                         status: 'paga',
@@ -2940,7 +3350,6 @@
                     }).eq('id', id);
                 }
 
-                // Atualizar saldo central
                 if (App.saldoCentral.id) {
                     let { data: saldoAtual } = await App.supabase.from('saldos').select('valor').eq('id', App.saldoCentral.id).single();
                     if (saldoAtual) {
@@ -2951,10 +3360,8 @@
                     }
                 }
 
-                // Registrar histórico
                 await registrarHistorico('pagamento_conta', `Conta paga: ${id}`, { id, valor, usuario: App.usuarioAtual });
                 
-                // Notificar
                 verificarNotificacoes({ descricao: 'Pagamento confirmado', valor }, 'contas');
                 
                 showToast('Pagamento confirmado!', 'success');
@@ -2985,14 +3392,12 @@
         async function desfazerPagamento(id, valor, regraId, dia, mes, ano, isRecorrente) {
             try {
                 if (isRecorrente && regraId) {
-                    // Remover exceção de pagamento
                     await App.supabase
                         .from('excecoes_recorrencia')
                         .delete()
                         .eq('regra_id', regraId)
                         .eq('data_excecao', dataParaString(ano, mes, dia));
                 } else {
-                    // Para conta única, reverter status
                     await App.supabase.from('contas').update({
                         valor_pago: 0,
                         status: 'pendente',
@@ -3000,7 +3405,6 @@
                     }).eq('id', id);
                 }
 
-                // Devolver valor ao saldo
                 if (App.saldoCentral.id) {
                     let { data: saldoAtual } = await App.supabase.from('saldos').select('valor').eq('id', App.saldoCentral.id).single();
                     if (saldoAtual) {
@@ -3023,106 +3427,13 @@
             }
         }
 
-        function editarItem(id, tipo, isRecorrente, regraId, isIndividual, individualId) {
+        function editarItem(id, tipo, isRecorrente, regraId, isIndividual, individualId, dia, mes, ano) {
             if (tipo === 'gasto') {
                 editarGasto(id);
             } else if (tipo === 'evento') {
-                // Buscar evento
-                let item = App.dataCache.eventos.find(e => e.id === id) || 
-                           App.dataCache.eventosIndividuais.find(e => `evento_individual_${e.id}` === id);
-                
-                if (!item) {
-                    showToast('Evento não encontrado', 'warning');
-                    return;
-                }
-                
-                // Se for evento de regra, mostrar opções de edição
-                if (isRecorrente && regraId) {
-                    let conteudo = `
-                        <div style="padding:16px">
-                            <h3 style="margin-bottom:16px">Editar Evento Recorrente</h3>
-                            <p>Este evento faz parte de uma recorrência. Como deseja editar?</p>
-                            <div class="exclusao-opcoes" style="margin:20px 0">
-                                <div class="exclusao-opcao" onclick="editarEventoUnica('${id}', '${regraId}', ${dia}, ${mes}, ${ano})">
-                                    <strong>Apenas esta ocorrência</strong>
-                                    <p style="font-size:0.9em;color:var(--gray)">Edita somente este evento específico</p>
-                                </div>
-                                <div class="exclusao-opcao" onclick="editarEventoTodas('${regraId}')">
-                                    <strong>Todas as ocorrências</strong>
-                                    <p style="font-size:0.9em;color:var(--gray)">Edita a regra inteira</p>
-                                </div>
-                            </div>
-                            <div class="btn-group">
-                                <button class="btn" onclick="fecharModal()" style="background:var(--gray);color:#fff">Cancelar</button>
-                            </div>
-                        </div>
-                    `;
-                    abrirModal('Editar Evento', 'fa-edit', conteudo);
-                } else {
-                    // Evento único - mostrar detalhes
-                    let conteudo = `
-                        <div style="padding:16px">
-                            <h3>${item.titulo}</h3>
-                            <p>${item.descricao || ''}</p>
-                            <p><i class="fas fa-calendar-day"></i> Dia: ${item.dia} de ${getNomeMes(item.mes)}/${item.ano}</p>
-                            ${item.hora ? `<p><i class="fas fa-clock"></i> Hora: ${item.hora}</p>` : ''}
-                            ${item.local ? `<p><i class="fas fa-map-marker-alt"></i> Local: ${item.local}</p>` : ''}
-                            <div class="btn-group" style="margin-top:20px">
-                                <button class="btn btn-primary" onclick="fecharModal()">Fechar</button>
-                            </div>
-                        </div>
-                    `;
-                    abrirModal('Detalhes do Evento', 'fa-calendar-alt', conteudo);
-                }
+                editarEvento(id, isRecorrente, regraId, isIndividual, individualId, dia, mes, ano);
             } else if (tipo === 'conta') {
-                // Buscar conta
-                let item = App.dataCache.contas.find(c => c.id === id);
-                if (!item) {
-                    // Tentar encontrar em regras
-                    let partes = id.split('_');
-                    if (partes[0] === 'regra' && partes[1]) {
-                        let regra = App.dataCache.regrasContas.find(r => r.id === partes[1]);
-                        if (regra) {
-                            item = {
-                                descricao: regra.descricao_base,
-                                valor_original: regra.valor,
-                                dia: partes[3] ? new Date(parseInt(partes[3])).getDate() : regra.dia_vencimento,
-                                mes: App.selectedMonth,
-                                ano: App.selectedYear,
-                                status: 'pendente',
-                                codigo_pagamento: regra.codigo_pagamento
-                            };
-                        }
-                    }
-                }
-                
-                if (!item) {
-                    showToast('Conta não encontrada', 'warning');
-                    return;
-                }
-                
-                let conteudo = `
-                    <div style="padding:16px">
-                        <h3>${item.descricao}</h3>
-                        <p><strong>Valor:</strong> ${formatCurrency(item.valor_original || item.valor || 0)}</p>
-                        <p><strong>Vencimento:</strong> ${item.dia} de ${getNomeMes(item.mes || App.selectedMonth)}/${item.ano || App.selectedYear}</p>
-                        <p><strong>Status:</strong> ${item.status === 'paga' ? 'Paga' : 'Pendente'}</p>
-                        ${item.valor_pago > 0 ? `<p><strong>Valor pago:</strong> ${formatCurrency(item.valor_pago)}</p>` : ''}
-                        ${item.codigo_pagamento ? `
-                            <div class="payment-info">
-                                <div class="payment-info-header">
-                                    <span><i class="fas fa-barcode"></i> Código de Pagamento</span>
-                                    <button class="btn-copy" onclick="copiarCodigoPagamento('${item.codigo_pagamento}')"><i class="fas fa-copy"></i> Copiar</button>
-                                </div>
-                                <div class="payment-info-content">${item.codigo_pagamento}</div>
-                            </div>
-                        ` : ''}
-                        <div class="btn-group" style="margin-top:20px">
-                            <button class="btn btn-primary" onclick="fecharModal()">Fechar</button>
-                        </div>
-                    </div>
-                `;
-                abrirModal('Detalhes da Conta', 'fa-file-invoice-dollar', conteudo);
+                editarConta(id, isRecorrente, regraId, dia, mes, ano);
             }
         }
 
@@ -3152,28 +3463,55 @@
                     </div>
                 `;
                 abrirModal('Excluir Evento', 'fa-trash', conteudo);
-            } else if (confirm(`Tem certeza que deseja excluir este ${tipo}?`)) {
-                (async () => {
-                    try {
-                        if (tipo === 'gasto') {
-                            await App.supabase.from('gastos').delete().eq('id', id);
-                        } else if (tipo === 'evento') {
-                            await App.supabase.from('eventos').delete().eq('id', id);
-                        } else if (tipo === 'conta') {
-                            await App.supabase.from('contas').delete().eq('id', id);
-                        }
+            } else if (tipo === 'conta' && (isRecorrente || regraId)) {
+                let conteudo = `
+                    <div style="padding:16px">
+                        <h3 style="margin-bottom:16px">Excluir Conta</h3>
+                        <p>Como deseja excluir esta conta?</p>
+                        <div class="exclusao-opcoes">
+                            <div class="exclusao-opcao" onclick="selecionarExclusaoConta('unica', '${id}', '${tipo}', ${isRecorrente}, '${regraId}', ${dia}, ${mes}, ${ano})" id="exclusaoUnica">
+                                <strong>Apenas esta ocorrência</strong>
+                                <p style="font-size:0.9em;color:var(--gray)">Exclui somente esta conta específica</p>
+                            </div>
+                            <div class="exclusao-opcao" onclick="selecionarExclusaoConta('futuras', '${id}', '${tipo}', ${isRecorrente}, '${regraId}', ${dia}, ${mes}, ${ano})" id="exclusaoFuturas">
+                                <strong>Desta data em diante</strong>
+                                <p style="font-size:0.9em;color:var(--gray)">Exclui esta e todas as futuras</p>
+                            </div>
+                            <div class="exclusao-opcao" onclick="selecionarExclusaoConta('todas', '${id}', '${tipo}', ${isRecorrente}, '${regraId}', ${dia}, ${mes}, ${ano})" id="exclusaoTodas">
+                                <strong>Todas as ocorrências</strong>
+                                <p style="font-size:0.9em;color:var(--gray)">Exclui a regra inteira</p>
+                            </div>
+                        </div>
+                        <div class="btn-group" style="margin-top:20px">
+                            <button class="btn" onclick="fecharModal()" style="background:var(--gray);color:#fff">Cancelar</button>
+                        </div>
+                    </div>
+                `;
+                abrirModal('Excluir Conta', 'fa-trash', conteudo);
+            } else {
+                if (confirm(`Tem certeza que deseja excluir este ${tipo}?`)) {
+                    (async () => {
+                        try {
+                            if (tipo === 'gasto') {
+                                await App.supabase.from('gastos').delete().eq('id', id);
+                            } else if (tipo === 'evento') {
+                                await App.supabase.from('eventos').delete().eq('id', id);
+                            } else if (tipo === 'conta') {
+                                await App.supabase.from('contas').delete().eq('id', id);
+                            }
 
-                        await registrarHistorico('exclusao_item', `${tipo} excluído`, { id, tipo, usuario: App.usuarioAtual });
-                        showToast('Item excluído!', 'success');
-                        fecharModal();
-                        await carregarDados(true);
-                        await atualizarCalendario();
-                        await mostrarConteudo();
-                    } catch (error) {
-                        console.error('Erro ao excluir:', error);
-                        showToast('Erro: ' + error.message, 'error');
-                    }
-                })();
+                            await registrarHistorico('exclusao_item', `${tipo} excluído`, { id, tipo, usuario: App.usuarioAtual });
+                            showToast('Item excluído!', 'success');
+                            fecharModal();
+                            await carregarDados(true);
+                            await atualizarCalendario();
+                            await mostrarConteudo();
+                        } catch (error) {
+                            console.error('Erro ao excluir:', error);
+                            showToast('Erro: ' + error.message, 'error');
+                        }
+                    })();
+                }
             }
         }
 
@@ -3213,6 +3551,46 @@
                     await mostrarConteudo();
                 } catch (error) {
                     console.error('Erro ao excluir evento:', error);
+                    showToast('Erro: ' + error.message, 'error');
+                }
+            })();
+        }
+
+        function selecionarExclusaoConta(tipo, id, tipoItem, isRecorrente, regraId, dia, mes, ano) {
+            (async () => {
+                try {
+                    if (tipo === 'unica') {
+                        if (isRecorrente && regraId) {
+                            let dataExcecao = dataParaString(ano, mes, dia);
+                            await App.supabase.from('excecoes_recorrencia').insert({
+                                user_id: App.currentUser.id,
+                                regra_id: regraId,
+                                data_excecao: dataExcecao,
+                                acao: 'excluir',
+                                added_by: App.usuarioAtual || 'desconhecido'
+                            });
+                        } else {
+                            await App.supabase.from('contas').delete().eq('id', id);
+                        }
+                    } else if (tipo === 'futuras') {
+                        let dataFim = dataParaString(ano, mes, dia - 1);
+                        await App.supabase
+                            .from('regras_contas')
+                            .update({ data_fim: dataFim })
+                            .eq('id', regraId);
+                    } else if (tipo === 'todas') {
+                        await App.supabase.from('regras_contas').delete().eq('id', regraId);
+                        await App.supabase.from('excecoes_recorrencia').delete().eq('regra_id', regraId);
+                    }
+
+                    await registrarHistorico('exclusao_conta', `Conta excluída (${tipo})`, { id, tipo, usuario: App.usuarioAtual });
+                    showToast('Conta excluída!', 'success');
+                    fecharModal();
+                    await carregarDados(true);
+                    await atualizarCalendario();
+                    await mostrarConteudo();
+                } catch (error) {
+                    console.error('Erro ao excluir conta:', error);
                     showToast('Erro: ' + error.message, 'error');
                 }
             })();
@@ -3573,8 +3951,30 @@
             showToast('Configurações salvas!', 'success');
         }
 
+        function abrirUltimasAcoes() {
+            if (!App.historicoAcoes || App.historicoAcoes.length === 0) {
+                let conteudo = '<div class="empty-state"><i class="fas fa-history"></i><p>Nenhuma ação registrada</p></div>';
+                abrirModal('Últimas Ações', 'fa-history', conteudo);
+                return;
+            }
+
+            let html = '<div class="items-list">';
+            App.historicoAcoes.slice(0, 100).forEach(h => {
+                let data = new Date(h.data).toLocaleString('pt-BR');
+                html += `<div class="historico-item">
+                    <div class="historico-header">
+                        <span><i class="fas ${h.tipo === 'criacao_conta' ? 'fa-file-invoice-dollar' : h.tipo === 'pagamento_conta' ? 'fa-dollar-sign' : 'fa-history'}"></i> ${h.descricao}</span>
+                        <span class="historico-data">${data}</span>
+                    </div>
+                    <div class="historico-descricao">${h.detalhes ? JSON.stringify(h.detalhes) : ''}</div>
+                    <div class="historico-usuario">${h.usuario || 'desconhecido'}</div>
+                </div>`;
+            });
+            html += '</div>';
+            abrirModal('Últimas Ações (100)', 'fa-history', html);
+        }
+
         function abrirManual() {
-            // Manual vazio conforme solicitado
             let conteudo = `
                 <div style="padding:16px; text-align:center">
                     <i class="fas fa-book" style="font-size:48px; color:var(--purple); margin-bottom:16px"></i>
@@ -4395,6 +4795,78 @@
             }
         }
 
+        function abrirExtratoSaldo(id) {
+            let saldo = App.dataCache.saldos.find(s => s.id === id);
+            if (!saldo) return;
+
+            let tresMesesAtras = new Date();
+            tresMesesAtras.setMonth(tresMesesAtras.getMonth() - 3);
+            tresMesesAtras.setHours(0, 0, 0, 0);
+
+            let movimentacoes = [];
+
+            App.dataCache.contas.forEach(c => {
+                if (c.data_pagamento && new Date(c.data_pagamento) >= tresMesesAtras) {
+                    movimentacoes.push({
+                        data: c.data_pagamento,
+                        tipo: 'pagamento_conta',
+                        descricao: `Pagamento: ${c.descricao}`,
+                        valor: -c.valor_pago,
+                        usuario: c.added_by || 'desconhecido'
+                    });
+                }
+            });
+
+            App.dataCache.gastos.forEach(g => {
+                let dataGasto = new Date(g.ano, g.mes - 1, g.dia, 12, 0, 0);
+                if (dataGasto >= tresMesesAtras) {
+                    movimentacoes.push({
+                        data: dataGasto,
+                        tipo: 'gasto',
+                        descricao: `Gasto: ${g.descricao}`,
+                        valor: -g.valor,
+                        usuario: g.added_by || 'desconhecido'
+                    });
+                }
+            });
+
+            App.dataCache.historico.forEach(h => {
+                let dataHist = new Date(h.data);
+                if (dataHist >= tresMesesAtras) {
+                    movimentacoes.push({
+                        data: dataHist,
+                        tipo: 'outro',
+                        descricao: h.descricao,
+                        valor: 0,
+                        usuario: h.usuario || 'desconhecido'
+                    });
+                }
+            });
+
+            movimentacoes.sort((a, b) => new Date(b.data) - new Date(a.data));
+
+            if (movimentacoes.length === 0) {
+                abrirModal(`Extrato de ${saldo.nome || 'Saldo'}`, 'fa-history', '<div class="empty-state"><p>Nenhuma movimentação nos últimos 3 meses</p></div>');
+                return;
+            }
+
+            let html = `<div class="items-list">`;
+            movimentacoes.forEach(m => {
+                let data = new Date(m.data).toLocaleDateString('pt-BR');
+                let classe = m.valor < 0 ? 'extrato-tipo pagamento' : m.valor > 0 ? 'extrato-tipo recebimento' : '';
+                html += `<div class="extrato-item">
+                    <div class="extrato-header">
+                        <span>${data}</span>
+                        <span class="${classe}">${m.valor !== 0 ? formatCurrency(Math.abs(m.valor)) : ''}</span>
+                    </div>
+                    <div class="extrato-detalhes">${m.descricao}</div>
+                    <div style="font-size:0.8em; color:var(--gray)">${m.usuario}</div>
+                </div>`;
+            });
+            html += '</div>';
+            abrirModal(`Extrato de ${saldo.nome || 'Saldo'} (3 meses)`, 'fa-history', html);
+        }
+
         function autenticarSaldos() {
             let senha = prompt('Senha de 4 dígitos:');
             if (senha === App.saldoSenha) {
@@ -4444,7 +4916,6 @@
                 App.supabase = window.supabase.createClient(CONFIG.supabase.url, CONFIG.supabase.anonKey);
                 let { data: { session } } = await App.supabase.auth.getSession();
 
-                // Inicializar notificações
                 await inicializarNotificacoes();
 
                 if (session) {
