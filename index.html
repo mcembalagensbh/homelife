@@ -1813,7 +1813,7 @@
 
             if ('serviceWorker' in navigator) {
                 try {
-                    const registration = await navigator.serviceWorker.register('/sw.js');
+                   const registration = await navigator.serviceWorker.register('sw.js', { scope: '/hcdlife/' });
                     App.serviceWorkerRegistration = registration;
                     console.log('Service Worker registrado');
                 } catch (error) {
