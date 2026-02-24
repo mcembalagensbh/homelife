@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=yes">
-    <title>HCD Life - Gestor Doméstico</title>
+    <title>My Life - Gestor Doméstico</title>
     <style>
         * {
             margin: 0;
@@ -1078,12 +1078,16 @@
 
         @media (min-width: 1024px) {
             .side-menu {
-                left: calc(50% - 450px);
+                left: -280px;
                 border-radius: 0 8px 8px 0;
             }
             
             .side-menu.open {
-                left: calc(50% - 450px);
+                left: 0;
+            }
+            
+            .side-menu.open ~ .side-menu-overlay {
+                display: block;
             }
         }
 
@@ -1479,7 +1483,7 @@
 <body>
     <div id="authContainer">
         <div class="auth-box">
-            <h2 class="auth-title"><i class="fas fa-home"></i> HCD Life</h2>
+            <h2 class="auth-title"><i class="fas fa-home"></i> My Life</h2>
             <div id="loginForm">
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-envelope"></i> Email</label>
@@ -1522,18 +1526,18 @@
     <div id="mainContainer">
         <div class="side-menu-overlay" id="sideMenuOverlay"></div>
         <div class="side-menu" id="sideMenu">
-            <div class="side-menu-header"><i class="fas fa-home"></i> HCD Life</div>
+            <div class="side-menu-header"><i class="fas fa-home"></i> My Life</div>
             <div class="side-menu-item" onclick="abrirMenuRelatorio();fecharSideMenu()"><i class="fas fa-chart-line"></i> Relatório</div>
-            <div class="side-menu-item" onclick="abrirMenuUsuarios();fecharSideMenu()"><i class="fas fa-users"></i> Usuários</div>
             <div class="side-menu-item" onclick="abrirNotificacoes();fecharSideMenu()"><i class="fas fa-bell"></i> Notificações</div>
             <div class="side-menu-item" onclick="abrirMenuSeguranca();fecharSideMenu()"><i class="fas fa-lock"></i> Segurança</div>
             <div class="side-menu-item" onclick="abrirUltimasAcoes();fecharSideMenu()"><i class="fas fa-history"></i> Últimas Ações</div>
             <div class="side-menu-item" onclick="abrirManual();fecharSideMenu()"><i class="fas fa-book"></i> Manual</div>
+            <div class="side-menu-item" onclick="abrirModalAssinatura();fecharSideMenu()"><i class="fas fa-crown"></i> Assinatura</div>
         </div>
 
         <div class="header">
             <div class="header-content">
-                <h1><i class="fas fa-home"></i> HCD Life</h1>
+                <h1><i class="fas fa-home"></i> My Life</h1>
                 <div class="header-center">
                     <button class="header-today-btn" id="btnToday"><i class="fas fa-calendar-day"></i> Hoje</button>
                     <div class="saldo-header" id="btnSaldoHeader">
@@ -1541,7 +1545,7 @@
                     </div>
                 </div>
                 <div class="header-actions">
-                    <div class="usuario-header" id="btnUsuarioHeader" onclick="verificarUsuario()">
+                    <div class="usuario-header" id="btnUsuarioHeader">
                         <i class="fas fa-user"></i><span id="usuarioHeaderNome">Selecionar</span>
                     </div>
                     <button class="header-btn" id="btnLogout" title="Sair"><i class="fas fa-sign-out-alt"></i></button>
@@ -1686,8 +1690,6 @@
             pendingDelete: null,
             saldoCentral: { id: null, valor: 0 },
             historicoAcoes: [],
-            usuarios: [],
-            usuarioAtual: null,
             notificacoesConfig: {
                 contas: true,
                 eventos: true,
@@ -1704,11 +1706,13 @@
             dataCache: {
                 contas: [], regrasContas: [], eventos: [], eventosIndividuais: [], regrasEventos: [],
                 gastos: [], lista: [], saldos: [], historico: [], excecoesRecorrencia: [],
-                giros: [], movimentacoesGiro: [], usuariosCadastrados: []
+                giros: [], movimentacoesGiro: []
             },
             notificacoesAgendadas: [],
             serviceWorkerRegistration: null,
-            processandoPagamento: false
+            processandoPagamento: false,
+            assinaturaAtiva: true,
+            dataExpiracao: null
         };
 
         // Funções auxiliares
@@ -1813,7 +1817,7 @@
 
             if ('serviceWorker' in navigator) {
                 try {
-                   const registration = await navigator.serviceWorker.register('sw.js', { scope: '/hcdlife/' });
+                   const registration = await navigator.serviceWorker.register('sw.js', { scope: '/mylife/' });
                     App.serviceWorkerRegistration = registration;
                     console.log('Service Worker registrado');
                 } catch (error) {
@@ -1837,7 +1841,7 @@
             }
             
             if (config.tipo === 'bloqueio' || config.tipo === 'ambos') {
-                new Notification('HCD Life', {
+                new Notification('My Life', {
                     body: corpo,
                     icon: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/home.svg',
                     badge: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/bell.svg',
@@ -1920,100 +1924,6 @@
                     }
                 });
             }
-        }
-
-        // Funções de carregamento de dados
-        async function carregarUsuariosCadastrados() {
-            if (!App.currentUser) return;
-            try {
-                const { data, error } = await App.supabase
-                    .from('usuarios_cadastrados')
-                    .select('*')
-                    .eq('user_id', App.currentUser.id);
-                
-                if (!error && data) {
-                    App.usuarios = data.map(u => u.nome);
-                    App.dataCache.usuariosCadastrados = data;
-                    
-                    const usuarioAtivo = data.find(u => u.ativo);
-                    if (usuarioAtivo) {
-                        App.usuarioAtual = usuarioAtivo.nome;
-                        document.getElementById('usuarioHeaderNome').textContent = usuarioAtivo.nome;
-                        localStorage.setItem(`homelife_usuario_${App.currentUser.id}`, usuarioAtivo.nome);
-                    } else {
-                        const nomeSalvo = localStorage.getItem(`homelife_usuario_${App.currentUser.id}`);
-                        if (nomeSalvo && App.usuarios.includes(nomeSalvo)) {
-                            App.usuarioAtual = nomeSalvo;
-                            document.getElementById('usuarioHeaderNome').textContent = nomeSalvo;
-                            await App.supabase
-                                .from('usuarios_cadastrados')
-                                .update({ ativo: true })
-                                .eq('user_id', App.currentUser.id)
-                                .eq('nome', nomeSalvo);
-                        }
-                    }
-                }
-            } catch (e) {
-                console.error('Erro ao carregar usuários:', e);
-            }
-        }
-
-        async function salvarUsuariosCadastrados() {
-            if (!App.currentUser) return;
-            try {
-                for (const nome of App.usuarios) {
-                    const existe = App.dataCache.usuariosCadastrados?.find(u => u.nome === nome);
-                    if (!existe) {
-                        await App.supabase.from('usuarios_cadastrados').insert({
-                            user_id: App.currentUser.id,
-                            nome: nome,
-                            ativo: nome === App.usuarioAtual
-                        });
-                    }
-                }
-                
-                if (App.usuarioAtual) {
-                    await App.supabase
-                        .from('usuarios_cadastrados')
-                        .update({ ativo: false })
-                        .eq('user_id', App.currentUser.id);
-                    
-                    await App.supabase
-                        .from('usuarios_cadastrados')
-                        .update({ ativo: true })
-                        .eq('user_id', App.currentUser.id)
-                        .eq('nome', App.usuarioAtual);
-                }
-                
-                localStorage.setItem(`homelife_usuario_${App.currentUser.id}`, App.usuarioAtual || '');
-                await carregarUsuariosCadastrados();
-            } catch (e) {
-                console.error('Erro ao salvar usuários:', e);
-            }
-        }
-
-        function carregarConfigLocal() {
-            if (!App.currentUser) return;
-            const key = `homelife_config_${App.currentUser.id}`;
-            try {
-                const config = JSON.parse(localStorage.getItem(key) || '{}');
-                App.notificacoesConfig = {
-                    ...App.notificacoesConfig,
-                    ...config.notificacoes
-                };
-                if (config.saldoSenha) App.saldoSenha = config.saldoSenha;
-                if (config.acessoNovaSenha) App.acessoNovaSenha = config.acessoNovaSenha;
-            } catch (e) { }
-        }
-
-        function salvarConfigLocal() {
-            if (!App.currentUser) return;
-            const key = `homelife_config_${App.currentUser.id}`;
-            localStorage.setItem(key, JSON.stringify({
-                notificacoes: App.notificacoesConfig,
-                saldoSenha: App.saldoSenha,
-                acessoNovaSenha: App.acessoNovaSenha
-            }));
         }
 
         // Funções de cálculo de recorrência
@@ -2230,13 +2140,126 @@
             return resultados;
         }
 
+        // Funções de assinatura
+        async function carregarAssinatura() {
+            if (!App.currentUser) return;
+            
+            try {
+                const { data, error } = await App.supabase
+                    .from('assinaturas')
+                    .select('data_expiracao, status')
+                    .eq('user_id', App.currentUser.id)
+                    .eq('status', 'ativo')
+                    .gte('data_expiracao', new Date().toISOString())
+                    .maybeSingle();
+
+                if (data) {
+                    App.assinaturaAtiva = true;
+                    App.dataExpiracao = new Date(data.data_expiracao);
+                } else {
+                    App.assinaturaAtiva = false;
+                }
+            } catch (error) {
+                console.error('Erro ao carregar assinatura:', error);
+                App.assinaturaAtiva = false;
+            }
+        }
+
+        function podeExecutarAcao() {
+            return App.assinaturaAtiva;
+        }
+
+        async function criarTrialParaNovoUsuario(userId) {
+            try {
+                const { data } = await App.supabase
+                    .from('assinaturas')
+                    .select('id')
+                    .eq('user_id', userId)
+                    .maybeSingle();
+                    
+                if (data) return;
+                
+                let dataExpiracao = new Date();
+                dataExpiracao.setDate(dataExpiracao.getDate() + 30);
+                
+                await App.supabase
+                    .from('assinaturas')
+                    .insert({
+                        user_id: userId,
+                        data_expiracao: dataExpiracao.toISOString(),
+                        status: 'ativo'
+                    });
+                    
+                console.log('Trial de 30 dias criado');
+            } catch (error) {
+                console.error('Erro ao criar trial:', error);
+            }
+        }
+
+        async function processarPagamento() {
+            // Esta é uma função placeholder - você implementará com Pagar.me depois
+            showToast('Processando pagamento... Em breve disponível!', 'info');
+            
+            // Simulação de pagamento bem-sucedido
+            setTimeout(async () => {
+                let novaExpiracao = new Date();
+                novaExpiracao.setDate(novaExpiracao.getDate() + 30);
+                
+                await App.supabase
+                    .from('assinaturas')
+                    .update({ 
+                        data_expiracao: novaExpiracao.toISOString(),
+                        status: 'ativo'
+                    })
+                    .eq('user_id', App.currentUser.id);
+                    
+                App.assinaturaAtiva = true;
+                App.dataExpiracao = novaExpiracao;
+                
+                showToast('Assinatura ativada com sucesso!', 'success');
+                fecharModal();
+            }, 2000);
+        }
+
+        function abrirModalAssinatura() {
+            let dataExpiracao = App.dataExpiracao ? App.dataExpiracao.toLocaleDateString('pt-BR') : 'Desconhecida';
+            let status = App.assinaturaAtiva ? 
+                `<span style="color:var(--success)">Ativa até ${dataExpiracao}</span>` : 
+                '<span style="color:var(--danger)">Expirada</span>';
+            
+            let conteudo = `
+                <div style="padding:16px; text-align:center">
+                    <i class="fas fa-crown" style="font-size:48px; color:var(--warning); margin-bottom:16px"></i>
+                    <h3>Status da Assinatura</h3>
+                    <p style="margin:16px 0; font-size:1.2em">${status}</p>
+                    
+                    ${!App.assinaturaAtiva ? `
+                        <p style="margin:16px 0">Para continuar adicionando itens, assine por apenas <strong>R$ 29,90/mês</strong>.</p>
+                        <p style="font-size:0.9em; color:var(--gray); margin-bottom:16px">
+                            Você ainda pode visualizar todos os seus dados normalmente.
+                        </p>
+                        <div class="btn-group">
+                            <button class="btn btn-success" onclick="processarPagamento()" style="flex:2">
+                                <i class="fas fa-credit-card"></i> Assinar Agora
+                            </button>
+                            <button class="btn" onclick="fecharModal()" style="flex:1">Fechar</button>
+                        </div>
+                    ` : `
+                        <p style="margin:16px 0">Sua assinatura está ativa. Obrigado por usar o My Life!</p>
+                        <button class="btn" onclick="fecharModal()">Fechar</button>
+                    `}
+                </div>
+            `;
+            abrirModal('Assinatura', 'fa-crown', conteudo);
+        }
+
+        // Funções de carregamento de dados
         async function carregarDados(forceRefresh) {
             if (!App.currentUser) return;
             
             document.getElementById('loadingState').style.display = 'block';
             
-            await carregarUsuariosCadastrados();
-            carregarConfigLocal();
+            await carregarAssinatura();
 
             try {
                 const promises = [
@@ -2299,8 +2322,7 @@
                     contas: contas || [], regrasContas: regrasContas || [], eventos: eventos || [],
                     eventosIndividuais: eventosIndividuais || [], regrasEventos: regrasEventos || [],
                     gastos: gastos || [], lista: lista || [], saldos: saldos || [], historico: historico || [],
-                    excecoesRecorrencia: excecoesRecorrencia, giros: giros || [], movimentacoesGiro: movimentacoes || [],
-                    usuariosCadastrados: App.dataCache.usuariosCadastrados
+                    excecoesRecorrencia: excecoesRecorrencia, giros: giros || [], movimentacoesGiro: movimentacoes || []
                 };
 
                 atualizarListaBadge();
@@ -2460,7 +2482,7 @@
             let valor = '';
             let icone = 'fa-file-invoice-dollar';
             let botoes = '';
-            let usuario = item.added_by || item.usuario || 'desconhecido';
+            let usuario = item.added_by || item.usuario || App.usuarioAtual || 'desconhecido';
             let usuarioBadge = `<span class="usuario-badge">${usuario}</span>`;
 
             if (item.tipo === 'conta') {
@@ -2717,6 +2739,86 @@
         function fecharModal() {
             document.getElementById('modalOverlay').style.display = 'none';
             App.modalHasChanges = false;
+        }
+
+        // Funções de usuário (apenas localStorage)
+        function carregarUsuarioLocal() {
+            if (!App.currentUser) return;
+            const key = `mylife_usuario_${App.currentUser.id}`;
+            const nome = localStorage.getItem(key);
+            if (nome) {
+                App.usuarioAtual = nome;
+                document.getElementById('usuarioHeaderNome').textContent = nome;
+            }
+        }
+
+        function salvarUsuarioLocal(nome) {
+            if (!App.currentUser) return;
+            const key = `mylife_usuario_${App.currentUser.id}`;
+            localStorage.setItem(key, nome);
+            App.usuarioAtual = nome;
+            document.getElementById('usuarioHeaderNome').textContent = nome;
+        }
+
+        function verificarUsuario() {
+            abrirSelecaoUsuario();
+        }
+
+        function abrirSelecaoUsuario(aposAcao = false, acao = null) {
+            let nomeAtual = App.usuarioAtual || '';
+
+            let conteudo = `
+                <div class="form-group">
+                    <label class="form-label">Seu Nome</label>
+                    <input type="text" id="novoUsuarioNome" class="form-input" value="${nomeAtual}" placeholder="Digite seu nome" autocomplete="off">
+                </div>
+                <div class="btn-group" style="margin-top:20px">
+                    <button class="btn btn-primary" onclick="salvarUsuarioSelecao(${aposAcao}, '${acao}')" style="flex:2"><i class="fas fa-save"></i> Salvar</button>
+                    <button class="btn" onclick="fecharModal()" style="flex:1;background:var(--gray);color:#fff">Cancelar</button>
+                </div>
+            `;
+            abrirModal('Seu Nome', 'fa-user', conteudo);
+        }
+
+        function salvarUsuarioSelecao(aposAcao = false, acao = null) {
+            let nome = document.getElementById('novoUsuarioNome')?.value.trim();
+            if (!nome) {
+                showToast('Digite um nome', 'warning');
+                return;
+            }
+            
+            salvarUsuarioLocal(nome);
+            fecharModal();
+            showToast(`Usuário ${nome} selecionado`, 'success');
+            
+            if (aposAcao && acao) {
+                setTimeout(() => executarAcao(acao), 300);
+            }
+        }
+
+        function verificarUsuarioAcao(acao) {
+            if (!App.usuarioAtual) {
+                abrirSelecaoUsuario(true, acao);
+                return;
+            }
+            
+            if (!podeExecutarAcao()) {
+                abrirModalAssinatura();
+                return;
+            }
+            
+            executarAcao(acao);
+        }
+
+        function executarAcao(acao) {
+            fecharAddMenu();
+            switch (acao) {
+                case 'conta': abrirNovaConta(); break;
+                case 'evento': abrirNovoEventoUnificado(); break;
+                case 'gasto': abrirNovoGasto(); break;
+                case 'lista': abrirNovoItemLista(); break;
+                case 'giro': abrirNovoGiro(); break;
+            }
         }
 
         // Função para abrir nova conta
@@ -3420,7 +3522,6 @@
                         data_fim: dataFimStr
                     }).eq('id', regraId);
                     
-                    // Atualizar também os eventos individuais vinculados
                     await App.supabase.from('eventos_individuais')
                         .update({
                             titulo: titulo,
@@ -3450,7 +3551,6 @@
                 } else {
                     let dataInicio = new Date(dataInicioStr + 'T12:00:00');
                     
-                    // Se for evento único com múltiplos dias, atualizar todos
                     if (dataFimStr && dataFimStr !== dataInicioStr) {
                         let dataFim = new Date(dataFimStr + 'T12:00:00');
                         let dataAtual = new Date(dataInicio);
@@ -3460,7 +3560,6 @@
                             let mesAtual = dataAtual.getMonth() + 1;
                             let diaAtual = dataAtual.getDate();
                             
-                            // Verificar se existe evento para esta data
                             let eventoExistente = App.dataCache.eventos.find(e => 
                                 e.dia === diaAtual && e.mes === mesAtual && e.ano === anoAtual
                             );
@@ -3794,7 +3893,6 @@
                             .update({ data_fim: dataFim })
                             .eq('id', regraId);
                         
-                        // Excluir eventos individuais futuros
                         await App.supabase
                             .from('eventos_individuais')
                             .delete()
@@ -3809,7 +3907,6 @@
                             await App.supabase.from('eventos_individuais').delete().eq('regra_id', regraId);
                             await App.supabase.from('regras_eventos').update({ data_fim: dataParaString(ano, mes, dia - 1) }).eq('id', regraId);
                         } else {
-                            // Evento único com múltiplos dias
                             let evento = App.dataCache.eventos.find(e => e.id === id);
                             if (evento && evento.data_inicio && evento.data_fim) {
                                 await App.supabase
@@ -3874,173 +3971,6 @@
                     showToast('Erro: ' + error.message, 'error');
                 }
             })();
-        }
-
-        function verificarUsuario() {
-            if (!App.usuarioAtual) {
-                abrirSelecaoUsuario();
-            } else {
-                abrirMenuUsuarios();
-            }
-        }
-
-        function verificarUsuarioAcao(acao) {
-            if (!App.usuarioAtual) {
-                abrirSelecaoUsuario(true, acao);
-            } else {
-                executarAcao(acao);
-            }
-        }
-
-        function abrirSelecaoUsuario(aposAcao = false, acao = null) {
-            carregarUsuariosCadastrados().then(() => {
-                let usuariosHtml = App.usuarios.map(u => 
-                    `<div class="delete-option" onclick="selecionarUsuario('${u}', ${aposAcao}, '${acao}')">
-                        <strong><i class="fas fa-user"></i> ${u}</strong>
-                    </div>`
-                ).join('');
-
-                let conteudo = `
-                    <div class="form-group">
-                        <label class="form-label">Seu Nome</label>
-                        <div style="display:flex;gap:8px">
-                            <input type="text" id="novoUsuarioNome" class="form-input" placeholder="Digite seu nome" autocomplete="off">
-                            <button class="btn btn-success" onclick="adicionarUsuarioSelecao(${aposAcao}, '${acao}')"><i class="fas fa-plus"></i> Adicionar</button>
-                        </div>
-                    </div>
-                    ${App.usuarios.length > 0 ? `
-                        <div class="section-divider">Usuários Existentes</div>
-                        ${usuariosHtml}
-                    ` : ''}
-                    <div class="btn-group" style="margin-top:20px">
-                        <button class="btn" onclick="fecharModal()" style="background:var(--gray);color:#fff">Cancelar</button>
-                    </div>
-                `;
-                abrirModal('Selecionar Usuário', 'fa-user', conteudo);
-            });
-        }
-
-        async function adicionarUsuarioSelecao(aposAcao = false, acao = null) {
-            let nome = document.getElementById('novoUsuarioNome')?.value.trim();
-            if (!nome) {
-                showToast('Digite um nome', 'warning');
-                return;
-            }
-            if (!App.usuarios.includes(nome)) {
-                App.usuarios.push(nome);
-                await salvarUsuariosCadastrados();
-            }
-            App.usuarioAtual = nome;
-            document.getElementById('usuarioHeaderNome').textContent = nome;
-            localStorage.setItem(`homelife_usuario_${App.currentUser.id}`, nome);
-            await salvarUsuariosCadastrados();
-            fecharModal();
-            showToast(`Usuário ${nome} selecionado`, 'success');
-            if (aposAcao && acao) {
-                setTimeout(() => executarAcao(acao), 300);
-            }
-        }
-
-        async function selecionarUsuario(nome, aposAcao = false, acao = null) {
-            App.usuarioAtual = nome;
-            document.getElementById('usuarioHeaderNome').textContent = nome;
-            localStorage.setItem(`homelife_usuario_${App.currentUser.id}`, nome);
-            await salvarUsuariosCadastrados();
-            fecharModal();
-            showToast(`Usuário ${nome} selecionado`, 'success');
-            if (aposAcao && acao) {
-                setTimeout(() => executarAcao(acao), 300);
-            }
-        }
-
-        function executarAcao(acao) {
-            fecharAddMenu();
-            switch (acao) {
-                case 'conta': abrirNovaConta(); break;
-                case 'evento': abrirNovoEventoUnificado(); break;
-                case 'gasto': abrirNovoGasto(); break;
-                case 'lista': abrirNovoItemLista(); break;
-                case 'giro': abrirNovoGiro(); break;
-            }
-        }
-
-        async function abrirMenuUsuarios() {
-            await carregarUsuariosCadastrados();
-            let usuariosHtml = App.usuarios.map(u => 
-                `<div class="delete-option ${u === App.usuarioAtual ? 'selected' : ''}">
-                    <strong><i class="fas fa-user"></i> ${u}</strong> ${u === App.usuarioAtual ? '(atual)' : ''}
-                    <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();removerUsuario('${u}')" style="float:right"><i class="fas fa-trash"></i></button>
-                </div>`
-            ).join('');
-
-            let conteudo = `
-                <div class="form-group">
-                    <label class="form-label">Novo Usuário</label>
-                    <div style="display:flex;gap:8px">
-                        <input type="text" id="novoUsuarioNome" class="form-input" placeholder="Nome">
-                        <button class="btn btn-success" onclick="adicionarUsuario()"><i class="fas fa-plus"></i></button>
-                    </div>
-                </div>
-                <div class="section-divider">Usuários Cadastrados</div>
-                ${usuariosHtml || '<p>Nenhum usuário cadastrado</p>'}
-                <div class="btn-group" style="margin-top:20px">
-                    <button class="btn" onclick="fecharModal()" style="background:var(--gray);color:#fff">Fechar</button>
-                </div>
-            `;
-            abrirModal('Gerenciar Usuários', 'fa-users', conteudo);
-        }
-
-        async function adicionarUsuario() {
-            let nome = document.getElementById('novoUsuarioNome')?.value.trim();
-            if (!nome) {
-                showToast('Digite um nome', 'warning');
-                return;
-            }
-            if (!App.usuarios.includes(nome)) {
-                App.usuarios.push(nome);
-                await salvarUsuariosCadastrados();
-                showToast('Usuário adicionado!', 'success');
-            } else {
-                showToast('Usuário já existe', 'warning');
-            }
-            fecharModal();
-            abrirMenuUsuarios();
-        }
-
-        async function removerUsuario(nome) {
-            if (App.usuarios.length === 1) {
-                showToast('Deve haver pelo menos um usuário', 'warning');
-                return;
-            }
-            
-            try {
-                await App.supabase
-                    .from('usuarios_cadastrados')
-                    .delete()
-                    .eq('user_id', App.currentUser.id)
-                    .eq('nome', nome);
-                
-                App.usuarios = App.usuarios.filter(u => u !== nome);
-                
-                if (nome === App.usuarioAtual) {
-                    App.usuarioAtual = App.usuarios[0];
-                    document.getElementById('usuarioHeaderNome').textContent = App.usuarioAtual;
-                    localStorage.setItem(`homelife_usuario_${App.currentUser.id}`, App.usuarioAtual);
-                    await App.supabase
-                        .from('usuarios_cadastrados')
-                        .update({ ativo: true })
-                        .eq('user_id', App.currentUser.id)
-                        .eq('nome', App.usuarioAtual);
-                }
-                
-                showToast('Usuário removido!', 'success');
-            } catch (e) {
-                console.error('Erro ao remover usuário:', e);
-                showToast('Erro ao remover usuário', 'error');
-            }
-            
-            fecharModal();
-            abrirMenuUsuarios();
         }
 
         function abrirMenuRelatorio() {
@@ -4162,7 +4092,6 @@
             let novaSenhaSaldo = document.getElementById('novaSenhaSaldo')?.value;
             let confirmaSenhaSaldo = document.getElementById('confirmaSenhaSaldo')?.value;
 
-            // Validar senha de acesso se foi preenchida
             if (novaSenhaAcesso || confirmaSenhaAcesso || senhaAtualAcesso) {
                 if (!senhaAtualAcesso) {
                     showToast('Digite a senha atual de acesso', 'warning');
@@ -4189,7 +4118,6 @@
                 showToast('Senha de acesso alterada!', 'success');
             }
 
-            // Validar senha do saldo se foi preenchida
             if (novaSenhaSaldo || confirmaSenhaSaldo || senhaAtualSaldo) {
                 if (!senhaAtualSaldo) {
                     showToast('Digite a senha atual do saldo', 'warning');
@@ -4362,9 +4290,77 @@
 
         function abrirManual() {
             let conteudo = `
-                <div style="padding:16px; text-align:center">
-                    <i class="fas fa-book" style="font-size:48px; color:var(--purple); margin-bottom:16px"></i>
-                    <p style="color:var(--gray)">Manual em construção</p>
+                <div style="padding:16px">
+                    <h3 style="color:var(--purple);margin-bottom:16px">Manual de Instruções - My Life</h3>
+                    
+                    <div style="margin-bottom:20px">
+                        <h4 style="color:var(--purple-dark);margin-bottom:8px"><i class="fas fa-calendar-day"></i> Botão "Hoje"</h4>
+                        <p>No menu superior, o botão <strong>"Hoje"</strong> volta automaticamente para o mês atual e seleciona o dia de hoje. Isso é útil quando você navega para meses anteriores ou futuros e quer retornar rapidamente para a data atual. Ao atualizar a página, o sistema também volta para o mês e dia atual.</p>
+                    </div>
+                    
+                    <div style="margin-bottom:20px">
+                        <h4 style="color:var(--purple-dark);margin-bottom:8px"><i class="fas fa-user"></i> Seu Nome (Usuário)</h4>
+                        <p>Clique no seu nome no menu superior para definir ou alterar seu nome. Este nome fica salvo apenas neste navegador (localStorage) e é usado para registrar quem fez cada ação (criar conta, pagar, etc.). Se outra pessoa usar o mesmo login em outro dispositivo, ela deverá colocar seu próprio nome, que ficará salvo apenas naquele dispositivo.</p>
+                    </div>
+                    
+                    <div style="margin-bottom:20px">
+                        <h4 style="color:var(--purple-dark);margin-bottom:8px"><i class="fas fa-file-invoice-dollar"></i> Contas</h4>
+                        <p><strong>Como criar:</strong> Clique no botão + e selecione "Nova Conta". Preencha descrição, valor, frequência (único, mensal, anual, etc.) e dia do vencimento. Para contas únicas, você pode adicionar código de barras ou chave PIX. Para contas recorrentes, o sistema criará automaticamente as próximas ocorrências.</p>
+                        <p><strong>Como pagar:</strong> Na lista de contas, clique no botão verde "$" ao lado da conta. O valor será debitado do saldo central automaticamente.</p>
+                        <p><strong>Recorrência:</strong> Se escolher uma frequência (mensal, anual), o sistema criará uma regra e gerará as contas futuras automaticamente. Você pode excluir ocorrências específicas ou a regra inteira.</p>
+                    </div>
+                    
+                    <div style="margin-bottom:20px">
+                        <h4 style="color:var(--purple-dark);margin-bottom:8px"><i class="fas fa-calendar-alt"></i> Eventos</h4>
+                        <p><strong>Como criar:</strong> Clique no botão + e selecione "Novo Evento". Escolha título, frequência, data de início e se desejar, data de fim para eventos de múltiplos dias. Você pode selecionar ícones coloridos para personalizar.</p>
+                        <p><strong>Calendário inteligente:</strong> Ao definir a frequência, o botão "Calendário" mostra as datas futuras onde o evento ocorrerá, facilitando a visualização.</p>
+                        <p><strong>Edição:</strong> Você pode editar um evento específico ou a regra inteira. Na exclusão, pode escolher entre excluir apenas este dia, deste dia em diante ou todas as ocorrências.</p>
+                    </div>
+                    
+                    <div style="margin-bottom:20px">
+                        <h4 style="color:var(--purple-dark);margin-bottom:8px"><i class="fas fa-wallet"></i> Saldo e Gastos</h4>
+                        <p><strong>Saldo:</strong> Acesse a área de Saldos clicando no valor no menu superior ou no botão "Saldos" na barra inferior. É protegido por senha (padrão: 1234). Você pode adicionar, retirar ou atualizar o saldo manualmente. O extrato mostra movimentações dos últimos 3 meses.</p>
+                        <p><strong>Gastos:</strong> No botão "Gastos" na barra inferior, registre seus gastos diários com categorias. Eles são automaticamente debitados do saldo central.</p>
+                    </div>
+                    
+                    <div style="margin-bottom:20px">
+                        <h4 style="color:var(--purple-dark);margin-bottom:8px"><i class="fas fa-hand-holding-usd"></i> Giros (Empréstimos)</h4>
+                        <p>Use para controlar empréstimos com amigos. Registre o valor inicial e a pessoa. Depois, registre pagamentos (você pagou a pessoa) ou recebimentos (a pessoa te pagou). O saldo é atualizado automaticamente.</p>
+                    </div>
+                    
+                    <div style="margin-bottom:20px">
+                        <h4 style="color:var(--purple-dark);margin-bottom:8px"><i class="fas fa-shopping-cart"></i> Lista de Compras</h4>
+                        <p>Lista simples para controle de compras. Marque os itens como comprados quando pegar no mercado. Um badge na barra inferior mostra quantos itens pendentes existem.</p>
+                    </div>
+                    
+                    <div style="margin-bottom:20px">
+                        <h4 style="color:var(--purple-dark);margin-bottom:8px"><i class="fas fa-chart-line"></i> Relatório</h4>
+                        <p>No menu lateral, acesse "Relatório" para ver um resumo financeiro do mês atual com gráficos de barras mostrando contas pagas, gastos e saldo.</p>
+                    </div>
+                    
+                    <div style="margin-bottom:20px">
+                        <h4 style="color:var(--purple-dark);margin-bottom:8px"><i class="fas fa-bell"></i> Notificações</h4>
+                        <p>Configure notificações para ser lembrado de contas a vencer e eventos. Você pode escolher a antecedência (1 dia, 1 semana, etc.) e o tipo (banner na tela, notificação do sistema ou ambos).</p>
+                    </div>
+                    
+                    <div style="margin-bottom:20px">
+                        <h4 style="color:var(--purple-dark);margin-bottom:8px"><i class="fas fa-lock"></i> Segurança</h4>
+                        <p>Altere a senha de acesso ao sistema (6 dígitos) e a senha da área de saldos (4 dígitos) no menu "Segurança".</p>
+                    </div>
+                    
+                    <div style="margin-bottom:20px">
+                        <h4 style="color:var(--purple-dark);margin-bottom:8px"><i class="fas fa-history"></i> Últimas Ações</h4>
+                        <p>Veja o histórico das últimas 100 ações realizadas no sistema, com data, descrição e quem executou.</p>
+                    </div>
+                    
+                    <div style="margin-bottom:20px">
+                        <h4 style="color:var(--purple-dark);margin-bottom:8px"><i class="fas fa-crown"></i> Assinatura</h4>
+                        <p>Ao criar uma conta, você ganha 30 dias grátis. Após esse período, apenas a visualização dos dados é permitida. Para continuar adicionando itens, assine por R$ 29,90/mês clicando em "Assinatura" no menu lateral.</p>
+                    </div>
+                    
+                    <div class="btn-group" style="margin-top:20px">
+                        <button class="btn btn-primary" onclick="fecharModal()">Fechar</button>
+                    </div>
                 </div>
             `;
             abrirModal('Manual de Instruções', 'fa-book', conteudo);
@@ -5296,6 +5292,30 @@
             document.getElementById('navAdd').classList.remove('active');
         }
 
+        function carregarConfigLocal() {
+            if (!App.currentUser) return;
+            const key = `mylife_config_${App.currentUser.id}`;
+            try {
+                const config = JSON.parse(localStorage.getItem(key) || '{}');
+                App.notificacoesConfig = {
+                    ...App.notificacoesConfig,
+                    ...config.notificacoes
+                };
+                if (config.saldoSenha) App.saldoSenha = config.saldoSenha;
+                if (config.acessoNovaSenha) App.acessoNovaSenha = config.acessoNovaSenha;
+            } catch (e) { }
+        }
+
+        function salvarConfigLocal() {
+            if (!App.currentUser) return;
+            const key = `mylife_config_${App.currentUser.id}`;
+            localStorage.setItem(key, JSON.stringify({
+                notificacoes: App.notificacoesConfig,
+                saldoSenha: App.saldoSenha,
+                acessoNovaSenha: App.acessoNovaSenha
+            }));
+        }
+
         // Inicialização
         async function init() {
             try {
@@ -5309,7 +5329,7 @@
                     document.getElementById('authContainer').style.display = 'none';
                     document.getElementById('mainContainer').style.display = 'block';
 
-                    await carregarUsuariosCadastrados();
+                    carregarUsuarioLocal();
                     carregarConfigLocal();
 
                     await carregarDados(true);
@@ -5350,7 +5370,7 @@
                             App.currentUser = data.user;
                             document.getElementById('authContainer').style.display = 'none';
                             document.getElementById('mainContainer').style.display = 'block';
-                            await carregarUsuariosCadastrados();
+                            carregarUsuarioLocal();
                             await carregarDados(true);
                             resetarParaHoje();
                             showToast('Login realizado!', 'success');
@@ -5363,6 +5383,7 @@
                 document.getElementById('btnRegister').addEventListener('click', async () => {
                     let email = document.getElementById('registerEmail').value.trim();
                     let pass = document.getElementById('registerPassword').value;
+                    let nome = document.getElementById('registerName').value.trim();
 
                     if (!email || !pass) {
                         showToast('Preencha email e senha', 'warning');
@@ -5374,10 +5395,17 @@
                     }
 
                     try {
-                        let { error } = await App.supabase.auth.signUp({ email, password: pass });
+                        let { data, error } = await App.supabase.auth.signUp({ email, password: pass });
                         if (error) showToast(error.message, 'error');
                         else {
-                            showToast('Conta criada! Faça login.', 'success');
+                            if (data.user) {
+                                await criarTrialParaNovoUsuario(data.user.id);
+                                if (nome) {
+                                    App.usuarioAtual = nome;
+                                    salvarUsuarioLocal(nome);
+                                }
+                            }
+                            showToast('Conta criada! Você tem 30 dias grátis.', 'success');
                             document.getElementById('registerForm').style.display = 'none';
                             document.getElementById('loginForm').style.display = 'block';
                         }
