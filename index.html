@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=yes">
-    <title>Home Life - Gestor Doméstico</title>
+    <title>HCD Life - Gestor Doméstico</title>
     <style>
         * {
             margin: 0;
@@ -122,6 +122,16 @@
             outline: 0;
             border-color: var(--purple);
             box-shadow: 0 0 0 3px rgba(155, 89, 182, .1)
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
 
         .btn {
@@ -490,7 +500,8 @@
         .filter-buttons {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 6px
+            gap: 6px;
+            position: relative
         }
 
         .filter-btn {
@@ -506,7 +517,8 @@
             font-weight: 600;
             font-size: 13px;
             min-height: 60px;
-            transition: all 0.2s
+            transition: all 0.2s;
+            position: relative
         }
 
         .filter-btn.active {
@@ -519,6 +531,29 @@
 
         .filter-btn i {
             font-size: 18px
+        }
+
+        .filter-check {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 12px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.2s
+        }
+
+        .filter-btn.active .filter-check {
+            opacity: 1
         }
 
         .content-area {
@@ -903,7 +938,7 @@
         }
 
         .nav-add-btn {
-            background: var(--green-dark) !important;
+            background: var(--purple-dark) !important;
             width: 56px;
             height: 56px;
             border-radius: 50%;
@@ -915,7 +950,7 @@
             color: #fff;
             font-size: 28px !important;
             transition: all 0.3s ease;
-            border: none !important
+            border: 2px solid rgba(255, 255, 255, 0.5) !important
         }
 
         .nav-add-btn i {
@@ -1166,6 +1201,137 @@
             border-color: var(--purple);
             background: var(--purple-light)
         }
+
+        .payment-info {
+            background: #f8f9fa;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 12px
+        }
+
+        .payment-info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            color: var(--purple-dark);
+            font-weight: 600
+        }
+
+        .payment-info-content {
+            word-break: break-all;
+            background: #fff;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px dashed var(--purple-light);
+            font-family: monospace
+        }
+
+        .btn-copy {
+            background: var(--purple);
+            color: #fff;
+            border: 0;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 11px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px
+        }
+
+        .report-chart {
+            background: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px
+        }
+
+        .chart-bar-container {
+            margin: 10px 0
+        }
+
+        .chart-bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            font-size: 12px
+        }
+
+        .chart-bar-bg {
+            background: #f0f0f0;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden
+        }
+
+        .chart-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--purple), var(--purple-dark));
+            border-radius: 10px;
+            transition: width 0.3s ease
+        }
+
+        .chart-bar-fill.warning {
+            background: linear-gradient(90deg, var(--warning), #e67e22)
+        }
+
+        .chart-bar-fill.success {
+            background: linear-gradient(90deg, var(--success), #27ae60)
+        }
+
+        .calendar-input {
+            position: relative;
+            display: flex;
+            align-items: center
+        }
+
+        .calendar-input input {
+            padding-right: 30px
+        }
+
+        .calendar-input i {
+            position: absolute;
+            right: 10px;
+            color: var(--purple);
+            pointer-events: none
+        }
+
+        .inline-calendar {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0
+        }
+
+        .inline-calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px
+        }
+
+        .inline-calendar-day {
+            padding: 8px 4px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 4px
+        }
+
+        .inline-calendar-day:hover {
+            background: var(--purple-light)
+        }
+
+        .inline-calendar-day.selected {
+            background: var(--purple);
+            color: #fff
+        }
+
+        .inline-calendar-day.today {
+            border: 1px solid var(--purple)
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1173,11 +1339,11 @@
 <body>
     <div id="authContainer">
         <div class="auth-box">
-            <h2 class="auth-title"><i class="fas fa-home"></i> Home Life</h2>
+            <h2 class="auth-title"><i class="fas fa-home"></i> HCD Life</h2>
             <div id="loginForm">
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-envelope"></i> Email</label>
-                    <input type="email" id="loginEmail" class="form-input" placeholder="seu@email.com">
+                    <input type="email" id="loginEmail" class="form-input" placeholder="seu@email.com" inputmode="email">
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-lock"></i> Senha</label>
@@ -1197,7 +1363,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-envelope"></i> Email</label>
-                    <input type="email" id="registerEmail" class="form-input" placeholder="seu@email.com">
+                    <input type="email" id="registerEmail" class="form-input" placeholder="seu@email.com" inputmode="email">
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-lock"></i> Senha</label>
@@ -1216,7 +1382,7 @@
     <div id="mainContainer">
         <div class="side-menu-overlay" id="sideMenuOverlay"></div>
         <div class="side-menu" id="sideMenu">
-            <div class="side-menu-header"><i class="fas fa-home"></i> Home Life</div>
+            <div class="side-menu-header"><i class="fas fa-home"></i> HCD Life</div>
             <div class="side-menu-item" onclick="abrirMenuRelatorio();fecharSideMenu()"><i class="fas fa-chart-line"></i> Relatório</div>
             <div class="side-menu-item" onclick="abrirMenuUsuarios();fecharSideMenu()"><i class="fas fa-users"></i> Usuários</div>
             <div class="side-menu-item" onclick="abrirNotificacoes();fecharSideMenu()"><i class="fas fa-bell"></i> Notificações</div>
@@ -1226,7 +1392,7 @@
 
         <div class="header">
             <div class="header-content">
-                <h1><i class="fas fa-home"></i> Home Life</h1>
+                <h1><i class="fas fa-home"></i> HCD Life</h1>
                 <div class="header-center">
                     <button class="header-today-btn" id="btnToday"><i class="fas fa-calendar-day"></i> Hoje</button>
                     <div class="saldo-header" id="btnSaldoHeader">
@@ -1255,8 +1421,16 @@
 
         <div class="filters">
             <div class="filter-buttons" id="filterButtons">
-                <button class="filter-btn active" data-filter="contas"><i class="fas fa-file-invoice-dollar"></i><span>Contas</span></button>
-                <button class="filter-btn active" data-filter="eventos"><i class="fas fa-calendar-alt"></i><span>Eventos</span></button>
+                <button class="filter-btn" data-filter="contas">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span>Contas</span>
+                    <span class="filter-check"><i class="fas fa-check"></i></span>
+                </button>
+                <button class="filter-btn" data-filter="eventos">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Eventos</span>
+                    <span class="filter-check"><i class="fas fa-check"></i></span>
+                </button>
             </div>
         </div>
 
@@ -1338,7 +1512,22 @@
                 { nome: 'Montanha', icon: 'fa-mountain', cor: '#27ae60' },
                 { nome: 'Sol', icon: 'fa-sun', cor: '#f39c12' },
                 { nome: 'Lua', icon: 'fa-moon', cor: '#34495e' }
-            ]
+            ],
+            frequenciasConta: ['unico', 'semanal', 'quinzenal', 'mensal', 'semestral', 'anual'],
+            frequenciasEvento: ['unico', 'semanal', 'quinzenal', 'mensal', 'semestral', 'anual'],
+            notificacaoAntecedencia: [
+                { valor: 0, label: 'No dia' },
+                { valor: 1, label: '1 dia antes' },
+                { valor: 2, label: '2 dias antes' },
+                { valor: 3, label: '3 dias antes' },
+                { valor: 7, label: '1 semana antes' },
+                { valor: 14, label: '2 semanas antes' },
+                { valor: 30, label: '1 mês antes' }
+            ],
+            anosLimite: {
+                passado: 3,
+                futuro: 5
+            }
         };
 
         const App = {
@@ -1357,15 +1546,29 @@
             historicoAcoes: [],
             usuarios: [],
             usuarioAtual: null,
-            notificacoesConfig: {},
+            notificacoesConfig: {
+                contas: true,
+                eventos: true,
+                lista: true,
+                novoItem: false,
+                tipo: 'ambos',
+                antecedencia: {
+                    contas: 0,
+                    eventos: 0,
+                    lista: 0
+                }
+            },
             currentFilter: 'all',
             dataCache: {
                 contas: [], regrasContas: [], eventos: [], eventosIndividuais: [], regrasEventos: [],
                 gastos: [], lista: [], saldos: [], historico: [], excecoesRecorrencia: [],
                 giros: [], movimentacoesGiro: [], usuariosCadastrados: []
-            }
+            },
+            notificacoesAgendadas: [],
+            serviceWorkerRegistration: null
         };
 
+        // Funções auxiliares
         function showToast(m, t) {
             const to = document.getElementById('toast');
             to.textContent = m;
@@ -1398,6 +1601,29 @@
             return { mes: d.getMonth() + 1, ano: d.getFullYear() };
         }
 
+        function dataValida(ano, mes, dia) {
+            return dia >= 1 && dia <= getDiasNoMes(ano, mes);
+        }
+
+        function criarData(ano, mes, dia) {
+            return new Date(ano, mes - 1, dia, 12, 0, 0);
+        }
+
+        function dataParaString(ano, mes, dia) {
+            return `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+        }
+
+        function stringParaData(str) {
+            return new Date(str + 'T12:00:00');
+        }
+
+        function ajustarDataAnoMes(data, ano, mes) {
+            let novaData = new Date(data);
+            novaData.setFullYear(ano);
+            novaData.setMonth(mes - 1);
+            return novaData;
+        }
+
         function atualizarSaldoHeader() {
             document.getElementById('saldoHeaderValue').textContent = formatCurrency(App.saldoCentral.valor);
         }
@@ -1416,6 +1642,133 @@
             } catch (e) { }
         }
 
+        // Funções de notificação
+        async function inicializarNotificacoes() {
+            if (!('Notification' in window)) {
+                console.log('Notificações não suportadas');
+                return;
+            }
+
+            if (Notification.permission === 'granted') {
+                console.log('Permissão de notificação já concedida');
+            } else if (Notification.permission !== 'denied') {
+                const permission = await Notification.requestPermission();
+                console.log('Permissão de notificação:', permission);
+            }
+
+            // Registrar service worker para notificações em background
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.register('/sw.js');
+                    App.serviceWorkerRegistration = registration;
+                    console.log('Service Worker registrado');
+                } catch (error) {
+                    console.error('Erro ao registrar Service Worker:', error);
+                }
+            }
+        }
+
+        async function verificarNotificacoes(item, tipo) {
+            if (!App.currentUser || !('Notification' in window)) return;
+            if (Notification.permission !== 'granted') return;
+            
+            let config = App.notificacoesConfig;
+            if (!config[tipo] && tipo !== 'novoItem') return;
+            if (tipo === 'novoItem' && !config.novoItem) return;
+            
+            let corpo = `${item.descricao || item.titulo || item} - ${App.usuarioAtual}`;
+            
+            if (config.tipo === 'banner' || config.tipo === 'ambos') {
+                showToast(`🔔 ${corpo}`, 'info');
+            }
+            
+            if (config.tipo === 'bloqueio' || config.tipo === 'ambos') {
+                new Notification('HCD Life', {
+                    body: corpo,
+                    icon: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/home.svg',
+                    badge: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/bell.svg',
+                    vibrate: [200, 100, 200],
+                    requireInteraction: true
+                });
+            }
+        }
+
+        async function agendarNotificacoes() {
+            if (!App.currentUser) return;
+            
+            let config = App.notificacoesConfig;
+            let hoje = new Date();
+            hoje.setHours(0, 0, 0, 0);
+            
+            let notificacoes = [];
+            
+            if (config.contas) {
+                let { mes, ano } = getMesAnoAtual();
+                let contas = combinarContasDoMes(mes, ano);
+                
+                contas.forEach(conta => {
+                    if (conta.valor_pago > 0 || conta.status === 'paga') return;
+                    
+                    let dataVenc = criarData(conta.ano, conta.mes, conta.dia);
+                    let diasAntecedencia = config.antecedencia.contas || 0;
+                    let dataNotificacao = new Date(dataVenc);
+                    dataNotificacao.setDate(dataNotificacao.getDate() - diasAntecedencia);
+                    
+                    if (dataNotificacao <= hoje) return;
+                    
+                    notificacoes.push({
+                        titulo: 'Conta a vencer',
+                        corpo: `${conta.descricao} - ${formatCurrency(conta.valor_original || conta.valor)}`,
+                        data: dataNotificacao,
+                        tipo: 'conta'
+                    });
+                });
+            }
+            
+            if (config.eventos) {
+                let { mes, ano } = getMesAnoAtual();
+                let eventos = combinarEventosDoMes(mes, ano);
+                
+                eventos.forEach(evento => {
+                    let dataEvento = criarData(evento.ano, evento.mes, evento.dia);
+                    let diasAntecedencia = config.antecedencia.eventos || 0;
+                    let dataNotificacao = new Date(dataEvento);
+                    dataNotificacao.setDate(dataNotificacao.getDate() - diasAntecedencia);
+                    
+                    if (dataNotificacao <= hoje) return;
+                    
+                    notificacoes.push({
+                        titulo: 'Evento próximo',
+                        corpo: evento.titulo,
+                        data: dataNotificacao,
+                        tipo: 'evento'
+                    });
+                });
+            }
+            
+            App.notificacoesAgendadas = notificacoes;
+            
+            if (App.serviceWorkerRegistration && 'showNotification' in App.serviceWorkerRegistration) {
+                notificacoes.forEach(notif => {
+                    let agora = new Date();
+                    let diffMs = notif.data - agora;
+                    
+                    if (diffMs > 0 && diffMs <= 30 * 24 * 60 * 60 * 1000) { // Até 30 dias
+                        setTimeout(() => {
+                            App.serviceWorkerRegistration.showNotification(notif.titulo, {
+                                body: notif.corpo,
+                                icon: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/home.svg',
+                                badge: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/bell.svg',
+                                vibrate: [200, 100, 200],
+                                data: { tipo: notif.tipo }
+                            });
+                        }, diffMs);
+                    }
+                });
+            }
+        }
+
+        // Funções de carregamento de dados
         async function carregarUsuariosCadastrados() {
             if (!App.currentUser) return;
             try {
@@ -1490,7 +1843,10 @@
             const key = `homelife_config_${App.currentUser.id}`;
             try {
                 const config = JSON.parse(localStorage.getItem(key) || '{}');
-                App.notificacoesConfig = config.notificacoes || { contas: true, eventos: true, lista: true, novoItem: false, tipo: 'ambos' };
+                App.notificacoesConfig = {
+                    ...App.notificacoesConfig,
+                    ...config.notificacoes
+                };
             } catch (e) { }
         }
 
@@ -1502,352 +1858,218 @@
             }));
         }
 
-        function verificarUsuario() {
-            if (!App.usuarioAtual) {
-                abrirSelecaoUsuario();
-            } else {
-                abrirMenuUsuarios();
-            }
-        }
-
-        function verificarUsuarioAcao(acao) {
-            if (!App.usuarioAtual) {
-                abrirSelecaoUsuario(true, acao);
-            } else {
-                executarAcao(acao);
-            }
-        }
-
-        function abrirSelecaoUsuario(aposAcao = false, acao = null) {
-            carregarUsuariosCadastrados().then(() => {
-                let usuariosHtml = App.usuarios.map(u => 
-                    `<div class="delete-option" onclick="selecionarUsuario('${u}', ${aposAcao}, '${acao}')">
-                        <strong><i class="fas fa-user"></i> ${u}</strong>
-                    </div>`
-                ).join('');
-
-                let conteudo = `
-                    <div class="form-group">
-                        <label class="form-label">Seu Nome</label>
-                        <div style="display:flex;gap:8px">
-                            <input type="text" id="novoUsuarioNome" class="form-input" placeholder="Digite seu nome" autocomplete="off">
-                            <button class="btn btn-success" onclick="adicionarUsuarioSelecao(${aposAcao}, '${acao}')"><i class="fas fa-plus"></i> Adicionar</button>
-                        </div>
-                    </div>
-                    ${App.usuarios.length > 0 ? `
-                        <div class="section-divider">Usuários Existentes</div>
-                        ${usuariosHtml}
-                    ` : ''}
-                    <div class="btn-group" style="margin-top:20px">
-                        <button class="btn" onclick="fecharModal()" style="background:var(--gray);color:#fff">Cancelar</button>
-                    </div>
-                `;
-                abrirModal('Selecionar Usuário', 'fa-user', conteudo);
-            });
-        }
-
-        async function adicionarUsuarioSelecao(aposAcao = false, acao = null) {
-            let nome = document.getElementById('novoUsuarioNome')?.value.trim();
-            if (!nome) {
-                showToast('Digite um nome', 'warning');
-                return;
-            }
-            if (!App.usuarios.includes(nome)) {
-                App.usuarios.push(nome);
-                await salvarUsuariosCadastrados();
-            }
-            App.usuarioAtual = nome;
-            document.getElementById('usuarioHeaderNome').textContent = nome;
-            localStorage.setItem(`homelife_usuario_${App.currentUser.id}`, nome);
-            await salvarUsuariosCadastrados();
-            fecharModal();
-            showToast(`Usuário ${nome} selecionado`, 'success');
-            if (aposAcao && acao) {
-                setTimeout(() => executarAcao(acao), 300);
-            }
-        }
-
-        async function selecionarUsuario(nome, aposAcao = false, acao = null) {
-            App.usuarioAtual = nome;
-            document.getElementById('usuarioHeaderNome').textContent = nome;
-            localStorage.setItem(`homelife_usuario_${App.currentUser.id}`, nome);
-            await salvarUsuariosCadastrados();
-            fecharModal();
-            showToast(`Usuário ${nome} selecionado`, 'success');
-            if (aposAcao && acao) {
-                setTimeout(() => executarAcao(acao), 300);
-            }
-        }
-
-        function executarAcao(acao) {
-            fecharAddMenu();
-            switch (acao) {
-                case 'conta': abrirNovaConta(); break;
-                case 'evento': abrirNovoEventoUnificado(); break;
-                case 'gasto': abrirNovoGasto(); break;
-                case 'lista': abrirNovoItemLista(); break;
-                case 'giro': abrirNovoGiro(); break;
-            }
-        }
-
-        async function abrirMenuUsuarios() {
-            await carregarUsuariosCadastrados();
-            let usuariosHtml = App.usuarios.map(u => 
-                `<div class="delete-option ${u === App.usuarioAtual ? 'selected' : ''}">
-                    <strong><i class="fas fa-user"></i> ${u}</strong> ${u === App.usuarioAtual ? '(atual)' : ''}
-                    <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();removerUsuario('${u}')" style="float:right"><i class="fas fa-trash"></i></button>
-                </div>`
-            ).join('');
-
-            let conteudo = `
-                <div class="form-group">
-                    <label class="form-label">Novo Usuário</label>
-                    <div style="display:flex;gap:8px">
-                        <input type="text" id="novoUsuarioNome" class="form-input" placeholder="Nome">
-                        <button class="btn btn-success" onclick="adicionarUsuario()"><i class="fas fa-plus"></i></button>
-                    </div>
-                </div>
-                <div class="section-divider">Usuários Cadastrados</div>
-                ${usuariosHtml || '<p>Nenhum usuário cadastrado</p>'}
-                <div class="btn-group" style="margin-top:20px">
-                    <button class="btn" onclick="fecharModal()" style="background:var(--gray);color:#fff">Fechar</button>
-                </div>
-            `;
-            abrirModal('Gerenciar Usuários', 'fa-users', conteudo);
-        }
-
-        async function adicionarUsuario() {
-            let nome = document.getElementById('novoUsuarioNome')?.value.trim();
-            if (!nome) {
-                showToast('Digite um nome', 'warning');
-                return;
-            }
-            if (!App.usuarios.includes(nome)) {
-                App.usuarios.push(nome);
-                await salvarUsuariosCadastrados();
-                showToast('Usuário adicionado!', 'success');
-            } else {
-                showToast('Usuário já existe', 'warning');
-            }
-            fecharModal();
-            abrirMenuUsuarios();
-        }
-
-        async function removerUsuario(nome) {
-            if (App.usuarios.length === 1) {
-                showToast('Deve haver pelo menos um usuário', 'warning');
-                return;
+        // Funções de cálculo de recorrência
+        function calcularProximaData(data, frequencia, diaReferencia = null) {
+            let novaData = new Date(data);
+            
+            switch (frequencia) {
+                case 'semanal':
+                    novaData.setDate(novaData.getDate() + 7);
+                    break;
+                case 'quinzenal':
+                    novaData.setDate(novaData.getDate() + 14);
+                    break;
+                case 'mensal':
+                    novaData.setMonth(novaData.getMonth() + 1);
+                    if (diaReferencia) {
+                        let ultimoDia = getDiasNoMes(novaData.getFullYear(), novaData.getMonth() + 1);
+                        novaData.setDate(Math.min(diaReferencia, ultimoDia));
+                    }
+                    break;
+                case 'semestral':
+                    novaData.setMonth(novaData.getMonth() + 6);
+                    if (diaReferencia) {
+                        let ultimoDia = getDiasNoMes(novaData.getFullYear(), novaData.getMonth() + 1);
+                        novaData.setDate(Math.min(diaReferencia, ultimoDia));
+                    }
+                    break;
+                case 'anual':
+                    novaData.setFullYear(novaData.getFullYear() + 1);
+                    break;
+                default:
+                    return null;
             }
             
-            try {
-                await App.supabase
-                    .from('usuarios_cadastrados')
-                    .delete()
-                    .eq('user_id', App.currentUser.id)
-                    .eq('nome', nome);
-                
-                App.usuarios = App.usuarios.filter(u => u !== nome);
-                
-                if (nome === App.usuarioAtual) {
-                    App.usuarioAtual = App.usuarios[0];
-                    document.getElementById('usuarioHeaderNome').textContent = App.usuarioAtual;
-                    localStorage.setItem(`homelife_usuario_${App.currentUser.id}`, App.usuarioAtual);
-                    await App.supabase
-                        .from('usuarios_cadastrados')
-                        .update({ ativo: true })
-                        .eq('user_id', App.currentUser.id)
-                        .eq('nome', App.usuarioAtual);
+            return novaData;
+        }
+
+        function calcularOcorrenciasConta(regra, mesAlvo, anoAlvo) {
+            let ocorrencias = [];
+            if (!regra || !regra.data_inicio || !regra.ativo) return ocorrencias;
+            
+            let dataInicio = stringParaData(regra.data_inicio);
+            let dataFim = regra.data_fim ? stringParaData(regra.data_fim) : null;
+            
+            // Verificar se está dentro do período limite
+            let anoLimitePassado = new Date().getFullYear() - CONFIG.anosLimite.passado;
+            let anoLimiteFuturo = new Date().getFullYear() + CONFIG.anosLimite.futuro;
+            
+            if (anoAlvo < anoLimitePassado || anoAlvo > anoLimiteFuturo) return ocorrencias;
+            
+            // Ajustar data de início para o período alvo
+            let dataAtual = new Date(dataInicio);
+            
+            while (dataAtual.getFullYear() < anoAlvo || (dataAtual.getFullYear() === anoAlvo && dataAtual.getMonth() + 1 < mesAlvo)) {
+                let proximaData = calcularProximaData(dataAtual, regra.frequencia, regra.dia_vencimento);
+                if (!proximaData) break;
+                dataAtual = proximaData;
+            }
+            
+            let contador = 0;
+            while (dataAtual.getFullYear() === anoAlvo && dataAtual.getMonth() + 1 === mesAlvo && contador < 100) {
+                if (!dataFim || dataAtual <= dataFim) {
+                    let dataStr = dataParaString(dataAtual.getFullYear(), dataAtual.getMonth() + 1, dataAtual.getDate());
+                    let excecao = App.dataCache.excecoesRecorrencia?.find(e => e.regra_id === regra.id && e.data_excecao === dataStr);
+                    
+                    if (!excecao || excecao.acao !== 'excluir') {
+                        ocorrencias.push({
+                            id: `regra_${regra.id}_${dataAtual.getTime()}`,
+                            regra_id: regra.id,
+                            descricao: `${regra.descricao_base} (${regra.frequencia})`,
+                            dia: dataAtual.getDate(),
+                            mes: mesAlvo,
+                            ano: anoAlvo,
+                            valor_original: regra.valor || 0,
+                            valor_pago: excecao?.acao === 'pagar' ? regra.valor : 0,
+                            status: excecao?.acao === 'pagar' ? 'paga' : 'pendente',
+                            frequencia: regra.frequencia,
+                            isRecorrente: true,
+                            data_original: dataAtual.toISOString(),
+                            codigo_pagamento: regra.codigo_pagamento || null
+                        });
+                    }
                 }
                 
-                showToast('Usuário removido!', 'success');
-            } catch (e) {
-                console.error('Erro ao remover usuário:', e);
-                showToast('Erro ao remover usuário', 'error');
+                let proximaData = calcularProximaData(dataAtual, regra.frequencia, regra.dia_vencimento);
+                if (!proximaData) break;
+                dataAtual = proximaData;
+                contador++;
             }
             
-            fecharModal();
-            abrirMenuUsuarios();
+            return ocorrencias;
         }
 
-        function abrirMenuRelatorio() {
-            let { mes, ano } = getMesAnoAtual();
-            let totalContas = App.dataCache.contas.filter(c => c.mes === mes && c.ano === ano).reduce((acc, c) => acc + (c.valor_original || c.valor || 0), 0);
-            let totalGastos = App.dataCache.gastos.filter(g => g.mes === mes && g.ano === ano).reduce((acc, g) => acc + (g.valor || 0), 0);
-            let totalPago = App.dataCache.contas.filter(c => c.mes === mes && c.ano === ano && c.valor_pago > 0).reduce((acc, c) => acc + c.valor_pago, 0);
+        function calcularOcorrenciasEvento(regra, mesAlvo, anoAlvo) {
+            let ocorrencias = [];
+            if (!regra || !regra.data_inicio || !regra.ativo) return ocorrencias;
             
-            let conteudo = `
-                <div style="padding:16px">
-                    <h3 style="color:var(--purple);margin-bottom:16px">Relatório de ${getNomeMes(mes)}/${ano}</h3>
-                    <div style="background:var(--bg-pendente);padding:12px;border-radius:8px;margin-bottom:12px">
-                        <div><strong>Total de Contas:</strong> ${formatCurrency(totalContas)}</div>
-                        <div><strong>Total Pago:</strong> ${formatCurrency(totalPago)}</div>
-                        <div><strong>Restante:</strong> ${formatCurrency(totalContas - totalPago)}</div>
-                    </div>
-                    <div style="background:var(--bg-gasto);padding:12px;border-radius:8px;margin-bottom:12px">
-                        <div><strong>Total de Gastos:</strong> ${formatCurrency(totalGastos)}</div>
-                    </div>
-                    <div style="background:var(--bg-evento);padding:12px;border-radius:8px;margin-bottom:12px">
-                        <div><strong>Saldo Final:</strong> ${formatCurrency(App.saldoCentral.valor)}</div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="fecharModal()">Fechar</button>
-                    </div>
-                </div>
-            `;
-            abrirModal('Relatório', 'fa-chart-line', conteudo);
-        }
-
-        function abrirMenuSeguranca() {
-            let conteudo = `
-                <div class="form-group">
-                    <label class="form-label">Alterar Senha do Saldo</label>
-                    <input type="password" id="novaSenhaSaldo" class="form-input" placeholder="Nova senha (4 dígitos)" maxlength="4">
-                </div>
-                <div class="btn-group">
-                    <button class="btn btn-primary" onclick="alterarSenhaSaldo()"><i class="fas fa-save"></i> Salvar</button>
-                    <button class="btn" onclick="fecharModal()" style="background:var(--gray);color:#fff">Cancelar</button>
-                </div>
-            `;
-            abrirModal('Segurança', 'fa-lock', conteudo);
-        }
-
-        function alterarSenhaSaldo() {
-            let novaSenha = document.getElementById('novaSenhaSaldo')?.value;
-            if (!novaSenha || novaSenha.length !== 4) {
-                showToast('Senha deve ter 4 dígitos', 'warning');
-                return;
+            let dataInicio = stringParaData(regra.data_inicio);
+            let dataFim = regra.data_fim ? stringParaData(regra.data_fim) : null;
+            
+            // Verificar se está dentro do período limite
+            let anoLimitePassado = new Date().getFullYear() - CONFIG.anosLimite.passado;
+            let anoLimiteFuturo = new Date().getFullYear() + CONFIG.anosLimite.futuro;
+            
+            if (anoAlvo < anoLimitePassado || anoAlvo > anoLimiteFuturo) return ocorrencias;
+            
+            // Ajustar data de início para o período alvo
+            let dataAtual = new Date(dataInicio);
+            
+            while (dataAtual.getFullYear() < anoAlvo || (dataAtual.getFullYear() === anoAlvo && dataAtual.getMonth() + 1 < mesAlvo)) {
+                let proximaData = calcularProximaData(dataAtual, regra.frequencia, regra.dia);
+                if (!proximaData) break;
+                dataAtual = proximaData;
             }
-            App.saldoSenha = novaSenha;
-            showToast('Senha alterada!', 'success');
-            fecharModal();
-        }
-
-        function abrirNotificacoes() {
-            let config = App.notificacoesConfig;
-            let conteudo = `
-                <div class="notificacao-option">
-                    <label><input type="checkbox" id="notifContas" ${config.contas ? 'checked' : ''}> Notificar Contas</label>
-                </div>
-                <div class="notificacao-option">
-                    <label><input type="checkbox" id="notifEventos" ${config.eventos ? 'checked' : ''}> Notificar Eventos</label>
-                </div>
-                <div class="notificacao-option">
-                    <label><input type="checkbox" id="notifLista" ${config.lista ? 'checked' : ''}> Notificar Lista</label>
-                </div>
-                <div class="notificacao-option">
-                    <label><input type="checkbox" id="notifNovoItem" ${config.novoItem ? 'checked' : ''}> Notificar Novo Item (outro usuário)</label>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Tipo de Notificação</label>
-                    <select id="notifTipo" class="form-select">
-                        <option value="ambos" ${config.tipo === 'ambos' ? 'selected' : ''}>Banner + Bloqueio</option>
-                        <option value="banner" ${config.tipo === 'banner' ? 'selected' : ''}>Apenas Banner</option>
-                        <option value="bloqueio" ${config.tipo === 'bloqueio' ? 'selected' : ''}>Apenas Bloqueio</option>
-                    </select>
-                </div>
-                <div class="btn-group" style="margin-top:20px">
-                    <button class="btn btn-primary" onclick="salvarNotificacoes()"><i class="fas fa-save"></i> Salvar</button>
-                    <button class="btn" onclick="fecharModal()" style="background:var(--gray);color:#fff">Cancelar</button>
-                </div>
-            `;
-            abrirModal('Configurar Notificações', 'fa-bell', conteudo);
-        }
-
-        function salvarNotificacoes() {
-            App.notificacoesConfig = {
-                contas: document.getElementById('notifContas')?.checked || false,
-                eventos: document.getElementById('notifEventos')?.checked || false,
-                lista: document.getElementById('notifLista')?.checked || false,
-                novoItem: document.getElementById('notifNovoItem')?.checked || false,
-                tipo: document.getElementById('notifTipo')?.value || 'ambos'
-            };
-            salvarConfigLocal();
-            if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-                Notification.requestPermission();
-            }
-            fecharModal();
-            showToast('Configurações salvas!', 'success');
-        }
-
-        function abrirManual() {
-            let conteudo = `
-                <div class="manual-section" style="padding:16px">
-                    <h3 style="color:var(--purple);margin-bottom:16px">Home Life - Manual</h3>
-                    <p>Bem-vindo ao Home Life! Guia rápido:</p>
+            
+            let contador = 0;
+            while (dataAtual.getFullYear() === anoAlvo && dataAtual.getMonth() + 1 === mesAlvo && contador < 100) {
+                if (!dataFim || dataAtual <= dataFim) {
+                    let dataStr = dataParaString(dataAtual.getFullYear(), dataAtual.getMonth() + 1, dataAtual.getDate());
+                    let excecao = App.dataCache.excecoesRecorrencia?.find(e => e.regra_id === regra.id && e.data_excecao === dataStr);
                     
-                    <h4 style="margin-top:16px;color:var(--purple-dark)">📅 Calendário</h4>
-                    <ul style="margin-left:20px;margin-bottom:12px">
-                        <li>Clique nos dias para filtrar itens</li>
-                        <li>Balões: contas a pagar (verde) e vencidas (vermelho)</li>
-                        <li>Ícones: eventos personalizados</li>
-                    </ul>
-
-                    <h4 style="color:var(--purple-dark)">💰 Contas</h4>
-                    <ul style="margin-left:20px;margin-bottom:12px">
-                        <li>Cadastro único ou recorrente</li>
-                        <li>Pagamento debita do saldo central</li>
-                    </ul>
-
-                    <h4 style="color:var(--purple-dark)">🎉 Eventos</h4>
-                    <ul style="margin-left:20px;margin-bottom:12px">
-                        <li>Com ícones coloridos</li>
-                        <li>Período múltiplos dias para eventos únicos</li>
-                    </ul>
-
-                    <h4 style="color:var(--purple-dark)">🛒 Gastos e Lista</h4>
-                    <ul style="margin-left:20px;margin-bottom:12px">
-                        <li>Gastos debitam automaticamente</li>
-                        <li>Lista com badge de pendentes</li>
-                    </ul>
-
-                    <h4 style="color:var(--purple-dark)">👥 Usuários</h4>
-                    <ul style="margin-left:20px;margin-bottom:12px">
-                        <li>Vários usuários no mesmo login</li>
-                        <li>Cada ação registra quem fez</li>
-                    </ul>
-
-                    <h4 style="color:var(--purple-dark)">🔔 Notificações</h4>
-                    <ul style="margin-left:20px;margin-bottom:12px">
-                        <li>Escolha o que notificar</li>
-                        <li>Banner e/ou tela bloqueio</li>
-                    </ul>
-
-                    <h4 style="color:var(--purple-dark)">💵 Saldos</h4>
-                    <ul style="margin-left:20px;margin-bottom:16px">
-                        <li>Protegido por senha (padrão 1234)</li>
-                        <li>Saldo central afetado automaticamente</li>
-                    </ul>
-
-                    <p style="text-align:center;margin-top:20px">Aproveite! <i class="fas fa-smile"></i></p>
-                    
-                    <div class="btn-group" style="margin-top:20px">
-                        <button class="btn btn-primary" onclick="fecharModal()">Fechar</button>
-                    </div>
-                </div>
-            `;
-            abrirModal('Manual de Instruções', 'fa-book', conteudo);
+                    if (!excecao || excecao.acao !== 'excluir') {
+                        let eventoIndividual = App.dataCache.eventosIndividuais?.find(e => e.regra_id === regra.id && e.data_original === dataStr);
+                        
+                        if (eventoIndividual) {
+                            ocorrencias.push({
+                                id: `evento_individual_${eventoIndividual.id}`,
+                                regra_id: regra.id,
+                                titulo: eventoIndividual.titulo || regra.titulo_base,
+                                descricao: eventoIndividual.descricao || regra.descricao || '',
+                                dia: dataAtual.getDate(),
+                                mes: mesAlvo,
+                                ano: anoAlvo,
+                                hora: eventoIndividual.hora || regra.hora || '',
+                                local: eventoIndividual.local || regra.local || '',
+                                icone: eventoIndividual.icone || regra.icone || 'fa-star',
+                                cor_icone: eventoIndividual.cor_icone || regra.cor_icone || '#ffd700',
+                                frequencia: regra.frequencia,
+                                isRecorrente: false,
+                                isIndividual: true,
+                                individual_id: eventoIndividual.id,
+                                data_original: dataAtual.toISOString(),
+                                data_inicio: regra.data_inicio,
+                                data_fim: regra.data_fim
+                            });
+                        } else {
+                            ocorrencias.push({
+                                id: `regra_evento_${regra.id}_${dataAtual.getTime()}`,
+                                regra_id: regra.id,
+                                titulo: `${regra.titulo_base} (${regra.frequencia})`,
+                                descricao: regra.descricao || '',
+                                dia: dataAtual.getDate(),
+                                mes: mesAlvo,
+                                ano: anoAlvo,
+                                hora: regra.hora || '',
+                                local: regra.local || '',
+                                icone: regra.icone || 'fa-star',
+                                cor_icone: regra.cor_icone || '#ffd700',
+                                frequencia: regra.frequencia,
+                                isRecorrente: true,
+                                data_original: dataAtual.toISOString(),
+                                data_inicio: regra.data_inicio,
+                                data_fim: regra.data_fim
+                            });
+                        }
+                    }
+                }
+                
+                let proximaData = calcularProximaData(dataAtual, regra.frequencia, regra.dia);
+                if (!proximaData) break;
+                dataAtual = proximaData;
+                contador++;
+            }
+            
+            return ocorrencias;
         }
 
-        function verificarNotificacoes(item, tipo) {
-            if (!App.currentUser || !('Notification' in window)) return;
-            if (Notification.permission !== 'granted') return;
-            let config = App.notificacoesConfig;
-            if (!config[tipo] && tipo !== 'novoItem') return;
-            if (tipo === 'novoItem' && !config.novoItem) return;
-            let corpo = `${item.descricao || item.titulo || item} - ${App.usuarioAtual}`;
-            if (config.tipo === 'banner' || config.tipo === 'ambos') {
-                showToast(`🔔 ${corpo}`, 'info');
-            }
-            if (config.tipo === 'bloqueio' || config.tipo === 'ambos') {
-                new Notification('Home Life', {
-                    body: corpo,
-                    icon: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/home.svg'
-                });
-            }
+        function combinarContasDoMes(mes, ano) {
+            let contasFixas = App.dataCache.contas.filter(c => c.mes === mes && c.ano === ano);
+            let contasRecorrentes = [];
+            App.dataCache.regrasContas.forEach(r => contasRecorrentes.push(...calcularOcorrenciasConta(r, mes, ano)));
+            let todas = [...contasFixas, ...contasRecorrentes];
+            
+            // Filtrar exceções
+            todas = todas.filter(c => {
+                if (!c.id.toString().startsWith('regra_') && !c.regra_id) return true;
+                let regraId = c.regra_id || (c.id.toString().startsWith('regra_') ? c.id.split('_')[1] : null);
+                if (!regraId) return true;
+                let dataExcecao = dataParaString(ano, mes, c.dia);
+                let excecao = App.dataCache.excecoesRecorrencia?.find(e => e.regra_id === regraId && e.data_excecao === dataExcecao);
+                if (excecao && excecao.acao === 'pagar') {
+                    c.valor_pago = c.valor_original || c.valor;
+                    c.status = 'paga';
+                }
+                return true;
+            });
+            
+            return todas;
+        }
+
+        function combinarEventosDoMes(mes, ano) {
+            let eventosFixos = App.dataCache.eventos.filter(e => e.mes === mes && e.ano === ano);
+            let eventosInd = App.dataCache.eventosIndividuais.filter(e => e.mes === mes && e.ano === ano);
+            let eventosRec = [];
+            App.dataCache.regrasEventos.forEach(r => eventosRec.push(...calcularOcorrenciasEvento(r, mes, ano)));
+            let todos = [...eventosFixos, ...eventosInd, ...eventosRec];
+            return todos;
         }
 
         async function carregarDados(forceRefresh) {
             if (!App.currentUser) return;
+            
+            document.getElementById('loadingState').style.display = 'block';
+            
             await carregarUsuariosCadastrados();
             carregarConfigLocal();
 
@@ -1864,23 +2086,23 @@
                     App.supabase.from('historico_pagamentos').select('*').eq('user_id', App.currentUser.id),
                     App.supabase.from('historico_acoes').select('*').eq('user_id', App.currentUser.id).order('data', { ascending: false }).limit(500),
                     App.supabase.from('giros').select('*').eq('user_id', App.currentUser.id),
-App.supabase.from('movimentacoes_giro').select('*').eq('user_id', App.currentUser.id).order('data', { ascending: false })
+                    App.supabase.from('movimentacoes_giro').select('*').eq('user_id', App.currentUser.id).order('data', { ascending: false })
                 ];
 
-               const results = await Promise.allSettled(promises);
+                const results = await Promise.allSettled(promises);
 
-const contas = results[0].status === 'fulfilled' ? results[0].value.data : [];
-const regrasContas = results[1].status === 'fulfilled' ? results[1].value.data : [];
-const eventos = results[2].status === 'fulfilled' ? results[2].value.data : [];
-const eventosIndividuais = results[3].status === 'fulfilled' ? results[3].value.data : [];
-const regrasEventos = results[4].status === 'fulfilled' ? results[4].value.data : [];
-const gastos = results[5].status === 'fulfilled' ? results[5].value.data : [];
-const lista = results[6].status === 'fulfilled' ? results[6].value.data : [];
-const saldos = results[7].status === 'fulfilled' ? results[7].value.data : [];
-const historico = results[8].status === 'fulfilled' ? results[8].value.data : [];
-const historicoAcoes = results[9].status === 'fulfilled' ? results[9].value.data : [];
-const giros = results[10].status === 'fulfilled' ? results[10].value.data : [];
-const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.data : [];
+                const contas = results[0].status === 'fulfilled' ? results[0].value.data : [];
+                const regrasContas = results[1].status === 'fulfilled' ? results[1].value.data : [];
+                const eventos = results[2].status === 'fulfilled' ? results[2].value.data : [];
+                const eventosIndividuais = results[3].status === 'fulfilled' ? results[3].value.data : [];
+                const regrasEventos = results[4].status === 'fulfilled' ? results[4].value.data : [];
+                const gastos = results[5].status === 'fulfilled' ? results[5].value.data : [];
+                const lista = results[6].status === 'fulfilled' ? results[6].value.data : [];
+                const saldos = results[7].status === 'fulfilled' ? results[7].value.data : [];
+                const historico = results[8].status === 'fulfilled' ? results[8].value.data : [];
+                const historicoAcoes = results[9].status === 'fulfilled' ? results[9].value.data : [];
+                const giros = results[10].status === 'fulfilled' ? results[10].value.data : [];
+                const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.data : [];
 
                 let excecoesRecorrencia = [];
                 try {
@@ -1918,9 +2140,15 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
 
                 atualizarListaBadge();
                 atualizarSaldoHeader();
+                
+                // Agendar notificações
+                agendarNotificacoes();
+                
+                document.getElementById('loadingState').style.display = 'none';
             } catch (error) {
                 console.error('Erro ao carregar dados:', error);
                 showToast('Erro ao carregar dados', 'error');
+                document.getElementById('loadingState').style.display = 'none';
             }
         }
 
@@ -1929,160 +2157,6 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             let badge = document.getElementById('listaBadge');
             badge.textContent = totalLista;
             badge.style.display = totalLista > 0 ? 'flex' : 'none';
-        }
-
-        function calcularOcorrenciasConta(regra, mesAlvo, anoAlvo) {
-            let ocorrencias = [];
-            if (!regra || !regra.data_inicio || !regra.ativo) return ocorrencias;
-            let dataInicio = new Date(regra.data_inicio + 'T12:00:00');
-            if (dataInicio.getFullYear() > anoAlvo || (dataInicio.getFullYear() === anoAlvo && dataInicio.getMonth() + 1 > mesAlvo)) return ocorrencias;
-            let dataFim = regra.data_fim ? new Date(regra.data_fim + 'T12:00:00') : null;
-            if (dataFim && (dataFim.getFullYear() < anoAlvo || (dataFim.getFullYear() === anoAlvo && dataFim.getMonth() + 1 < mesAlvo))) return ocorrencias;
-
-            let dataAtual = new Date(dataInicio);
-            while (dataAtual.getFullYear() < anoAlvo || (dataAtual.getFullYear() === anoAlvo && dataAtual.getMonth() + 1 < mesAlvo)) {
-                if (regra.frequencia === 'semanal') dataAtual.setDate(dataAtual.getDate() + 7);
-                else if (regra.frequencia === 'quinzenal') dataAtual.setDate(dataAtual.getDate() + 14);
-                else if (regra.frequencia === 'mensal') {
-                    dataAtual.setMonth(dataAtual.getMonth() + 1);
-                    let ultimoDia = getDiasNoMes(dataAtual.getFullYear(), dataAtual.getMonth() + 1);
-                    dataAtual.setDate(Math.min(regra.dia_vencimento, ultimoDia));
-                } else if (regra.frequencia === 'anual') dataAtual.setFullYear(dataAtual.getFullYear() + 1);
-            }
-
-            let contador = 0;
-            while (dataAtual.getFullYear() === anoAlvo && dataAtual.getMonth() + 1 === mesAlvo && contador < 100) {
-                if (!dataFim || dataAtual <= dataFim) {
-                    let excecao = App.dataCache.excecoesRecorrencia?.find(e => e.regra_id === regra.id && e.data_excecao === `${anoAlvo}-${String(mesAlvo).padStart(2, '0')}-${String(dataAtual.getDate()).padStart(2, '0')}`);
-                    if (!excecao || excecao.acao !== 'excluir') {
-                        ocorrencias.push({
-                            id: `regra_${regra.id}_${dataAtual.getTime()}`,
-                            regra_id: regra.id,
-                            descricao: `${regra.descricao_base} (${regra.frequencia})`,
-                            dia: dataAtual.getDate(),
-                            mes: mesAlvo,
-                            ano: anoAlvo,
-                            valor_original: regra.valor || 0,
-                            valor_pago: 0,
-                            status: 'pendente',
-                            frequencia: regra.frequencia,
-                            isRecorrente: true,
-                            data_original: dataAtual.toISOString()
-                        });
-                    }
-                }
-                if (regra.frequencia === 'semanal') dataAtual.setDate(dataAtual.getDate() + 7);
-                else if (regra.frequencia === 'quinzenal') dataAtual.setDate(dataAtual.getDate() + 14);
-                else if (regra.frequencia === 'mensal') {
-                    dataAtual.setMonth(dataAtual.getMonth() + 1);
-                    let ultimoDia = getDiasNoMes(dataAtual.getFullYear(), dataAtual.getMonth() + 1);
-                    dataAtual.setDate(Math.min(regra.dia_vencimento, ultimoDia));
-                } else if (regra.frequencia === 'anual') dataAtual.setFullYear(dataAtual.getFullYear() + 1);
-                contador++;
-            }
-            return ocorrencias;
-        }
-
-        function calcularOcorrenciasEvento(regra, mesAlvo, anoAlvo) {
-            let ocorrencias = [];
-            if (!regra || !regra.data_inicio || !regra.ativo) return ocorrencias;
-            let dataInicio = new Date(regra.data_inicio + 'T12:00:00');
-            if (dataInicio.getFullYear() > anoAlvo || (dataInicio.getFullYear() === anoAlvo && dataInicio.getMonth() + 1 > mesAlvo)) return ocorrencias;
-            let dataFim = regra.data_fim ? new Date(regra.data_fim + 'T12:00:00') : null;
-            if (dataFim && (dataFim.getFullYear() < anoAlvo || (dataFim.getFullYear() === anoAlvo && dataFim.getMonth() + 1 < mesAlvo))) return ocorrencias;
-
-            let dataAtual = new Date(dataInicio);
-            while (dataAtual.getFullYear() < anoAlvo || (dataAtual.getFullYear() === anoAlvo && dataAtual.getMonth() + 1 < mesAlvo)) {
-                if (regra.frequencia === 'semanal') dataAtual.setDate(dataAtual.getDate() + 7);
-                else if (regra.frequencia === 'quinzenal') dataAtual.setDate(dataAtual.getDate() + 14);
-                else if (regra.frequencia === 'mensal') {
-                    dataAtual.setMonth(dataAtual.getMonth() + 1);
-                    let ultimoDia = getDiasNoMes(dataAtual.getFullYear(), dataAtual.getMonth() + 1);
-                    dataAtual.setDate(Math.min(regra.dia, ultimoDia));
-                } else if (regra.frequencia === 'anual') dataAtual.setFullYear(dataAtual.getFullYear() + 1);
-            }
-
-            let contador = 0;
-            while (dataAtual.getFullYear() === anoAlvo && dataAtual.getMonth() + 1 === mesAlvo && contador < 100) {
-                if (!dataFim || dataAtual <= dataFim) {
-                    let excecao = App.dataCache.excecoesRecorrencia?.find(e => e.regra_id === regra.id && e.data_excecao === `${anoAlvo}-${String(mesAlvo).padStart(2, '0')}-${String(dataAtual.getDate()).padStart(2, '0')}`);
-                    if (!excecao || excecao.acao !== 'excluir') {
-                        let eventoIndividual = App.dataCache.eventosIndividuais?.find(e => e.regra_id === regra.id && e.data_original === dataAtual.toISOString().split('T')[0]);
-                        if (eventoIndividual) {
-                            ocorrencias.push({
-                                id: `evento_individual_${eventoIndividual.id}`,
-                                regra_id: regra.id,
-                                titulo: eventoIndividual.titulo || regra.titulo_base,
-                                descricao: eventoIndividual.descricao || regra.descricao || '',
-                                dia: dataAtual.getDate(),
-                                mes: mesAlvo,
-                                ano: anoAlvo,
-                                hora: eventoIndividual.hora || regra.hora || '',
-                                local: eventoIndividual.local || regra.local || '',
-                                icone: eventoIndividual.icone || regra.icone || 'fa-star',
-                                cor_icone: eventoIndividual.cor_icone || regra.cor_icone || '#ffd700',
-                                frequencia: regra.frequencia,
-                                isRecorrente: false,
-                                isIndividual: true,
-                                individual_id: eventoIndividual.id,
-                                data_original: dataAtual.toISOString()
-                            });
-                        } else {
-                            ocorrencias.push({
-                                id: `regra_evento_${regra.id}_${dataAtual.getTime()}`,
-                                regra_id: regra.id,
-                                titulo: `${regra.titulo_base} (${regra.frequencia})`,
-                                descricao: regra.descricao || '',
-                                dia: dataAtual.getDate(),
-                                mes: mesAlvo,
-                                ano: anoAlvo,
-                                hora: regra.hora || '',
-                                local: regra.local || '',
-                                icone: regra.icone || 'fa-star',
-                                cor_icone: regra.cor_icone || '#ffd700',
-                                frequencia: regra.frequencia,
-                                isRecorrente: true,
-                                data_original: dataAtual.toISOString()
-                            });
-                        }
-                    }
-                }
-                if (regra.frequencia === 'semanal') dataAtual.setDate(dataAtual.getDate() + 7);
-                else if (regra.frequencia === 'quinzenal') dataAtual.setDate(dataAtual.getDate() + 14);
-                else if (regra.frequencia === 'mensal') {
-                    dataAtual.setMonth(dataAtual.getMonth() + 1);
-                    let ultimoDia = getDiasNoMes(dataAtual.getFullYear(), dataAtual.getMonth() + 1);
-                    dataAtual.setDate(Math.min(regra.dia, ultimoDia));
-                } else if (regra.frequencia === 'anual') dataAtual.setFullYear(dataAtual.getFullYear() + 1);
-                contador++;
-            }
-            return ocorrencias;
-        }
-
-        function combinarContasDoMes(mes, ano) {
-            let contasFixas = App.dataCache.contas.filter(c => c.mes === mes && c.ano === ano);
-            let contasRecorrentes = [];
-            App.dataCache.regrasContas.forEach(r => contasRecorrentes.push(...calcularOcorrenciasConta(r, mes, ano)));
-            let todas = [...contasFixas, ...contasRecorrentes];
-            todas = todas.filter(c => {
-                if (!c.id.toString().startsWith('regra_') && !c.regra_id) return true;
-                let regraId = c.regra_id || (c.id.toString().startsWith('regra_') ? c.id.split('_')[1] : null);
-                if (!regraId) return true;
-                let dataExcecao = `${ano}-${String(mes).padStart(2, '0')}-${String(c.dia).padStart(2, '0')}`;
-                let excecao = App.dataCache.excecoesRecorrencia?.find(e => e.regra_id === regraId && e.data_excecao === dataExcecao);
-                if (excecao && excecao.acao === 'pagar') return false;
-                return true;
-            });
-            return todas;
-        }
-
-        function combinarEventosDoMes(mes, ano) {
-            let eventosFixos = App.dataCache.eventos.filter(e => e.mes === mes && e.ano === ano);
-            let eventosInd = App.dataCache.eventosIndividuais.filter(e => e.mes === mes && e.ano === ano);
-            let eventosRec = [];
-            App.dataCache.regrasEventos.forEach(r => eventosRec.push(...calcularOcorrenciasEvento(r, mes, ano)));
-            let todos = [...eventosFixos, ...eventosInd, ...eventosRec];
-            return todos;
         }
 
         async function atualizarCalendario() {
@@ -2156,10 +2230,6 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             }
         }
 
-        function criarData(ano, mes, dia) {
-            return new Date(ano, mes - 1, dia, 12, 0, 0);
-        }
-
         function selecionarDia(dia) {
             App.selectedDay = App.selectedDay === dia ? null : dia;
             atualizarCalendario();
@@ -2230,7 +2300,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             let usuarioBadge = `<span class="usuario-badge">${usuario}</span>`;
 
             if (item.tipo === 'conta') {
-                let venc = criarData(ano || item.ano, mes || item.mes, item.dia || item.dia_vencimento);
+                let venc = criarData(item.ano || ano, item.mes || mes, item.dia || item.dia_vencimento);
                 if (item.valor_pago > 0 || item.status === 'paga') {
                     classe = 'paga';
                 } else if (venc < hoje) {
@@ -2241,13 +2311,13 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
 
                 titulo = item.descricao || 'Conta sem descrição';
                 if (item.frequencia && item.frequencia !== 'unico') titulo += ` <span class="item-badge badge-recorrente">${item.frequencia}</span>`;
-                detalhes = `Vence ${item.dia || item.dia_vencimento} ${getNomeMes(mes || item.mes)}/${ano || item.ano}`;
+                detalhes = `Vence ${item.dia || item.dia_vencimento} ${getNomeMes(item.mes || mes)}/${item.ano || ano}`;
                 valor = formatCurrency(item.valor_original || item.valor || 0);
                 
                 if (item.valor_pago > 0 || item.status === 'paga') {
-                    botoes += `<button class="action-btn undo" onclick="event.stopPropagation();abrirModalDesfazerPagamento('${item.id}','${item.descricao}',${item.valor_pago || item.valor_original || item.valor || 0},'${item.regra_id || ''}',${item.dia || item.dia_vencimento},${mes || item.mes},${ano || item.ano},${item.isRecorrente || false})"><i class="fas fa-undo-alt"></i></button>`;
+                    botoes += `<button class="action-btn undo" onclick="event.stopPropagation();abrirModalDesfazerPagamento('${item.id}','${item.descricao}',${item.valor_pago || item.valor_original || item.valor || 0},'${item.regra_id || ''}',${item.dia || item.dia_vencimento},${item.mes || mes},${item.ano || ano},${item.isRecorrente || false})"><i class="fas fa-undo-alt"></i></button>`;
                 } else {
-                    botoes += `<button class="action-btn pay" onclick="event.stopPropagation();abrirModalPagamento('${item.id}','${item.descricao}',${item.valor_original || item.valor || 0},'${item.regra_id || ''}',${item.dia || item.dia_vencimento},${mes || item.mes},${ano || item.ano},${item.isRecorrente || false})"><i class="fas fa-dollar-sign"></i></button>`;
+                    botoes += `<button class="action-btn pay" onclick="event.stopPropagation();abrirModalPagamento('${item.id}','${item.descricao}',${item.valor_original || item.valor || 0},'${item.regra_id || ''}',${item.dia || item.dia_vencimento},${item.mes || mes},${item.ano || ano},${item.isRecorrente || false}, '${item.codigo_pagamento || ''}')"><i class="fas fa-dollar-sign"></i></button>`;
                 }
 
                 return `<div class="item-card ${classe}" onclick="editarItem('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.isIndividual || false},'${item.individual_id || ''}')">
@@ -2259,7 +2329,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                     <div class="item-actions">
                         ${botoes}
                         <button class="action-btn edit" onclick="event.stopPropagation();editarItem('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.isIndividual || false},'${item.individual_id || ''}')"><i class="fas fa-edit"></i></button>
-                        <button class="action-btn delete" onclick="event.stopPropagation();confirmarExclusao('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.dia || 0},${item.mes || 0},${item.ano || 0},${item.isIndividual || false},'${item.individual_id || ''}')"><i class="fas fa-trash"></i></button>
+                        <button class="action-btn delete" onclick="event.stopPropagation();confirmarExclusao('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.dia || 0},${item.mes || mes},${item.ano || ano},${item.isIndividual || false},'${item.individual_id || ''}')"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>`;
             } else if (item.tipo === 'evento') {
@@ -2282,7 +2352,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                     </div>
                     <div class="item-actions">
                         <button class="action-btn edit" onclick="event.stopPropagation();editarItem('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.isIndividual || false},'${item.individual_id || ''}')"><i class="fas fa-edit"></i></button>
-                        <button class="action-btn delete" onclick="event.stopPropagation();confirmarExclusao('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.dia || 0},${item.mes || 0},${item.ano || 0},${item.isIndividual || false},'${item.individual_id || ''}')"><i class="fas fa-trash"></i></button>
+                        <button class="action-btn delete" onclick="event.stopPropagation();confirmarExclusao('${item.id}','${item.tipo}',${item.isRecorrente || false},'${item.regra_id || ''}',${item.dia || 0},${item.mes || mes},${item.ano || ano},${item.isIndividual || false},'${item.individual_id || ''}')"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>`;
             }
@@ -2462,6 +2532,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             content.innerHTML = html;
         }
 
+        // Funções de modal
         function abrirModal(titulo, icone, conteudo) {
             let modal = document.getElementById('modalContent');
             modal.innerHTML = `
@@ -2480,10 +2551,15 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             App.modalHasChanges = false;
         }
 
+        // Função para abrir nova conta com todas as correções
         function abrirNovaConta() {
             let { mes, ano } = getMesAnoAtual();
             let diaPadrao = App.selectedDay || new Date().getDate();
             
+            let frequenciasHtml = CONFIG.frequenciasConta.map(f => 
+                `<option value="${f}">${f.charAt(0).toUpperCase() + f.slice(1)}</option>`
+            ).join('');
+
             let conteudo = `
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-heading"></i> Descrição</label>
@@ -2491,11 +2567,15 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-dollar-sign"></i> Valor</label>
-                    <input type="text" id="contaValor" class="form-input" placeholder="0,00" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
+                    <input type="text" id="contaValor" class="form-input" placeholder="0,00" inputmode="decimal" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-barcode"></i> Código de Barras / Chave PIX</label>
+                    <input type="text" id="contaCodigo" class="form-input" placeholder="Digite ou cole o código" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-calendar-day"></i> Dia do Vencimento</label>
-                    <input type="number" id="contaDia" class="form-input" min="1" max="31" value="${diaPadrao}">
+                    <input type="number" id="contaDia" class="form-input" min="1" max="31" value="${diaPadrao}" inputmode="numeric">
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-calendar-alt"></i> Mês/Ano</label>
@@ -2503,16 +2583,18 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                         <select id="contaMes" class="form-select">
                             ${CONFIG.meses.map((m, i) => `<option value="${i + 1}" ${i + 1 === mes ? 'selected' : ''}>${m}</option>`).join('')}
                         </select>
-                        <input type="number" id="contaAno" class="form-input" value="${ano}">
+                        <input type="number" id="contaAno" class="form-input" value="${ano}" inputmode="numeric">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-repeat"></i> Frequência</label>
-                    <select id="contaFrequencia" class="form-select">
-                        <option value="unico">Único</option>
-                        <option value="mensal">Mensal</option>
-                        <option value="anual">Anual</option>
+                    <select id="contaFrequencia" class="form-select" onchange="if(this.value==='unico') document.getElementById('contaDataFim').style.display='none'; else document.getElementById('contaDataFim').style.display='block'">
+                        ${frequenciasHtml}
                     </select>
+                </div>
+                <div id="contaDataFim" style="display:none" class="form-group">
+                    <label class="form-label"><i class="fas fa-calendar-day"></i> Data Final (opcional)</label>
+                    <input type="date" id="contaDataFimInput" class="form-input">
                 </div>
                 <div class="btn-group" style="margin-top:20px">
                     <button class="btn btn-primary" onclick="salvarNovaConta()" style="flex:2"><i class="fas fa-save"></i> Salvar</button>
@@ -2525,22 +2607,30 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
         async function salvarNovaConta() {
             let descricao = document.getElementById('contaDescricao')?.value.trim();
             let valor = parseCurrency(document.getElementById('contaValor')?.value);
+            let codigo = document.getElementById('contaCodigo')?.value.trim() || null;
             let dia = parseInt(document.getElementById('contaDia')?.value);
             let mes = parseInt(document.getElementById('contaMes')?.value);
             let ano = parseInt(document.getElementById('contaAno')?.value);
             let frequencia = document.getElementById('contaFrequencia')?.value;
+            let dataFim = document.getElementById('contaDataFimInput')?.value || null;
 
             if (!descricao || !valor || !dia || !mes || !ano) {
-                showToast('Preencha todos os campos', 'warning');
+                showToast('Preencha todos os campos obrigatórios', 'warning');
                 return;
             }
 
-            let diaAjustado = Math.min(dia, getDiasNoMes(ano, mes));
-            let data = `${ano}-${String(mes).padStart(2, '0')}-${String(diaAjustado).padStart(2, '0')}`;
+            if (!dataValida(ano, mes, dia)) {
+                showToast('Dia inválido para o mês selecionado', 'warning');
+                return;
+            }
+
+            let diaAjustado = dia;
+            let dataInicio = dataParaString(ano, mes, diaAjustado);
 
             try {
                 if (frequencia === 'unico') {
-                    await App.supabase.from('contas').insert({
+                    // Inserir conta única
+                    let { data, error } = await App.supabase.from('contas').insert({
                         user_id: App.currentUser.id,
                         descricao: descricao,
                         valor: valor,
@@ -2548,36 +2638,52 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                         dia: diaAjustado,
                         mes: mes,
                         ano: ano,
-                        data: data,
+                        data: dataInicio,
                         status: 'pendente',
-                        added_by: App.usuarioAtual || 'desconhecido'
-                    });
+                        added_by: App.usuarioAtual || 'desconhecido',
+                        codigo_pagamento: codigo
+                    }).select();
+
+                    if (error) throw error;
+                    
+                    showToast('Conta salva com sucesso!', 'success');
                 } else {
-                    await App.supabase.from('regras_contas').insert({
+                    // Inserir regra de conta recorrente
+                    let regraData = {
                         user_id: App.currentUser.id,
                         descricao_base: descricao,
                         valor: valor,
                         dia_vencimento: diaAjustado,
                         frequencia: frequencia,
-                        data_inicio: data,
+                        data_inicio: dataInicio,
                         ativo: true,
-                        added_by: App.usuarioAtual || 'desconhecido'
-                    });
+                        added_by: App.usuarioAtual || 'desconhecido',
+                        codigo_pagamento: codigo
+                    };
+                    
+                    if (dataFim) regraData.data_fim = dataFim;
+                    
+                    let { data, error } = await App.supabase.from('regras_contas').insert(regraData).select();
+                    
+                    if (error) throw error;
+                    
+                    showToast('Regra de conta salva com sucesso!', 'success');
                 }
 
                 verificarNotificacoes({ descricao, valor }, 'contas');
                 await registrarHistorico('criacao_conta', `Conta criada: ${descricao}`, { descricao, valor, frequencia, usuario: App.usuarioAtual });
-                showToast('Conta salva!', 'success');
+                
                 fecharModal();
                 await carregarDados(true);
                 await atualizarCalendario();
                 await mostrarConteudo();
             } catch (error) {
                 console.error('Erro ao salvar conta:', error);
-                showToast('Erro: ' + error.message, 'error');
+                showToast('Erro ao salvar: ' + error.message, 'error');
             }
         }
 
+        // Função para abrir novo evento com todas as melhorias
         function abrirNovoEventoUnificado() {
             let { mes, ano } = getMesAnoAtual();
             let diaPadrao = App.selectedDay || new Date().getDate();
@@ -2587,10 +2693,32 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                 iconesHtml += `<div class="icon-option" onclick="selecionarIconeEvento('${icone.icon}', '${icone.cor}')" data-icon="${icone.icon}" data-cor="${icone.cor}"><i class="fas ${icone.icon}" style="color:${icone.cor}"></i></div>`;
             });
 
+            let frequenciasHtml = CONFIG.frequenciasEvento.map(f => 
+                `<option value="${f}">${f.charAt(0).toUpperCase() + f.slice(1)}</option>`
+            ).join('');
+
             let conteudo = `
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-heading"></i> Título do Evento</label>
                     <input type="text" id="eventoTitulo" class="form-input" placeholder="Digite o título">
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-repeat"></i> Frequência</label>
+                    <select id="eventoFrequencia" class="form-select" onchange="if(this.value==='unico') { document.getElementById('eventoDataFimDiv').style.display='block'; } else { document.getElementById('eventoDataFimDiv').style.display='none'; }">
+                        ${frequenciasHtml}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-calendar-day"></i> Data de Início</label>
+                    <input type="date" id="eventoDataInicio" class="form-input" value="${ano}-${String(mes).padStart(2, '0')}-${String(diaPadrao).padStart(2, '0')}">
+                </div>
+                <div id="eventoDataFimDiv" class="form-group">
+                    <label class="form-label"><i class="fas fa-calendar-day"></i> Data de Fim (para eventos de múltiplos dias)</label>
+                    <input type="date" id="eventoDataFim" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-align-left"></i> Descrição</label>
+                    <textarea id="eventoDescricao" class="form-textarea" rows="2"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-icons"></i> Escolha o Ícone</label>
@@ -2608,27 +2736,6 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                         <button class="btn" onclick="fecharSeletorIcones()" style="background:var(--gray); color:#fff">Fechar</button>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-align-left"></i> Descrição</label>
-                    <textarea id="eventoDescricao" class="form-textarea" rows="2"></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-calendar-day"></i> Data de Início</label>
-                    <input type="number" id="eventoDiaInicio" class="form-input" min="1" max="31" value="${diaPadrao}">
-                </div>
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-calendar-day"></i> Data de Fim (opcional)</label>
-                    <input type="number" id="eventoDiaFim" class="form-input" min="1" max="31" placeholder="Dia de fim">
-                </div>
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-calendar-alt"></i> Mês/Ano</label>
-                    <div style="display:flex;gap:8px">
-                        <select id="eventoMes" class="form-select">
-                            ${CONFIG.meses.map((m, i) => `<option value="${i + 1}" ${i + 1 === mes ? 'selected' : ''}>${m}</option>`).join('')}
-                        </select>
-                        <input type="number" id="eventoAno" class="form-input" value="${ano}">
-                    </div>
-                </div>
                 <div style="display:flex;gap:8px">
                     <div class="form-group" style="flex:1">
                         <label class="form-label"><i class="fas fa-clock"></i> Hora</label>
@@ -2638,14 +2745,6 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                         <label class="form-label"><i class="fas fa-map-marker-alt"></i> Local</label>
                         <input type="text" id="eventoLocal" class="form-input">
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-repeat"></i> Frequência</label>
-                    <select id="eventoFrequencia" class="form-select">
-                        <option value="unico">Único</option>
-                        <option value="mensal">Mensal</option>
-                        <option value="anual">Anual</option>
-                    </select>
                 </div>
                 <div class="btn-group" style="margin-top:20px">
                     <button class="btn btn-primary" onclick="salvarNovoEvento()" style="flex:2"><i class="fas fa-save"></i> Salvar</button>
@@ -2677,61 +2776,81 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
         async function salvarNovoEvento() {
             let titulo = document.getElementById('eventoTitulo')?.value.trim();
             let desc = document.getElementById('eventoDescricao')?.value.trim();
-            let diaInicio = parseInt(document.getElementById('eventoDiaInicio')?.value);
-            let diaFim = document.getElementById('eventoDiaFim')?.value ? parseInt(document.getElementById('eventoDiaFim').value) : null;
-            let mes = parseInt(document.getElementById('eventoMes')?.value);
-            let ano = parseInt(document.getElementById('eventoAno')?.value);
+            let dataInicioStr = document.getElementById('eventoDataInicio')?.value;
+            let dataFimStr = document.getElementById('eventoDataFim')?.value || null;
             let hora = document.getElementById('eventoHora')?.value;
             let local = document.getElementById('eventoLocal')?.value.trim();
             let icone = document.getElementById('eventoIcone')?.value || 'fa-star';
             let corIcone = document.getElementById('eventoCorIcone')?.value || '#ffd700';
             let frequencia = document.getElementById('eventoFrequencia')?.value;
 
-            if (!titulo || !diaInicio || !mes || !ano) {
-                showToast('Preencha título, dia de início e data', 'warning');
+            if (!titulo || !dataInicioStr) {
+                showToast('Preencha título e data de início', 'warning');
                 return;
             }
 
+            let dataInicio = new Date(dataInicioStr + 'T12:00:00');
+            let dataFim = dataFimStr ? new Date(dataFimStr + 'T12:00:00') : null;
+
+            if (dataFim && dataFim < dataInicio) {
+                showToast('Data de fim deve ser após data de início', 'warning');
+                return;
+            }
+
+            let anoInicio = dataInicio.getFullYear();
+            let mesInicio = dataInicio.getMonth() + 1;
+            let diaInicio = dataInicio.getDate();
+
             try {
                 if (frequencia === 'unico') {
-                    if (diaFim && diaFim >= diaInicio) {
-                        for (let d = diaInicio; d <= Math.min(diaFim, getDiasNoMes(ano, mes)); d++) {
+                    if (dataFim) {
+                        // Evento em múltiplos dias
+                        let dataAtual = new Date(dataInicio);
+                        while (dataAtual <= dataFim) {
+                            let ano = dataAtual.getFullYear();
+                            let mes = dataAtual.getMonth() + 1;
+                            let dia = dataAtual.getDate();
+                            
                             await App.supabase.from('eventos').insert({
                                 user_id: App.currentUser.id,
                                 titulo: titulo,
                                 descricao: desc || '',
-                                dia: d,
+                                dia: dia,
                                 mes: mes,
                                 ano: ano,
                                 hora: hora || null,
                                 local: local || null,
                                 icone: icone,
                                 cor_icone: corIcone,
-                                data_inicio: `${ano}-${String(mes).padStart(2, '0')}-${String(diaInicio).padStart(2, '0')}`,
-                                data_fim: diaFim ? `${ano}-${String(mes).padStart(2, '0')}-${String(diaFim).padStart(2, '0')}` : null,
+                                data_inicio: dataInicioStr,
+                                data_fim: dataFimStr,
                                 is_recorrente: false,
                                 added_by: App.usuarioAtual || 'desconhecido'
                             });
+                            
+                            dataAtual.setDate(dataAtual.getDate() + 1);
                         }
                     } else {
+                        // Evento único em um dia
                         await App.supabase.from('eventos').insert({
                             user_id: App.currentUser.id,
                             titulo: titulo,
                             descricao: desc || '',
                             dia: diaInicio,
-                            mes: mes,
-                            ano: ano,
+                            mes: mesInicio,
+                            ano: anoInicio,
                             hora: hora || null,
                             local: local || null,
                             icone: icone,
                             cor_icone: corIcone,
-                            data_inicio: `${ano}-${String(mes).padStart(2, '0')}-${String(diaInicio).padStart(2, '0')}`,
+                            data_inicio: dataInicioStr,
                             data_fim: null,
                             is_recorrente: false,
                             added_by: App.usuarioAtual || 'desconhecido'
                         });
                     }
                 } else {
+                    // Evento recorrente
                     await App.supabase.from('regras_eventos').insert({
                         user_id: App.currentUser.id,
                         titulo_base: titulo,
@@ -2742,8 +2861,8 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                         icone: icone,
                         cor_icone: corIcone,
                         frequencia: frequencia,
-                        data_inicio: `${ano}-${String(mes).padStart(2, '0')}-${String(diaInicio).padStart(2, '0')}`,
-                        data_fim: diaFim ? `${ano}-${String(mes).padStart(2, '0')}-${String(diaFim).padStart(2, '0')}` : null,
+                        data_inicio: dataInicioStr,
+                        data_fim: dataFimStr,
                         ativo: true,
                         added_by: App.usuarioAtual || 'desconhecido'
                     });
@@ -2751,7 +2870,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
 
                 verificarNotificacoes({ titulo, descricao: desc }, 'eventos');
                 await registrarHistorico('criacao_evento', `Evento criado: ${titulo}`, { titulo, icone, usuario: App.usuarioAtual });
-                showToast('Evento salvo!', 'success');
+                showToast('Evento salvo com sucesso!', 'success');
                 fecharModal();
                 await carregarDados(true);
                 await atualizarCalendario();
@@ -2762,6 +2881,710 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             }
         }
 
+        // Função de pagamento com código de barras
+        function abrirModalPagamento(id, desc, valor, regraId, dia, mes, ano, isRecorrente, codigoPagamento) {
+            let codigoHtml = codigoPagamento ? `
+                <div class="payment-info">
+                    <div class="payment-info-header">
+                        <span><i class="fas fa-barcode"></i> Código de Barras / Chave PIX</span>
+                        <button class="btn-copy" onclick="copiarCodigoPagamento('${codigoPagamento}')"><i class="fas fa-copy"></i> Copiar</button>
+                    </div>
+                    <div class="payment-info-content" id="codigoPagamentoDisplay">${codigoPagamento}</div>
+                </div>
+            ` : '';
+
+            let conteudo = `
+                <div style="padding:16px">
+                    <p>Pagamento de <strong>${desc}</strong></p>
+                    ${codigoHtml}
+                    <div class="form-group" style="margin:16px 0">
+                        <label class="form-label"><i class="fas fa-dollar-sign"></i> Valor a pagar</label>
+                        <input type="text" id="pagamentoValorConta" class="form-input" value="${valor.toFixed(2).replace('.', ',')}" inputmode="decimal" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="confirmarPagamento('${id}', '${regraId}', ${dia}, ${mes}, ${ano}, ${isRecorrente})" style="flex:2"><i class="fas fa-check"></i> Confirmar Pagamento</button>
+                        <button class="btn" onclick="fecharModal()" style="flex:1;background:var(--gray);color:#fff">Cancelar</button>
+                    </div>
+                </div>
+            `;
+            abrirModal('Confirmar Pagamento', 'fa-dollar-sign', conteudo);
+        }
+
+        function copiarCodigoPagamento(codigo) {
+            navigator.clipboard.writeText(codigo).then(() => {
+                showToast('Código copiado!', 'success');
+            }).catch(() => {
+                showToast('Erro ao copiar', 'error');
+            });
+        }
+
+        async function confirmarPagamento(id, regraId, dia, mes, ano, isRecorrente) {
+            let valor = parseCurrency(document.getElementById('pagamentoValorConta')?.value);
+
+            try {
+                if (isRecorrente && regraId) {
+                    // Para conta recorrente, criar exceção de pagamento
+                    await App.supabase.from('excecoes_recorrencia').insert({
+                        user_id: App.currentUser.id,
+                        regra_id: regraId,
+                        data_excecao: dataParaString(ano, mes, dia),
+                        acao: 'pagar',
+                        added_by: App.usuarioAtual || 'desconhecido'
+                    });
+                } else {
+                    // Para conta única, atualizar diretamente
+                    await App.supabase.from('contas').update({
+                        valor_pago: valor,
+                        status: 'paga',
+                        data_pagamento: new Date().toISOString()
+                    }).eq('id', id);
+                }
+
+                // Atualizar saldo central
+                if (App.saldoCentral.id) {
+                    let { data: saldoAtual } = await App.supabase.from('saldos').select('valor').eq('id', App.saldoCentral.id).single();
+                    if (saldoAtual) {
+                        let novoValor = saldoAtual.valor - valor;
+                        await App.supabase.from('saldos').update({ valor: novoValor }).eq('id', App.saldoCentral.id);
+                        App.saldoCentral.valor = novoValor;
+                        atualizarSaldoHeader();
+                    }
+                }
+
+                // Registrar histórico
+                await registrarHistorico('pagamento_conta', `Conta paga: ${id}`, { id, valor, usuario: App.usuarioAtual });
+                
+                // Notificar
+                verificarNotificacoes({ descricao: 'Pagamento confirmado', valor }, 'contas');
+                
+                showToast('Pagamento confirmado!', 'success');
+                fecharModal();
+                await carregarDados(true);
+                await atualizarCalendario();
+                await mostrarConteudo();
+            } catch (error) {
+                console.error('Erro ao pagar conta:', error);
+                showToast('Erro: ' + error.message, 'error');
+            }
+        }
+
+        function abrirModalDesfazerPagamento(id, desc, valor, regraId, dia, mes, ano, isRecorrente) {
+            let conteudo = `
+                <div style="padding:16px; text-align:center">
+                    <p>Desfazer pagamento de <strong>${desc}</strong>?</p>
+                    <p style="font-size:1.2em; margin:16px 0">${formatCurrency(valor)} voltará para o saldo</p>
+                    <div class="btn-group">
+                        <button class="btn btn-warning" onclick="desfazerPagamento('${id}', ${valor}, '${regraId}', ${dia}, ${mes}, ${ano}, ${isRecorrente})" style="flex:2"><i class="fas fa-undo-alt"></i> Desfazer</button>
+                        <button class="btn" onclick="fecharModal()" style="flex:1;background:var(--gray);color:#fff">Cancelar</button>
+                    </div>
+                </div>
+            `;
+            abrirModal('Desfazer Pagamento', 'fa-undo-alt', conteudo);
+        }
+
+        async function desfazerPagamento(id, valor, regraId, dia, mes, ano, isRecorrente) {
+            try {
+                if (isRecorrente && regraId) {
+                    // Remover exceção de pagamento
+                    await App.supabase
+                        .from('excecoes_recorrencia')
+                        .delete()
+                        .eq('regra_id', regraId)
+                        .eq('data_excecao', dataParaString(ano, mes, dia));
+                } else {
+                    // Para conta única, reverter status
+                    await App.supabase.from('contas').update({
+                        valor_pago: 0,
+                        status: 'pendente',
+                        data_pagamento: null
+                    }).eq('id', id);
+                }
+
+                // Devolver valor ao saldo
+                if (App.saldoCentral.id) {
+                    let { data: saldoAtual } = await App.supabase.from('saldos').select('valor').eq('id', App.saldoCentral.id).single();
+                    if (saldoAtual) {
+                        let novoValor = saldoAtual.valor + valor;
+                        await App.supabase.from('saldos').update({ valor: novoValor }).eq('id', App.saldoCentral.id);
+                        App.saldoCentral.valor = novoValor;
+                        atualizarSaldoHeader();
+                    }
+                }
+
+                await registrarHistorico('desfazer_pagamento', `Pagamento desfeito: ${id}`, { id, valor, usuario: App.usuarioAtual });
+                showToast('Pagamento desfeito!', 'success');
+                fecharModal();
+                await carregarDados(true);
+                await atualizarCalendario();
+                await mostrarConteudo();
+            } catch (error) {
+                console.error('Erro ao desfazer pagamento:', error);
+                showToast('Erro: ' + error.message, 'error');
+            }
+        }
+
+        function editarItem(id, tipo, isRecorrente, regraId, isIndividual, individualId) {
+            if (tipo === 'gasto') {
+                editarGasto(id);
+            } else if (tipo === 'evento') {
+                // Buscar evento
+                let item = App.dataCache.eventos.find(e => e.id === id) || 
+                           App.dataCache.eventosIndividuais.find(e => `evento_individual_${e.id}` === id);
+                
+                if (!item) {
+                    showToast('Evento não encontrado', 'warning');
+                    return;
+                }
+                
+                // Se for evento de regra, mostrar opções de edição
+                if (isRecorrente && regraId) {
+                    let conteudo = `
+                        <div style="padding:16px">
+                            <h3 style="margin-bottom:16px">Editar Evento Recorrente</h3>
+                            <p>Este evento faz parte de uma recorrência. Como deseja editar?</p>
+                            <div class="exclusao-opcoes" style="margin:20px 0">
+                                <div class="exclusao-opcao" onclick="editarEventoUnica('${id}', '${regraId}', ${dia}, ${mes}, ${ano})">
+                                    <strong>Apenas esta ocorrência</strong>
+                                    <p style="font-size:0.9em;color:var(--gray)">Edita somente este evento específico</p>
+                                </div>
+                                <div class="exclusao-opcao" onclick="editarEventoTodas('${regraId}')">
+                                    <strong>Todas as ocorrências</strong>
+                                    <p style="font-size:0.9em;color:var(--gray)">Edita a regra inteira</p>
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn" onclick="fecharModal()" style="background:var(--gray);color:#fff">Cancelar</button>
+                            </div>
+                        </div>
+                    `;
+                    abrirModal('Editar Evento', 'fa-edit', conteudo);
+                } else {
+                    // Evento único - mostrar detalhes
+                    let conteudo = `
+                        <div style="padding:16px">
+                            <h3>${item.titulo}</h3>
+                            <p>${item.descricao || ''}</p>
+                            <p><i class="fas fa-calendar-day"></i> Dia: ${item.dia} de ${getNomeMes(item.mes)}/${item.ano}</p>
+                            ${item.hora ? `<p><i class="fas fa-clock"></i> Hora: ${item.hora}</p>` : ''}
+                            ${item.local ? `<p><i class="fas fa-map-marker-alt"></i> Local: ${item.local}</p>` : ''}
+                            <div class="btn-group" style="margin-top:20px">
+                                <button class="btn btn-primary" onclick="fecharModal()">Fechar</button>
+                            </div>
+                        </div>
+                    `;
+                    abrirModal('Detalhes do Evento', 'fa-calendar-alt', conteudo);
+                }
+            } else if (tipo === 'conta') {
+                // Buscar conta
+                let item = App.dataCache.contas.find(c => c.id === id);
+                if (!item) {
+                    // Tentar encontrar em regras
+                    let partes = id.split('_');
+                    if (partes[0] === 'regra' && partes[1]) {
+                        let regra = App.dataCache.regrasContas.find(r => r.id === partes[1]);
+                        if (regra) {
+                            item = {
+                                descricao: regra.descricao_base,
+                                valor_original: regra.valor,
+                                dia: partes[3] ? new Date(parseInt(partes[3])).getDate() : regra.dia_vencimento,
+                                mes: App.selectedMonth,
+                                ano: App.selectedYear,
+                                status: 'pendente',
+                                codigo_pagamento: regra.codigo_pagamento
+                            };
+                        }
+                    }
+                }
+                
+                if (!item) {
+                    showToast('Conta não encontrada', 'warning');
+                    return;
+                }
+                
+                let conteudo = `
+                    <div style="padding:16px">
+                        <h3>${item.descricao}</h3>
+                        <p><strong>Valor:</strong> ${formatCurrency(item.valor_original || item.valor || 0)}</p>
+                        <p><strong>Vencimento:</strong> ${item.dia} de ${getNomeMes(item.mes || App.selectedMonth)}/${item.ano || App.selectedYear}</p>
+                        <p><strong>Status:</strong> ${item.status === 'paga' ? 'Paga' : 'Pendente'}</p>
+                        ${item.valor_pago > 0 ? `<p><strong>Valor pago:</strong> ${formatCurrency(item.valor_pago)}</p>` : ''}
+                        ${item.codigo_pagamento ? `
+                            <div class="payment-info">
+                                <div class="payment-info-header">
+                                    <span><i class="fas fa-barcode"></i> Código de Pagamento</span>
+                                    <button class="btn-copy" onclick="copiarCodigoPagamento('${item.codigo_pagamento}')"><i class="fas fa-copy"></i> Copiar</button>
+                                </div>
+                                <div class="payment-info-content">${item.codigo_pagamento}</div>
+                            </div>
+                        ` : ''}
+                        <div class="btn-group" style="margin-top:20px">
+                            <button class="btn btn-primary" onclick="fecharModal()">Fechar</button>
+                        </div>
+                    </div>
+                `;
+                abrirModal('Detalhes da Conta', 'fa-file-invoice-dollar', conteudo);
+            }
+        }
+
+        function confirmarExclusao(id, tipo, isRecorrente, regraId, dia, mes, ano, isIndividual, individualId) {
+            if (tipo === 'evento' && (isRecorrente || regraId)) {
+                let conteudo = `
+                    <div style="padding:16px">
+                        <h3 style="margin-bottom:16px">Excluir Evento</h3>
+                        <p>Como deseja excluir este evento?</p>
+                        <div class="exclusao-opcoes">
+                            <div class="exclusao-opcao" onclick="selecionarExclusao('unica', '${id}', '${tipo}', ${isRecorrente}, '${regraId}', ${dia}, ${mes}, ${ano}, ${isIndividual}, '${individualId}')" id="exclusaoUnica">
+                                <strong>Apenas esta ocorrência</strong>
+                                <p style="font-size:0.9em;color:var(--gray)">Exclui somente este evento específico</p>
+                            </div>
+                            <div class="exclusao-opcao" onclick="selecionarExclusao('futuras', '${id}', '${tipo}', ${isRecorrente}, '${regraId}', ${dia}, ${mes}, ${ano}, ${isIndividual}, '${individualId}')" id="exclusaoFuturas">
+                                <strong>Desta data em diante</strong>
+                                <p style="font-size:0.9em;color:var(--gray)">Exclui este e todos os futuros</p>
+                            </div>
+                            <div class="exclusao-opcao" onclick="selecionarExclusao('todas', '${id}', '${tipo}', ${isRecorrente}, '${regraId}', ${dia}, ${mes}, ${ano}, ${isIndividual}, '${individualId}')" id="exclusaoTodas">
+                                <strong>Todas as ocorrências</strong>
+                                <p style="font-size:0.9em;color:var(--gray)">Exclui a regra inteira</p>
+                            </div>
+                        </div>
+                        <div class="btn-group" style="margin-top:20px">
+                            <button class="btn" onclick="fecharModal()" style="background:var(--gray);color:#fff">Cancelar</button>
+                        </div>
+                    </div>
+                `;
+                abrirModal('Excluir Evento', 'fa-trash', conteudo);
+            } else if (confirm(`Tem certeza que deseja excluir este ${tipo}?`)) {
+                (async () => {
+                    try {
+                        if (tipo === 'gasto') {
+                            await App.supabase.from('gastos').delete().eq('id', id);
+                        } else if (tipo === 'evento') {
+                            await App.supabase.from('eventos').delete().eq('id', id);
+                        } else if (tipo === 'conta') {
+                            await App.supabase.from('contas').delete().eq('id', id);
+                        }
+
+                        await registrarHistorico('exclusao_item', `${tipo} excluído`, { id, tipo, usuario: App.usuarioAtual });
+                        showToast('Item excluído!', 'success');
+                        fecharModal();
+                        await carregarDados(true);
+                        await atualizarCalendario();
+                        await mostrarConteudo();
+                    } catch (error) {
+                        console.error('Erro ao excluir:', error);
+                        showToast('Erro: ' + error.message, 'error');
+                    }
+                })();
+            }
+        }
+
+        function selecionarExclusao(tipo, id, tipoItem, isRecorrente, regraId, dia, mes, ano, isIndividual, individualId) {
+            (async () => {
+                try {
+                    if (tipo === 'unica') {
+                        if (isIndividual && individualId) {
+                            await App.supabase.from('eventos_individuais').delete().eq('id', individualId);
+                        } else {
+                            let dataExcecao = dataParaString(ano, mes, dia);
+                            await App.supabase.from('excecoes_recorrencia').insert({
+                                user_id: App.currentUser.id,
+                                regra_id: regraId,
+                                data_excecao: dataExcecao,
+                                acao: 'excluir',
+                                added_by: App.usuarioAtual || 'desconhecido'
+                            });
+                        }
+                    } else if (tipo === 'futuras') {
+                        let dataFim = dataParaString(ano, mes, dia - 1);
+                        await App.supabase
+                            .from('regras_eventos')
+                            .update({ data_fim: dataFim })
+                            .eq('id', regraId);
+                    } else if (tipo === 'todas') {
+                        await App.supabase.from('regras_eventos').delete().eq('id', regraId);
+                        await App.supabase.from('eventos_individuais').delete().eq('regra_id', regraId);
+                        await App.supabase.from('excecoes_recorrencia').delete().eq('regra_id', regraId);
+                    }
+
+                    await registrarHistorico('exclusao_evento', `Evento excluído (${tipo})`, { id, tipo, usuario: App.usuarioAtual });
+                    showToast('Evento excluído!', 'success');
+                    fecharModal();
+                    await carregarDados(true);
+                    await atualizarCalendario();
+                    await mostrarConteudo();
+                } catch (error) {
+                    console.error('Erro ao excluir evento:', error);
+                    showToast('Erro: ' + error.message, 'error');
+                }
+            })();
+        }
+
+        function verificarUsuario() {
+            if (!App.usuarioAtual) {
+                abrirSelecaoUsuario();
+            } else {
+                abrirMenuUsuarios();
+            }
+        }
+
+        function verificarUsuarioAcao(acao) {
+            if (!App.usuarioAtual) {
+                abrirSelecaoUsuario(true, acao);
+            } else {
+                executarAcao(acao);
+            }
+        }
+
+        function abrirSelecaoUsuario(aposAcao = false, acao = null) {
+            carregarUsuariosCadastrados().then(() => {
+                let usuariosHtml = App.usuarios.map(u => 
+                    `<div class="delete-option" onclick="selecionarUsuario('${u}', ${aposAcao}, '${acao}')">
+                        <strong><i class="fas fa-user"></i> ${u}</strong>
+                    </div>`
+                ).join('');
+
+                let conteudo = `
+                    <div class="form-group">
+                        <label class="form-label">Seu Nome</label>
+                        <div style="display:flex;gap:8px">
+                            <input type="text" id="novoUsuarioNome" class="form-input" placeholder="Digite seu nome" autocomplete="off">
+                            <button class="btn btn-success" onclick="adicionarUsuarioSelecao(${aposAcao}, '${acao}')"><i class="fas fa-plus"></i> Adicionar</button>
+                        </div>
+                    </div>
+                    ${App.usuarios.length > 0 ? `
+                        <div class="section-divider">Usuários Existentes</div>
+                        ${usuariosHtml}
+                    ` : ''}
+                    <div class="btn-group" style="margin-top:20px">
+                        <button class="btn" onclick="fecharModal()" style="background:var(--gray);color:#fff">Cancelar</button>
+                    </div>
+                `;
+                abrirModal('Selecionar Usuário', 'fa-user', conteudo);
+            });
+        }
+
+        async function adicionarUsuarioSelecao(aposAcao = false, acao = null) {
+            let nome = document.getElementById('novoUsuarioNome')?.value.trim();
+            if (!nome) {
+                showToast('Digite um nome', 'warning');
+                return;
+            }
+            if (!App.usuarios.includes(nome)) {
+                App.usuarios.push(nome);
+                await salvarUsuariosCadastrados();
+            }
+            App.usuarioAtual = nome;
+            document.getElementById('usuarioHeaderNome').textContent = nome;
+            localStorage.setItem(`homelife_usuario_${App.currentUser.id}`, nome);
+            await salvarUsuariosCadastrados();
+            fecharModal();
+            showToast(`Usuário ${nome} selecionado`, 'success');
+            if (aposAcao && acao) {
+                setTimeout(() => executarAcao(acao), 300);
+            }
+        }
+
+        async function selecionarUsuario(nome, aposAcao = false, acao = null) {
+            App.usuarioAtual = nome;
+            document.getElementById('usuarioHeaderNome').textContent = nome;
+            localStorage.setItem(`homelife_usuario_${App.currentUser.id}`, nome);
+            await salvarUsuariosCadastrados();
+            fecharModal();
+            showToast(`Usuário ${nome} selecionado`, 'success');
+            if (aposAcao && acao) {
+                setTimeout(() => executarAcao(acao), 300);
+            }
+        }
+
+        function executarAcao(acao) {
+            fecharAddMenu();
+            switch (acao) {
+                case 'conta': abrirNovaConta(); break;
+                case 'evento': abrirNovoEventoUnificado(); break;
+                case 'gasto': abrirNovoGasto(); break;
+                case 'lista': abrirNovoItemLista(); break;
+                case 'giro': abrirNovoGiro(); break;
+            }
+        }
+
+        async function abrirMenuUsuarios() {
+            await carregarUsuariosCadastrados();
+            let usuariosHtml = App.usuarios.map(u => 
+                `<div class="delete-option ${u === App.usuarioAtual ? 'selected' : ''}">
+                    <strong><i class="fas fa-user"></i> ${u}</strong> ${u === App.usuarioAtual ? '(atual)' : ''}
+                    <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();removerUsuario('${u}')" style="float:right"><i class="fas fa-trash"></i></button>
+                </div>`
+            ).join('');
+
+            let conteudo = `
+                <div class="form-group">
+                    <label class="form-label">Novo Usuário</label>
+                    <div style="display:flex;gap:8px">
+                        <input type="text" id="novoUsuarioNome" class="form-input" placeholder="Nome">
+                        <button class="btn btn-success" onclick="adicionarUsuario()"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+                <div class="section-divider">Usuários Cadastrados</div>
+                ${usuariosHtml || '<p>Nenhum usuário cadastrado</p>'}
+                <div class="btn-group" style="margin-top:20px">
+                    <button class="btn" onclick="fecharModal()" style="background:var(--gray);color:#fff">Fechar</button>
+                </div>
+            `;
+            abrirModal('Gerenciar Usuários', 'fa-users', conteudo);
+        }
+
+        async function adicionarUsuario() {
+            let nome = document.getElementById('novoUsuarioNome')?.value.trim();
+            if (!nome) {
+                showToast('Digite um nome', 'warning');
+                return;
+            }
+            if (!App.usuarios.includes(nome)) {
+                App.usuarios.push(nome);
+                await salvarUsuariosCadastrados();
+                showToast('Usuário adicionado!', 'success');
+            } else {
+                showToast('Usuário já existe', 'warning');
+            }
+            fecharModal();
+            abrirMenuUsuarios();
+        }
+
+        async function removerUsuario(nome) {
+            if (App.usuarios.length === 1) {
+                showToast('Deve haver pelo menos um usuário', 'warning');
+                return;
+            }
+            
+            try {
+                await App.supabase
+                    .from('usuarios_cadastrados')
+                    .delete()
+                    .eq('user_id', App.currentUser.id)
+                    .eq('nome', nome);
+                
+                App.usuarios = App.usuarios.filter(u => u !== nome);
+                
+                if (nome === App.usuarioAtual) {
+                    App.usuarioAtual = App.usuarios[0];
+                    document.getElementById('usuarioHeaderNome').textContent = App.usuarioAtual;
+                    localStorage.setItem(`homelife_usuario_${App.currentUser.id}`, App.usuarioAtual);
+                    await App.supabase
+                        .from('usuarios_cadastrados')
+                        .update({ ativo: true })
+                        .eq('user_id', App.currentUser.id)
+                        .eq('nome', App.usuarioAtual);
+                }
+                
+                showToast('Usuário removido!', 'success');
+            } catch (e) {
+                console.error('Erro ao remover usuário:', e);
+                showToast('Erro ao remover usuário', 'error');
+            }
+            
+            fecharModal();
+            abrirMenuUsuarios();
+        }
+
+        function abrirMenuRelatorio() {
+            let { mes, ano } = getMesAnoAtual();
+            let totalContas = App.dataCache.contas.filter(c => c.mes === mes && c.ano === ano).reduce((acc, c) => acc + (c.valor_original || c.valor || 0), 0);
+            let totalPago = App.dataCache.contas.filter(c => c.mes === mes && c.ano === ano && c.valor_pago > 0).reduce((acc, c) => acc + c.valor_pago, 0);
+            let totalGastos = App.dataCache.gastos.filter(g => g.mes === mes && g.ano === ano).reduce((acc, g) => acc + (g.valor || 0), 0);
+            let saldoFinal = App.saldoCentral.valor;
+            
+            let percentualPago = totalContas > 0 ? (totalPago / totalContas * 100) : 0;
+            let percentualGastos = saldoFinal > 0 ? (totalGastos / (saldoFinal + totalGastos) * 100) : 0;
+            
+            let conteudo = `
+                <div style="padding:16px">
+                    <h3 style="color:var(--purple);margin-bottom:16px">Relatório de ${getNomeMes(mes)}/${ano}</h3>
+                    
+                    <div class="report-chart">
+                        <h4 style="margin-bottom:12px">Resumo Financeiro</h4>
+                        
+                        <div class="chart-bar-container">
+                            <div class="chart-bar-label">
+                                <span>Contas Pagas</span>
+                                <span>${formatCurrency(totalPago)} de ${formatCurrency(totalContas)} (${percentualPago.toFixed(1)}%)</span>
+                            </div>
+                            <div class="chart-bar-bg">
+                                <div class="chart-bar-fill ${percentualPago >= 100 ? 'success' : ''}" style="width: ${percentualPago}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-bar-container">
+                            <div class="chart-bar-label">
+                                <span>Gastos do Mês</span>
+                                <span>${formatCurrency(totalGastos)}</span>
+                            </div>
+                            <div class="chart-bar-bg">
+                                <div class="chart-bar-fill warning" style="width: ${percentualGastos}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-bar-container">
+                            <div class="chart-bar-label">
+                                <span>Saldo Atual</span>
+                                <span>${formatCurrency(saldoFinal)}</span>
+                            </div>
+                            <div class="chart-bar-bg">
+                                <div class="chart-bar-fill success" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px">
+                        <div style="background:var(--bg-pendente);padding:12px;border-radius:8px">
+                            <div style="font-size:0.9em">Total Contas</div>
+                            <div style="font-size:1.2em;font-weight:700">${formatCurrency(totalContas)}</div>
+                        </div>
+                        <div style="background:var(--bg-success-light);padding:12px;border-radius:8px">
+                            <div style="font-size:0.9em">Total Pago</div>
+                            <div style="font-size:1.2em;font-weight:700;color:var(--text-success)">${formatCurrency(totalPago)}</div>
+                        </div>
+                        <div style="background:var(--bg-gasto);padding:12px;border-radius:8px">
+                            <div style="font-size:0.9em">Total Gastos</div>
+                            <div style="font-size:1.2em;font-weight:700">${formatCurrency(totalGastos)}</div>
+                        </div>
+                        <div style="background:var(--bg-evento);padding:12px;border-radius:8px">
+                            <div style="font-size:0.9em">Saldo Final</div>
+                            <div style="font-size:1.2em;font-weight:700">${formatCurrency(saldoFinal)}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group" style="margin-top:20px">
+                        <button class="btn btn-primary" onclick="fecharModal()">Fechar</button>
+                    </div>
+                </div>
+            `;
+            abrirModal('Relatório', 'fa-chart-line', conteudo);
+        }
+
+        function abrirMenuSeguranca() {
+            let conteudo = `
+                <div class="form-group">
+                    <label class="form-label">Alterar Senha do Saldo</label>
+                    <input type="password" id="novaSenhaSaldo" class="form-input" placeholder="Nova senha (4 dígitos)" maxlength="4" inputmode="numeric">
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="alterarSenhaSaldo()"><i class="fas fa-save"></i> Salvar</button>
+                    <button class="btn" onclick="fecharModal()" style="background:var(--gray);color:#fff">Cancelar</button>
+                </div>
+            `;
+            abrirModal('Segurança', 'fa-lock', conteudo);
+        }
+
+        function alterarSenhaSaldo() {
+            let novaSenha = document.getElementById('novaSenhaSaldo')?.value;
+            if (!novaSenha || novaSenha.length !== 4) {
+                showToast('Senha deve ter 4 dígitos', 'warning');
+                return;
+            }
+            App.saldoSenha = novaSenha;
+            showToast('Senha alterada!', 'success');
+            fecharModal();
+        }
+
+        function abrirNotificacoes() {
+            let config = App.notificacoesConfig;
+            
+            let antecedenciaContasHtml = CONFIG.notificacaoAntecedencia.map(a => 
+                `<option value="${a.valor}" ${config.antecedencia?.contas === a.valor ? 'selected' : ''}>${a.label}</option>`
+            ).join('');
+            
+            let antecedenciaEventosHtml = CONFIG.notificacaoAntecedencia.map(a => 
+                `<option value="${a.valor}" ${config.antecedencia?.eventos === a.valor ? 'selected' : ''}>${a.label}</option>`
+            ).join('');
+            
+            let antecedenciaListaHtml = CONFIG.notificacaoAntecedencia.map(a => 
+                `<option value="${a.valor}" ${config.antecedencia?.lista === a.valor ? 'selected' : ''}>${a.label}</option>`
+            ).join('');
+
+            let conteudo = `
+                <div class="notificacao-option">
+                    <label><input type="checkbox" id="notifContas" ${config.contas ? 'checked' : ''}> Notificar Contas</label>
+                </div>
+                <div class="form-group" style="margin-left:20px">
+                    <label class="form-label">Antecedência para Contas</label>
+                    <select id="notifAntecedenciaContas" class="form-select">
+                        ${antecedenciaContasHtml}
+                    </select>
+                </div>
+                
+                <div class="notificacao-option">
+                    <label><input type="checkbox" id="notifEventos" ${config.eventos ? 'checked' : ''}> Notificar Eventos</label>
+                </div>
+                <div class="form-group" style="margin-left:20px">
+                    <label class="form-label">Antecedência para Eventos</label>
+                    <select id="notifAntecedenciaEventos" class="form-select">
+                        ${antecedenciaEventosHtml}
+                    </select>
+                </div>
+                
+                <div class="notificacao-option">
+                    <label><input type="checkbox" id="notifLista" ${config.lista ? 'checked' : ''}> Notificar Lista</label>
+                </div>
+                <div class="form-group" style="margin-left:20px">
+                    <label class="form-label">Antecedência para Lista</label>
+                    <select id="notifAntecedenciaLista" class="form-select">
+                        ${antecedenciaListaHtml}
+                    </select>
+                </div>
+                
+                <div class="notificacao-option">
+                    <label><input type="checkbox" id="notifNovoItem" ${config.novoItem ? 'checked' : ''}> Notificar Novo Item (outro usuário)</label>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Tipo de Notificação</label>
+                    <select id="notifTipo" class="form-select">
+                        <option value="ambos" ${config.tipo === 'ambos' ? 'selected' : ''}>Banner + Bloqueio</option>
+                        <option value="banner" ${config.tipo === 'banner' ? 'selected' : ''}>Apenas Banner</option>
+                        <option value="bloqueio" ${config.tipo === 'bloqueio' ? 'selected' : ''}>Apenas Bloqueio</option>
+                    </select>
+                </div>
+                
+                <div class="btn-group" style="margin-top:20px">
+                    <button class="btn btn-primary" onclick="salvarNotificacoes()"><i class="fas fa-save"></i> Salvar</button>
+                    <button class="btn" onclick="fecharModal()" style="background:var(--gray);color:#fff">Cancelar</button>
+                </div>
+            `;
+            abrirModal('Configurar Notificações', 'fa-bell', conteudo);
+        }
+
+        function salvarNotificacoes() {
+            App.notificacoesConfig = {
+                contas: document.getElementById('notifContas')?.checked || false,
+                eventos: document.getElementById('notifEventos')?.checked || false,
+                lista: document.getElementById('notifLista')?.checked || false,
+                novoItem: document.getElementById('notifNovoItem')?.checked || false,
+                tipo: document.getElementById('notifTipo')?.value || 'ambos',
+                antecedencia: {
+                    contas: parseInt(document.getElementById('notifAntecedenciaContas')?.value) || 0,
+                    eventos: parseInt(document.getElementById('notifAntecedenciaEventos')?.value) || 0,
+                    lista: parseInt(document.getElementById('notifAntecedenciaLista')?.value) || 0
+                }
+            };
+            salvarConfigLocal();
+            if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+                Notification.requestPermission();
+            }
+            fecharModal();
+            showToast('Configurações salvas!', 'success');
+        }
+
+        function abrirManual() {
+            // Manual vazio conforme solicitado
+            let conteudo = `
+                <div style="padding:16px; text-align:center">
+                    <i class="fas fa-book" style="font-size:48px; color:var(--purple); margin-bottom:16px"></i>
+                    <p style="color:var(--gray)">Manual em construção</p>
+                </div>
+            `;
+            abrirModal('Manual de Instruções', 'fa-book', conteudo);
+        }
+
+        // Funções de gastos
         function abrirNovoGasto() {
             let { mes, ano } = getMesAnoAtual();
             let diaPadrao = App.selectedDay || new Date().getDate();
@@ -2777,7 +3600,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-dollar-sign"></i> Valor</label>
-                    <input type="text" id="gastoValor" class="form-input" placeholder="0,00" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
+                    <input type="text" id="gastoValor" class="form-input" placeholder="0,00" inputmode="decimal" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-tag"></i> Categoria</label>
@@ -2791,7 +3614,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-calendar-day"></i> Dia</label>
-                    <input type="number" id="gastoDia" class="form-input" min="1" max="31" value="${diaPadrao}">
+                    <input type="number" id="gastoDia" class="form-input" min="1" max="31" value="${diaPadrao}" inputmode="numeric">
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-calendar-alt"></i> Mês/Ano</label>
@@ -2799,7 +3622,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                         <select id="gastoMes" class="form-select">
                             ${CONFIG.meses.map((m, i) => `<option value="${i + 1}" ${i + 1 === mes ? 'selected' : ''}>${m}</option>`).join('')}
                         </select>
-                        <input type="number" id="gastoAno" class="form-input" value="${ano}">
+                        <input type="number" id="gastoAno" class="form-input" value="${ano}" inputmode="numeric">
                     </div>
                 </div>
                 <div class="btn-group" style="margin-top:20px">
@@ -2832,8 +3655,13 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                 return;
             }
 
-            let diaAjustado = Math.min(dia, getDiasNoMes(ano, mes));
-            let data = `${ano}-${String(mes).padStart(2, '0')}-${String(diaAjustado).padStart(2, '0')}`;
+            if (!dataValida(ano, mes, dia)) {
+                showToast('Dia inválido para o mês selecionado', 'warning');
+                return;
+            }
+
+            let diaAjustado = dia;
+            let data = dataParaString(ano, mes, diaAjustado);
 
             try {
                 let gastoData = {
@@ -2855,7 +3683,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                     let { data: saldoAtual } = await App.supabase.from('saldos').select('valor').eq('id', App.saldoCentral.id).single();
                     if (saldoAtual) {
                         let novoValor = saldoAtual.valor - valor;
-                        await App.supabase.from('saldos').update({ valor: novoValor, data: data }).eq('id', App.saldoCentral.id);
+                        await App.supabase.from('saldos').update({ valor: novoValor, data: new Date().toISOString() }).eq('id', App.saldoCentral.id);
                         App.saldoCentral.valor = novoValor;
                         atualizarSaldoHeader();
                     }
@@ -2874,11 +3702,114 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             }
         }
 
+        function cancelarGasto(id, desc, valor) {
+            if (confirm(`Cancelar gasto ${desc} de ${formatCurrency(valor)}?`)) {
+                (async () => {
+                    try {
+                        await App.supabase.from('gastos').delete().eq('id', id);
+
+                        if (App.saldoCentral.id) {
+                            let { data: saldoAtual } = await App.supabase.from('saldos').select('valor').eq('id', App.saldoCentral.id).single();
+                            if (saldoAtual) {
+                                let novoValor = saldoAtual.valor + valor;
+                                await App.supabase.from('saldos').update({ valor: novoValor }).eq('id', App.saldoCentral.id);
+                                App.saldoCentral.valor = novoValor;
+                                atualizarSaldoHeader();
+                            }
+                        }
+
+                        await registrarHistorico('cancelamento_gasto', `Gasto cancelado: ${desc}`, { id, valor, usuario: App.usuarioAtual });
+                        showToast('Gasto cancelado!', 'success');
+                        await carregarDados(true);
+                        await mostrarConteudo();
+                    } catch (error) {
+                        console.error('Erro ao cancelar gasto:', error);
+                        showToast('Erro: ' + error.message, 'error');
+                    }
+                })();
+            }
+        }
+
+        function deletarGasto(id) {
+            if (confirm('Tem certeza que deseja excluir este gasto permanentemente?')) {
+                (async () => {
+                    try {
+                        await App.supabase.from('gastos').delete().eq('id', id);
+                        showToast('Gasto excluído!', 'success');
+                        await carregarDados(true);
+                        await mostrarConteudo();
+                    } catch (error) {
+                        console.error('Erro ao excluir gasto:', error);
+                        showToast('Erro: ' + error.message, 'error');
+                    }
+                })();
+            }
+        }
+
+        function editarGasto(id) {
+            let gasto = App.dataCache.gastos.find(g => g.id === id);
+            if (!gasto) return;
+            
+            let categoriasHtml = CONFIG.categoriasGastos.map(c => 
+                `<option value="${c.id}" ${gasto.categoria === c.id ? 'selected' : ''}>${c.nome}</option>`
+            ).join('');
+
+            let conteudo = `
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-heading"></i> Descrição</label>
+                    <input type="text" id="gastoDescricaoEdit" class="form-input" value="${gasto.descricao}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-dollar-sign"></i> Valor</label>
+                    <input type="text" id="gastoValorEdit" class="form-input" value="${gasto.valor.toFixed(2).replace('.', ',')}" inputmode="decimal" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-tag"></i> Categoria</label>
+                    <select id="gastoCategoriaEdit" class="form-select">
+                        ${categoriasHtml}
+                    </select>
+                </div>
+                <div class="btn-group" style="margin-top:20px">
+                    <button class="btn btn-primary" onclick="salvarEdicaoGasto('${id}')" style="flex:2"><i class="fas fa-save"></i> Salvar</button>
+                    <button class="btn" onclick="fecharModal()" style="flex:1;background:var(--gray);color:#fff">Cancelar</button>
+                </div>
+            `;
+            abrirModal('Editar Gasto', 'fa-edit', conteudo);
+        }
+
+        async function salvarEdicaoGasto(id) {
+            let desc = document.getElementById('gastoDescricaoEdit')?.value.trim();
+            let valor = parseCurrency(document.getElementById('gastoValorEdit')?.value);
+            let cat = document.getElementById('gastoCategoriaEdit')?.value;
+
+            if (!desc || !valor) {
+                showToast('Preencha todos os campos', 'warning');
+                return;
+            }
+
+            try {
+                await App.supabase.from('gastos').update({
+                    descricao: desc,
+                    valor: valor,
+                    categoria: cat
+                }).eq('id', id);
+
+                showToast('Gasto atualizado!', 'success');
+                fecharModal();
+                await carregarDados(true);
+                await mostrarConteudo();
+            } catch (error) {
+                console.error('Erro ao editar gasto:', error);
+                showToast('Erro: ' + error.message, 'error');
+            }
+        }
+
+        // Funções de lista de compras
         function abrirNovoItemLista() {
             let conteudo = `
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-sort-numeric-up"></i> Quantidade</label>
-                    <input type="number" id="itemQuantidade" class="form-input" min="1" value="1">
+                    <input type="number" id="itemQuantidade" class="form-input" min="1" value="1" inputmode="numeric">
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-heading"></i> Descrição</label>
@@ -2922,6 +3853,91 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             }
         }
 
+        function alternarComprado(id) {
+            (async () => {
+                try {
+                    let item = App.dataCache.lista.find(i => i.id === id);
+                    if (item) {
+                        await App.supabase.from('lista_compras').update({
+                            comprado: !item.comprado
+                        }).eq('id', id);
+
+                        await registrarHistorico('alternar_lista', `Item ${item.comprado ? 'desmarcado' : 'marcado'}: ${item.descricao}`, { id, usuario: App.usuarioAtual });
+                        await carregarDados(true);
+                        await mostrarConteudo();
+                    }
+                } catch (error) {
+                    console.error('Erro ao alternar item:', error);
+                    showToast('Erro: ' + error.message, 'error');
+                }
+            })();
+        }
+
+        function deletarItemLista(id) {
+            if (confirm('Remover item da lista?')) {
+                (async () => {
+                    try {
+                        await App.supabase.from('lista_compras').delete().eq('id', id);
+                        await registrarHistorico('exclusao_lista', `Item removido da lista`, { id, usuario: App.usuarioAtual });
+                        showToast('Item removido!', 'success');
+                        await carregarDados(true);
+                        await mostrarConteudo();
+                    } catch (error) {
+                        console.error('Erro ao remover item:', error);
+                        showToast('Erro: ' + error.message, 'error');
+                    }
+                })();
+            }
+        }
+
+        function editarItemLista(id) {
+            let item = App.dataCache.lista.find(i => i.id === id);
+            if (!item) return;
+
+            let conteudo = `
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-sort-numeric-up"></i> Quantidade</label>
+                    <input type="number" id="itemQuantidadeEdit" class="form-input" min="1" value="${item.quantidade}" inputmode="numeric">
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-heading"></i> Descrição</label>
+                    <input type="text" id="itemDescricaoEdit" class="form-input" value="${item.descricao}">
+                </div>
+                <div class="btn-group" style="margin-top:20px">
+                    <button class="btn btn-primary" onclick="salvarEdicaoLista('${id}')" style="flex:2"><i class="fas fa-save"></i> Salvar</button>
+                    <button class="btn" onclick="fecharModal()" style="flex:1;background:var(--gray);color:#fff">Cancelar</button>
+                </div>
+            `;
+            abrirModal('Editar Item', 'fa-edit', conteudo);
+        }
+
+        async function salvarEdicaoLista(id) {
+            let qtd = parseInt(document.getElementById('itemQuantidadeEdit')?.value);
+            let desc = document.getElementById('itemDescricaoEdit')?.value.trim();
+
+            if (!qtd || !desc) {
+                showToast('Preencha todos os campos', 'warning');
+                return;
+            }
+
+            try {
+                await App.supabase.from('lista_compras').update({
+                    quantidade: qtd,
+                    descricao: desc
+                }).eq('id', id);
+
+                await registrarHistorico('edicao_lista', `Item editado: ${desc}`, { id, usuario: App.usuarioAtual });
+                showToast('Item atualizado!', 'success');
+                fecharModal();
+                await carregarDados(true);
+                await mostrarConteudo();
+            } catch (error) {
+                console.error('Erro ao editar item:', error);
+                showToast('Erro: ' + error.message, 'error');
+            }
+        }
+
+        // Funções de giro
         function abrirNovoGiro() {
             let conteudo = `
                 <div class="form-group">
@@ -2930,7 +3946,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-dollar-sign"></i> Valor Inicial</label>
-                    <input type="text" id="giroValor" class="form-input" placeholder="0,00" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
+                    <input type="text" id="giroValor" class="form-input" placeholder="0,00" inputmode="decimal" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-user"></i> Pessoa</label>
@@ -2978,7 +3994,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             let conteudo = `
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-dollar-sign"></i> Valor do Pagamento</label>
-                    <input type="text" id="pagamentoValor" class="form-input" placeholder="0,00" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
+                    <input type="text" id="pagamentoValor" class="form-input" placeholder="0,00" inputmode="decimal" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-align-left"></i> Descrição (opcional)</label>
@@ -3027,7 +4043,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             let conteudo = `
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-dollar-sign"></i> Valor do Recebimento</label>
-                    <input type="text" id="recebimentoValor" class="form-input" placeholder="0,00" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
+                    <input type="text" id="recebimentoValor" class="form-input" placeholder="0,00" inputmode="decimal" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-align-left"></i> Descrição (opcional)</label>
@@ -3137,308 +4153,12 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             }
         }
 
-        function abrirModalPagamento(id, desc, valor, regraId, dia, mes, ano, isRecorrente) {
-            let conteudo = `
-                <div style="padding:16px">
-                    <p>Pagamento de <strong>${desc}</strong></p>
-                    <div class="form-group" style="margin:16px 0">
-                        <label class="form-label"><i class="fas fa-dollar-sign"></i> Valor a pagar</label>
-                        <input type="text" id="pagamentoValorConta" class="form-input" value="${valor.toFixed(2).replace('.', ',')}" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-success" onclick="confirmarPagamento('${id}', '${regraId}', ${dia}, ${mes}, ${ano}, ${isRecorrente})" style="flex:2"><i class="fas fa-check"></i> Confirmar Pagamento</button>
-                        <button class="btn" onclick="fecharModal()" style="flex:1;background:var(--gray);color:#fff">Cancelar</button>
-                    </div>
-                </div>
-            `;
-            abrirModal('Confirmar Pagamento', 'fa-dollar-sign', conteudo);
-        }
-
-        async function confirmarPagamento(id, regraId, dia, mes, ano, isRecorrente) {
-            let valor = parseCurrency(document.getElementById('pagamentoValorConta')?.value);
-
-            try {
-                if (isRecorrente && regraId) {
-                    await App.supabase.from('excecoes_recorrencia').insert({
-                        user_id: App.currentUser.id,
-                        regra_id: regraId,
-                        data_excecao: `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`,
-                        acao: 'pagar',
-                        added_by: App.usuarioAtual || 'desconhecido'
-                    });
-                } else {
-                    await App.supabase.from('contas').update({
-                        valor_pago: valor,
-                        status: 'paga',
-                        data_pagamento: new Date().toISOString()
-                    }).eq('id', id);
-                }
-
-                if (App.saldoCentral.id) {
-                    let { data: saldoAtual } = await App.supabase.from('saldos').select('valor').eq('id', App.saldoCentral.id).single();
-                    if (saldoAtual) {
-                        let novoValor = saldoAtual.valor - valor;
-                        await App.supabase.from('saldos').update({ valor: novoValor }).eq('id', App.saldoCentral.id);
-                        App.saldoCentral.valor = novoValor;
-                        atualizarSaldoHeader();
-                    }
-                }
-
-                await registrarHistorico('pagamento_conta', `Conta paga: ${id}`, { id, valor, usuario: App.usuarioAtual });
-                showToast('Pagamento confirmado!', 'success');
-                fecharModal();
-                await carregarDados(true);
-                await atualizarCalendario();
-                await mostrarConteudo();
-            } catch (error) {
-                console.error('Erro ao pagar conta:', error);
-                showToast('Erro: ' + error.message, 'error');
-            }
-        }
-
-        function abrirModalDesfazerPagamento(id, desc, valor, regraId, dia, mes, ano, isRecorrente) {
-            let conteudo = `
-                <div style="padding:16px; text-align:center">
-                    <p>Desfazer pagamento de <strong>${desc}</strong>?</p>
-                    <p style="font-size:1.2em; margin:16px 0">${formatCurrency(valor)} voltará para o saldo</p>
-                    <div class="btn-group">
-                        <button class="btn btn-warning" onclick="desfazerPagamento('${id}', ${valor}, '${regraId}', ${dia}, ${mes}, ${ano}, ${isRecorrente})" style="flex:2"><i class="fas fa-undo-alt"></i> Desfazer</button>
-                        <button class="btn" onclick="fecharModal()" style="flex:1;background:var(--gray);color:#fff">Cancelar</button>
-                    </div>
-                </div>
-            `;
-            abrirModal('Desfazer Pagamento', 'fa-undo-alt', conteudo);
-        }
-
-        async function desfazerPagamento(id, valor, regraId, dia, mes, ano, isRecorrente) {
-            try {
-                if (isRecorrente && regraId) {
-                    await App.supabase
-                        .from('excecoes_recorrencia')
-                        .delete()
-                        .eq('regra_id', regraId)
-                        .eq('data_excecao', `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`);
-                } else {
-                    await App.supabase.from('contas').update({
-                        valor_pago: 0,
-                        status: 'pendente',
-                        data_pagamento: null
-                    }).eq('id', id);
-                }
-
-                if (App.saldoCentral.id) {
-                    let { data: saldoAtual } = await App.supabase.from('saldos').select('valor').eq('id', App.saldoCentral.id).single();
-                    if (saldoAtual) {
-                        let novoValor = saldoAtual.valor + valor;
-                        await App.supabase.from('saldos').update({ valor: novoValor }).eq('id', App.saldoCentral.id);
-                        App.saldoCentral.valor = novoValor;
-                        atualizarSaldoHeader();
-                    }
-                }
-
-                await registrarHistorico('desfazer_pagamento', `Pagamento desfeito: ${id}`, { id, valor, usuario: App.usuarioAtual });
-                showToast('Pagamento desfeito!', 'success');
-                fecharModal();
-                await carregarDados(true);
-                await atualizarCalendario();
-                await mostrarConteudo();
-            } catch (error) {
-                console.error('Erro ao desfazer pagamento:', error);
-                showToast('Erro: ' + error.message, 'error');
-            }
-        }
-
-        function cancelarGasto(id, desc, valor) {
-            if (confirm(`Cancelar gasto ${desc} de ${formatCurrency(valor)}?`)) {
-                (async () => {
-                    try {
-                        await App.supabase.from('gastos').delete().eq('id', id);
-
-                        if (App.saldoCentral.id) {
-                            let { data: saldoAtual } = await App.supabase.from('saldos').select('valor').eq('id', App.saldoCentral.id).single();
-                            if (saldoAtual) {
-                                let novoValor = saldoAtual.valor + valor;
-                                await App.supabase.from('saldos').update({ valor: novoValor }).eq('id', App.saldoCentral.id);
-                                App.saldoCentral.valor = novoValor;
-                                atualizarSaldoHeader();
-                            }
-                        }
-
-                        await registrarHistorico('cancelamento_gasto', `Gasto cancelado: ${desc}`, { id, valor, usuario: App.usuarioAtual });
-                        showToast('Gasto cancelado!', 'success');
-                        await carregarDados(true);
-                        await mostrarConteudo();
-                    } catch (error) {
-                        console.error('Erro ao cancelar gasto:', error);
-                        showToast('Erro: ' + error.message, 'error');
-                    }
-                })();
-            }
-        }
-
-        function deletarGasto(id) {
-            if (confirm('Tem certeza que deseja excluir este gasto permanentemente?')) {
-                (async () => {
-                    try {
-                        await App.supabase.from('gastos').delete().eq('id', id);
-                        showToast('Gasto excluído!', 'success');
-                        await carregarDados(true);
-                        await mostrarConteudo();
-                    } catch (error) {
-                        console.error('Erro ao excluir gasto:', error);
-                        showToast('Erro: ' + error.message, 'error');
-                    }
-                })();
-            }
-        }
-
-        function editarGasto(id) {
-            let gasto = App.dataCache.gastos.find(g => g.id === id);
-            if (!gasto) return;
-            
-            let categoriasHtml = CONFIG.categoriasGastos.map(c => 
-                `<option value="${c.id}" ${gasto.categoria === c.id ? 'selected' : ''}>${c.nome}</option>`
-            ).join('');
-
-            let conteudo = `
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-heading"></i> Descrição</label>
-                    <input type="text" id="gastoDescricaoEdit" class="form-input" value="${gasto.descricao}">
-                </div>
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-dollar-sign"></i> Valor</label>
-                    <input type="text" id="gastoValorEdit" class="form-input" value="${gasto.valor.toFixed(2).replace('.', ',')}" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
-                </div>
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-tag"></i> Categoria</label>
-                    <select id="gastoCategoriaEdit" class="form-select">
-                        ${categoriasHtml}
-                    </select>
-                </div>
-                <div class="btn-group" style="margin-top:20px">
-                    <button class="btn btn-primary" onclick="salvarEdicaoGasto('${id}')" style="flex:2"><i class="fas fa-save"></i> Salvar</button>
-                    <button class="btn" onclick="fecharModal()" style="flex:1;background:var(--gray);color:#fff">Cancelar</button>
-                </div>
-            `;
-            abrirModal('Editar Gasto', 'fa-edit', conteudo);
-        }
-
-        async function salvarEdicaoGasto(id) {
-            let desc = document.getElementById('gastoDescricaoEdit')?.value.trim();
-            let valor = parseCurrency(document.getElementById('gastoValorEdit')?.value);
-            let cat = document.getElementById('gastoCategoriaEdit')?.value;
-
-            if (!desc || !valor) {
-                showToast('Preencha todos os campos', 'warning');
-                return;
-            }
-
-            try {
-                await App.supabase.from('gastos').update({
-                    descricao: desc,
-                    valor: valor,
-                    categoria: cat
-                }).eq('id', id);
-
-                showToast('Gasto atualizado!', 'success');
-                fecharModal();
-                await carregarDados(true);
-                await mostrarConteudo();
-            } catch (error) {
-                console.error('Erro ao editar gasto:', error);
-                showToast('Erro: ' + error.message, 'error');
-            }
-        }
-
-        function alternarComprado(id) {
-            (async () => {
-                try {
-                    let item = App.dataCache.lista.find(i => i.id === id);
-                    if (item) {
-                        await App.supabase.from('lista_compras').update({
-                            comprado: !item.comprado
-                        }).eq('id', id);
-
-                        await registrarHistorico('alternar_lista', `Item ${item.comprado ? 'desmarcado' : 'marcado'}: ${item.descricao}`, { id, usuario: App.usuarioAtual });
-                        await carregarDados(true);
-                        await mostrarConteudo();
-                    }
-                } catch (error) {
-                    console.error('Erro ao alternar item:', error);
-                    showToast('Erro: ' + error.message, 'error');
-                }
-            })();
-        }
-
-        function deletarItemLista(id) {
-            if (confirm('Remover item da lista?')) {
-                (async () => {
-                    try {
-                        await App.supabase.from('lista_compras').delete().eq('id', id);
-                        await registrarHistorico('exclusao_lista', `Item removido da lista`, { id, usuario: App.usuarioAtual });
-                        showToast('Item removido!', 'success');
-                        await carregarDados(true);
-                        await mostrarConteudo();
-                    } catch (error) {
-                        console.error('Erro ao remover item:', error);
-                        showToast('Erro: ' + error.message, 'error');
-                    }
-                })();
-            }
-        }
-
-        function editarItemLista(id) {
-            let item = App.dataCache.lista.find(i => i.id === id);
-            if (!item) return;
-
-            let conteudo = `
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-sort-numeric-up"></i> Quantidade</label>
-                    <input type="number" id="itemQuantidadeEdit" class="form-input" min="1" value="${item.quantidade}">
-                </div>
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-heading"></i> Descrição</label>
-                    <input type="text" id="itemDescricaoEdit" class="form-input" value="${item.descricao}">
-                </div>
-                <div class="btn-group" style="margin-top:20px">
-                    <button class="btn btn-primary" onclick="salvarEdicaoLista('${id}')" style="flex:2"><i class="fas fa-save"></i> Salvar</button>
-                    <button class="btn" onclick="fecharModal()" style="flex:1;background:var(--gray);color:#fff">Cancelar</button>
-                </div>
-            `;
-            abrirModal('Editar Item', 'fa-edit', conteudo);
-        }
-
-        async function salvarEdicaoLista(id) {
-            let qtd = parseInt(document.getElementById('itemQuantidadeEdit')?.value);
-            let desc = document.getElementById('itemDescricaoEdit')?.value.trim();
-
-            if (!qtd || !desc) {
-                showToast('Preencha todos os campos', 'warning');
-                return;
-            }
-
-            try {
-                await App.supabase.from('lista_compras').update({
-                    quantidade: qtd,
-                    descricao: desc
-                }).eq('id', id);
-
-                await registrarHistorico('edicao_lista', `Item editado: ${desc}`, { id, usuario: App.usuarioAtual });
-                showToast('Item atualizado!', 'success');
-                fecharModal();
-                await carregarDados(true);
-                await mostrarConteudo();
-            } catch (error) {
-                console.error('Erro ao editar item:', error);
-                showToast('Erro: ' + error.message, 'error');
-            }
-        }
-
+        // Funções de saldo
         function abrirAdicionarValorSaldo(id) {
             let conteudo = `
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-dollar-sign"></i> Valor para Adicionar</label>
-                    <input type="text" id="saldoValor" class="form-input" placeholder="0,00" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
+                    <input type="text" id="saldoValor" class="form-input" placeholder="0,00" inputmode="decimal" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
                 </div>
                 <div class="btn-group" style="margin-top:20px">
                     <button class="btn btn-success" onclick="confirmarAdicionarSaldo('${id}')" style="flex:2"><i class="fas fa-plus"></i> Adicionar</button>
@@ -3481,7 +4201,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             let conteudo = `
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-dollar-sign"></i> Valor para Retirar</label>
-                    <input type="text" id="saldoValor" class="form-input" placeholder="0,00" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
+                    <input type="text" id="saldoValor" class="form-input" placeholder="0,00" inputmode="decimal" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
                 </div>
                 <div class="btn-group" style="margin-top:20px">
                     <button class="btn btn-warning" onclick="confirmarRetirarSaldo('${id}')" style="flex:2"><i class="fas fa-minus"></i> Retirar</button>
@@ -3527,7 +4247,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             let conteudo = `
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-dollar-sign"></i> Novo Valor</label>
-                    <input type="text" id="saldoValor" class="form-input" value="${saldo.valor.toFixed(2).replace('.', ',')}" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
+                    <input type="text" id="saldoValor" class="form-input" value="${saldo.valor.toFixed(2).replace('.', ',')}" inputmode="decimal" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
                 </div>
                 <div class="btn-group" style="margin-top:20px">
                     <button class="btn btn-primary" onclick="confirmarAtualizarSaldo('${id}')" style="flex:2"><i class="fas fa-save"></i> Atualizar</button>
@@ -3620,7 +4340,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-dollar-sign"></i> Valor Inicial</label>
-                    <input type="text" id="saldoValor" class="form-input" placeholder="0,00" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
+                    <input type="text" id="saldoValor" class="form-input" placeholder="0,00" inputmode="decimal" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-check-circle"></i> Saldo Central?</label>
@@ -3684,137 +4404,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             } else if (senha) showToast('Senha incorreta', 'error');
         }
 
-        function editarItem(id, tipo, isRecorrente, regraId, isIndividual, individualId) {
-            if (tipo === 'gasto') {
-                editarGasto(id);
-            } else if (tipo === 'evento') {
-                let item = App.dataCache.eventos.find(e => e.id === id) || 
-                           App.dataCache.eventosIndividuais.find(e => `evento_individual_${e.id}` === id);
-                if (!item) return;
-                
-                let conteudo = `
-                    <div style="padding:16px">
-                        <h3>${item.titulo}</h3>
-                        <p>${item.descricao || ''}</p>
-                        <p><i class="fas fa-calendar-day"></i> Dia: ${item.dia} de ${getNomeMes(item.mes)}/${item.ano}</p>
-                        ${item.hora ? `<p><i class="fas fa-clock"></i> Hora: ${item.hora}</p>` : ''}
-                        ${item.local ? `<p><i class="fas fa-map-marker-alt"></i> Local: ${item.local}</p>` : ''}
-                        <div class="btn-group" style="margin-top:20px">
-                            <button class="btn btn-primary" onclick="fecharModal()">Fechar</button>
-                        </div>
-                    </div>
-                `;
-                abrirModal('Detalhes do Evento', 'fa-calendar-alt', conteudo);
-            } else if (tipo === 'conta') {
-                let item = App.dataCache.contas.find(c => c.id === id);
-                if (!item) return;
-                
-                let conteudo = `
-                    <div style="padding:16px">
-                        <h3>${item.descricao}</h3>
-                        <p><strong>Valor:</strong> ${formatCurrency(item.valor_original || item.valor || 0)}</p>
-                        <p><strong>Vencimento:</strong> ${item.dia} de ${getNomeMes(item.mes)}/${item.ano}</p>
-                        <p><strong>Status:</strong> ${item.status === 'paga' ? 'Paga' : 'Pendente'}</p>
-                        ${item.valor_pago > 0 ? `<p><strong>Valor pago:</strong> ${formatCurrency(item.valor_pago)}</p>` : ''}
-                        <div class="btn-group" style="margin-top:20px">
-                            <button class="btn btn-primary" onclick="fecharModal()">Fechar</button>
-                        </div>
-                    </div>
-                `;
-                abrirModal('Detalhes da Conta', 'fa-file-invoice-dollar', conteudo);
-            }
-        }
-
-        function confirmarExclusao(id, tipo, isRecorrente, regraId, dia, mes, ano, isIndividual, individualId) {
-            if (tipo === 'evento' && (isRecorrente || regraId)) {
-                let conteudo = `
-                    <div style="padding:16px">
-                        <h3 style="margin-bottom:16px">Excluir Evento</h3>
-                        <p>Como deseja excluir este evento?</p>
-                        <div class="exclusao-opcoes">
-                            <div class="exclusao-opcao" onclick="selecionarExclusao('unica', '${id}', '${tipo}', ${isRecorrente}, '${regraId}', ${dia}, ${mes}, ${ano}, ${isIndividual}, '${individualId}')" id="exclusaoUnica">
-                                <strong>Apenas esta ocorrência</strong>
-                                <p style="font-size:0.9em;color:var(--gray)">Exclui somente este evento específico</p>
-                            </div>
-                            <div class="exclusao-opcao" onclick="selecionarExclusao('futuras', '${id}', '${tipo}', ${isRecorrente}, '${regraId}', ${dia}, ${mes}, ${ano}, ${isIndividual}, '${individualId}')" id="exclusaoFuturas">
-                                <strong>Desta data em diante</strong>
-                                <p style="font-size:0.9em;color:var(--gray)">Exclui este e todos os futuros</p>
-                            </div>
-                            <div class="exclusao-opcao" onclick="selecionarExclusao('todas', '${id}', '${tipo}', ${isRecorrente}, '${regraId}', ${dia}, ${mes}, ${ano}, ${isIndividual}, '${individualId}')" id="exclusaoTodas">
-                                <strong>Todas as ocorrências</strong>
-                                <p style="font-size:0.9em;color:var(--gray)">Exclui a regra inteira</p>
-                            </div>
-                        </div>
-                        <div class="btn-group" style="margin-top:20px">
-                            <button class="btn" onclick="fecharModal()" style="background:var(--gray);color:#fff">Cancelar</button>
-                        </div>
-                    </div>
-                `;
-                abrirModal('Excluir Evento', 'fa-trash', conteudo);
-            } else if (confirm(`Tem certeza que deseja excluir este ${tipo}?`)) {
-                (async () => {
-                    try {
-                        if (tipo === 'gasto') {
-                            await App.supabase.from('gastos').delete().eq('id', id);
-                        } else if (tipo === 'evento') {
-                            await App.supabase.from('eventos').delete().eq('id', id);
-                        } else if (tipo === 'conta') {
-                            await App.supabase.from('contas').delete().eq('id', id);
-                        }
-
-                        await registrarHistorico('exclusao_item', `${tipo} excluído`, { id, tipo, usuario: App.usuarioAtual });
-                        showToast('Item excluído!', 'success');
-                        await carregarDados(true);
-                        await atualizarCalendario();
-                        await mostrarConteudo();
-                    } catch (error) {
-                        console.error('Erro ao excluir:', error);
-                        showToast('Erro: ' + error.message, 'error');
-                    }
-                })();
-            }
-        }
-
-        function selecionarExclusao(tipo, id, tipoItem, isRecorrente, regraId, dia, mes, ano, isIndividual, individualId) {
-            (async () => {
-                try {
-                    if (tipo === 'unica') {
-                        if (isIndividual && individualId) {
-                            await App.supabase.from('eventos_individuais').delete().eq('id', individualId);
-                        } else {
-                            let dataExcecao = `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
-                            await App.supabase.from('excecoes_recorrencia').insert({
-                                user_id: App.currentUser.id,
-                                regra_id: regraId,
-                                data_excecao: dataExcecao,
-                                acao: 'excluir',
-                                added_by: App.usuarioAtual || 'desconhecido'
-                            });
-                        }
-                    } else if (tipo === 'futuras') {
-                        await App.supabase
-                            .from('regras_eventos')
-                            .update({ data_fim: `${ano}-${String(mes).padStart(2, '0')}-${String(dia - 1).padStart(2, '0')}` })
-                            .eq('id', regraId);
-                    } else if (tipo === 'todas') {
-                        await App.supabase.from('regras_eventos').delete().eq('id', regraId);
-                        await App.supabase.from('eventos_individuais').delete().eq('regra_id', regraId);
-                        await App.supabase.from('excecoes_recorrencia').delete().eq('regra_id', regraId);
-                    }
-
-                    await registrarHistorico('exclusao_evento', `Evento excluído (${tipo})`, { id, tipo, usuario: App.usuarioAtual });
-                    showToast('Evento excluído!', 'success');
-                    fecharModal();
-                    await carregarDados(true);
-                    await atualizarCalendario();
-                    await mostrarConteudo();
-                } catch (error) {
-                    console.error('Erro ao excluir evento:', error);
-                    showToast('Erro: ' + error.message, 'error');
-                }
-            })();
-        }
-
+        // Funções de navegação
         function resetarParaHoje() {
             let hoje = new Date();
             App.currentMonthOffset = 0;
@@ -3824,7 +4414,9 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 let filter = btn.dataset.filter;
-                btn.classList.toggle('active', App.activeFilters[filter]);
+                if (filter === 'contas' || filter === 'eventos') {
+                    btn.classList.toggle('active', App.activeFilters[filter]);
+                }
             });
             
             atualizarCalendario();
@@ -3846,10 +4438,14 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
             document.getElementById('navAdd').classList.remove('active');
         }
 
+        // Inicialização
         async function init() {
             try {
                 App.supabase = window.supabase.createClient(CONFIG.supabase.url, CONFIG.supabase.anonKey);
                 let { data: { session } } = await App.supabase.auth.getSession();
+
+                // Inicializar notificações
+                await inicializarNotificacoes();
 
                 if (session) {
                     App.currentUser = session.user;
@@ -3869,7 +4465,9 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
 
                     document.querySelectorAll('.filter-btn').forEach(btn => {
                         let filter = btn.dataset.filter;
-                        btn.classList.toggle('active', App.activeFilters[filter]);
+                        if (filter === 'contas' || filter === 'eventos') {
+                            btn.classList.toggle('active', App.activeFilters[filter]);
+                        }
                     });
 
                     await atualizarCalendario();
@@ -3878,6 +4476,7 @@ const movimentacoes = results[11].status === 'fulfilled' ? results[11].value.dat
                     document.getElementById('authContainer').style.display = 'flex';
                 }
 
+                // Event listeners
                 document.getElementById('btnLogin').addEventListener('click', async () => {
                     let email = document.getElementById('loginEmail').value.trim();
                     let pass = document.getElementById('loginPassword').value;
