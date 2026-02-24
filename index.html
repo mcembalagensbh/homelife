@@ -1356,7 +1356,9 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 10px;
-            margin: 10px 0
+            margin: 10px 0;
+            max-height: 300px;
+            overflow-y: auto
         }
 
         .inline-calendar-grid {
@@ -1705,7 +1707,8 @@
                 giros: [], movimentacoesGiro: [], usuariosCadastrados: []
             },
             notificacoesAgendadas: [],
-            serviceWorkerRegistration: null
+            serviceWorkerRegistration: null,
+            processandoPagamento: false
         };
 
         // Funções auxiliares
@@ -2981,20 +2984,17 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-calendar-day"></i> Data de Início</label>
-                    <input type="date" id="eventoDataInicio" class="form-input" onchange="atualizarCalendarioInteligente()" value="${ano}-${String(mes).padStart(2, '0')}-${String(diaPadrao).padStart(2, '0')}">
+                    <div style="display:flex; gap:8px">
+                        <input type="date" id="eventoDataInicio" class="form-input" style="flex:2" value="${ano}-${String(mes).padStart(2, '0')}-${String(diaPadrao).padStart(2, '0')}">
+                        <button class="btn btn-sm btn-primary" onclick="abrirCalendarioInteligente()" style="flex:1"><i class="fas fa-calendar-alt"></i> Calendário</button>
+                    </div>
                 </div>
                 <div id="eventoDataFimDiv" class="form-group">
                     <label class="form-label"><i class="fas fa-calendar-day"></i> Data de Fim (para eventos de múltiplos dias)</label>
-                    <input type="date" id="eventoDataFim" class="form-input" onchange="atualizarCalendarioInteligente()">
+                    <input type="date" id="eventoDataFim" class="form-input">
                 </div>
                 <div id="eventoCalendarioInteligente" class="inline-calendar" style="display:none;">
-                    <div style="margin-bottom:8px; font-size:0.9em; color:var(--purple)">
-                        <i class="fas fa-info-circle"></i> Selecione as datas recorrentes (em branco = indefinido)
-                    </div>
                     <div class="inline-calendar-grid" id="calendarioInteligenteGrid"></div>
-                    <div style="margin-top:8px; text-align:center; font-size:0.8em; color:var(--gray)">
-                        <span id="calendarioInteligenteInfo"></span>
-                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-align-left"></i> Descrição</label>
@@ -3035,18 +3035,30 @@
             setTimeout(atualizarVisibilidadeDataFim, 100);
         }
 
+        function abrirCalendarioInteligente() {
+            let dataInicioStr = document.getElementById('eventoDataInicio')?.value;
+            if (!dataInicioStr) {
+                showToast('Selecione a data de início primeiro', 'warning');
+                return;
+            }
+            
+            let calendario = document.getElementById('eventoCalendarioInteligente');
+            if (calendario.style.display === 'none' || calendario.style.display === '') {
+                calendario.style.display = 'block';
+                atualizarCalendarioInteligente();
+            } else {
+                calendario.style.display = 'none';
+            }
+        }
+
         function atualizarVisibilidadeDataFim() {
             let frequencia = document.getElementById('eventoFrequencia')?.value;
             let dataFimDiv = document.getElementById('eventoDataFimDiv');
-            let calendarioInteligente = document.getElementById('eventoCalendarioInteligente');
             
             if (frequencia === 'unico') {
                 dataFimDiv.style.display = 'block';
-                calendarioInteligente.style.display = 'none';
             } else {
                 dataFimDiv.style.display = 'none';
-                calendarioInteligente.style.display = 'block';
-                atualizarCalendarioInteligente();
             }
         }
 
@@ -3062,13 +3074,10 @@
             let mes = dataInicio.getMonth() + 1;
             let dia = dataInicio.getDate();
             
-            let dataFimStr = document.getElementById('eventoDataFim')?.value;
-            let dataFim = dataFimStr ? new Date(dataFimStr + 'T12:00:00') : null;
-            
             let grid = document.getElementById('calendarioInteligenteGrid');
             grid.innerHTML = '';
             
-            let mesesMostrar = 3;
+            let mesesMostrar = 6;
             let hoje = new Date();
             hoje.setHours(0, 0, 0, 0);
             
@@ -3080,12 +3089,38 @@
                     anoAtual++;
                 }
                 
-                let diasNoMes = getDiasNoMes(anoAtual, mesAtual);
+                let mesHeader = document.createElement('div');
+                mesHeader.style.gridColumn = 'span 7';
+                mesHeader.style.fontWeight = 'bold';
+                mesHeader.style.margin = '8px 0 4px';
+                mesHeader.style.color = 'var(--purple)';
+                mesHeader.textContent = `${getNomeMes(mesAtual)}/${anoAtual}`;
+                grid.appendChild(mesHeader);
                 
+                CONFIG.diasSemana.forEach(diaSem => {
+                    let header = document.createElement('div');
+                    header.className = 'calendar-day-header';
+                    header.textContent = diaSem;
+                    grid.appendChild(header);
+                });
+                
+                let primeiroDia = new Date(anoAtual, mesAtual - 1, 1).getDay();
+                for (let j = 0; j < primeiroDia; j++) {
+                    let cell = document.createElement('div');
+                    cell.className = 'inline-calendar-day disabled';
+                    grid.appendChild(cell);
+                }
+                
+                let diasNoMes = getDiasNoMes(anoAtual, mesAtual);
                 for (let d = 1; d <= diasNoMes; d++) {
                     let dataAtual = new Date(anoAtual, mesAtual - 1, d, 12, 0, 0);
-                    if (dataAtual < dataInicio) continue;
-                    if (dataFim && dataAtual > dataFim) continue;
+                    if (dataAtual < dataInicio) {
+                        let cell = document.createElement('div');
+                        cell.className = 'inline-calendar-day disabled';
+                        cell.textContent = d;
+                        grid.appendChild(cell);
+                        continue;
+                    }
                     
                     let ativo = false;
                     
@@ -3126,9 +3161,6 @@
                     }
                 }
             }
-            
-            let info = document.getElementById('calendarioInteligenteInfo');
-            info.innerHTML = dataFim ? `Fim em: ${dataFim.toLocaleDateString('pt-BR')}` : 'Sem data de fim (evento indefinido)';
         }
 
         function abrirSeletorIcones() {
@@ -3387,6 +3419,19 @@
                         data_inicio: dataInicioStr,
                         data_fim: dataFimStr
                     }).eq('id', regraId);
+                    
+                    // Atualizar também os eventos individuais vinculados
+                    await App.supabase.from('eventos_individuais')
+                        .update({
+                            titulo: titulo,
+                            descricao: desc || '',
+                            hora: hora || null,
+                            local: local || null,
+                            icone: icone,
+                            cor_icone: corIcone
+                        })
+                        .eq('regra_id', regraId);
+                        
                 } else if (isIndividual && individualId) {
                     let dataInicio = new Date(dataInicioStr + 'T12:00:00');
                     await App.supabase.from('eventos_individuais').update({
@@ -3404,19 +3449,69 @@
                     }).eq('id', individualId);
                 } else {
                     let dataInicio = new Date(dataInicioStr + 'T12:00:00');
-                    await App.supabase.from('eventos').update({
-                        titulo: titulo,
-                        descricao: desc || '',
-                        dia: dataInicio.getDate(),
-                        mes: dataInicio.getMonth() + 1,
-                        ano: dataInicio.getFullYear(),
-                        hora: hora || null,
-                        local: local || null,
-                        icone: icone,
-                        cor_icone: corIcone,
-                        data_inicio: dataInicioStr,
-                        data_fim: dataFimStr
-                    }).eq('id', id);
+                    
+                    // Se for evento único com múltiplos dias, atualizar todos
+                    if (dataFimStr && dataFimStr !== dataInicioStr) {
+                        let dataFim = new Date(dataFimStr + 'T12:00:00');
+                        let dataAtual = new Date(dataInicio);
+                        
+                        while (dataAtual <= dataFim) {
+                            let anoAtual = dataAtual.getFullYear();
+                            let mesAtual = dataAtual.getMonth() + 1;
+                            let diaAtual = dataAtual.getDate();
+                            
+                            // Verificar se existe evento para esta data
+                            let eventoExistente = App.dataCache.eventos.find(e => 
+                                e.dia === diaAtual && e.mes === mesAtual && e.ano === anoAtual
+                            );
+                            
+                            if (eventoExistente) {
+                                await App.supabase.from('eventos').update({
+                                    titulo: titulo,
+                                    descricao: desc || '',
+                                    hora: hora || null,
+                                    local: local || null,
+                                    icone: icone,
+                                    cor_icone: corIcone,
+                                    data_inicio: dataInicioStr,
+                                    data_fim: dataFimStr
+                                }).eq('id', eventoExistente.id);
+                            } else {
+                                await App.supabase.from('eventos').insert({
+                                    user_id: App.currentUser.id,
+                                    titulo: titulo,
+                                    descricao: desc || '',
+                                    dia: diaAtual,
+                                    mes: mesAtual,
+                                    ano: anoAtual,
+                                    hora: hora || null,
+                                    local: local || null,
+                                    icone: icone,
+                                    cor_icone: corIcone,
+                                    data_inicio: dataInicioStr,
+                                    data_fim: dataFimStr,
+                                    is_recorrente: false,
+                                    added_by: App.usuarioAtual || 'desconhecido'
+                                });
+                            }
+                            
+                            dataAtual.setDate(dataAtual.getDate() + 1);
+                        }
+                    } else {
+                        await App.supabase.from('eventos').update({
+                            titulo: titulo,
+                            descricao: desc || '',
+                            dia: dataInicio.getDate(),
+                            mes: dataInicio.getMonth() + 1,
+                            ano: dataInicio.getFullYear(),
+                            hora: hora || null,
+                            local: local || null,
+                            icone: icone,
+                            cor_icone: corIcone,
+                            data_inicio: dataInicioStr,
+                            data_fim: dataFimStr
+                        }).eq('id', id);
+                    }
                 }
 
                 await registrarHistorico('edicao_evento', `Evento editado: ${titulo}`, { id, usuario: App.usuarioAtual });
@@ -3452,7 +3547,7 @@
                         <input type="text" id="pagamentoValorConta" class="form-input" value="${valor.toFixed(2).replace('.', ',')}" inputmode="decimal" onkeyup="this.value = this.value.replace(/[^0-9,]/g, '')">
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-success" onclick="confirmarPagamento('${id}', '${regraId}', ${dia}, ${mes}, ${ano}, ${isRecorrente})" style="flex:2"><i class="fas fa-check"></i> Confirmar Pagamento</button>
+                        <button class="btn btn-success" onclick="confirmarPagamento('${id}', '${desc}', '${regraId}', ${dia}, ${mes}, ${ano}, ${isRecorrente})" style="flex:2"><i class="fas fa-check"></i> Confirmar Pagamento</button>
                         <button class="btn" onclick="fecharModal()" style="flex:1;background:var(--gray);color:#fff">Cancelar</button>
                     </div>
                 </div>
@@ -3468,7 +3563,14 @@
             });
         }
 
-        async function confirmarPagamento(id, regraId, dia, mes, ano, isRecorrente) {
+        async function confirmarPagamento(id, desc, regraId, dia, mes, ano, isRecorrente) {
+            if (App.processandoPagamento) {
+                showToast('Processando pagamento, aguarde...', 'warning');
+                return;
+            }
+            
+            App.processandoPagamento = true;
+            
             let valor = parseCurrency(document.getElementById('pagamentoValorConta')?.value);
 
             try {
@@ -3489,8 +3591,8 @@
                 }
 
                 if (App.saldoCentral.id) {
-                    let { data: saldoAtual } = await App.supabase.from('saldos').select('valor').eq('id', App.saldoCentral.id).single();
-                    if (saldoAtual) {
+                    let { data: saldoAtual, error: saldoError } = await App.supabase.from('saldos').select('valor').eq('id', App.saldoCentral.id).single();
+                    if (saldoAtual && !saldoError) {
                         let novoValor = saldoAtual.valor - valor;
                         await App.supabase.from('saldos').update({ valor: novoValor }).eq('id', App.saldoCentral.id);
                         App.saldoCentral.valor = novoValor;
@@ -3510,6 +3612,8 @@
             } catch (error) {
                 console.error('Erro ao pagar conta:', error);
                 showToast('Erro: ' + error.message, 'error');
+            } finally {
+                App.processandoPagamento = false;
             }
         }
 
@@ -3576,23 +3680,35 @@
         }
 
         function confirmarExclusao(id, tipo, isRecorrente, regraId, dia, mes, ano, isIndividual, individualId) {
-            if (tipo === 'evento' && (isRecorrente || regraId)) {
+            if (tipo === 'evento' && (isRecorrente || regraId || (!isRecorrente && dia && mes && ano))) {
+                let evento = isRecorrente ? App.dataCache.regrasEventos.find(r => r.id === regraId) : 
+                            isIndividual ? App.dataCache.eventosIndividuais.find(e => e.id === individualId) :
+                            App.dataCache.eventos.find(e => e.id === id);
+                
+                let temDataFim = evento && evento.data_fim;
+                
                 let conteudo = `
                     <div style="padding:16px">
                         <h3 style="margin-bottom:16px">Excluir Evento</h3>
                         <p>Como deseja excluir este evento?</p>
                         <div class="exclusao-opcoes">
                             <div class="exclusao-opcao" onclick="selecionarExclusao('unica', '${id}', '${tipo}', ${isRecorrente}, '${regraId}', ${dia}, ${mes}, ${ano}, ${isIndividual}, '${individualId}')" id="exclusaoUnica">
-                                <strong>Apenas esta ocorrência</strong>
-                                <p style="font-size:0.9em;color:var(--gray)">Exclui somente este evento específico</p>
-                            </div>
+                                <strong>Apenas este dia</strong>
+                                <p style="font-size:0.9em;color:var(--gray)">Exclui somente o evento deste dia específico</p>
+                            </div>`;
+                
+                if (temDataFim || isRecorrente) {
+                    conteudo += `
                             <div class="exclusao-opcao" onclick="selecionarExclusao('futuras', '${id}', '${tipo}', ${isRecorrente}, '${regraId}', ${dia}, ${mes}, ${ano}, ${isIndividual}, '${individualId}')" id="exclusaoFuturas">
-                                <strong>Desta data em diante</strong>
-                                <p style="font-size:0.9em;color:var(--gray)">Exclui este e todos os futuros</p>
-                            </div>
+                                <strong>Deste dia em diante</strong>
+                                <p style="font-size:0.9em;color:var(--gray)">Exclui este e todos os eventos futuros</p>
+                            </div>`;
+                }
+                
+                conteudo += `
                             <div class="exclusao-opcao" onclick="selecionarExclusao('todas', '${id}', '${tipo}', ${isRecorrente}, '${regraId}', ${dia}, ${mes}, ${ano}, ${isIndividual}, '${individualId}')" id="exclusaoTodas">
-                                <strong>Todas as ocorrências</strong>
-                                <p style="font-size:0.9em;color:var(--gray)">Exclui a regra inteira</p>
+                                <strong>Todos os dias</strong>
+                                <p style="font-size:0.9em;color:var(--gray)">Exclui todos os dias deste evento</p>
                             </div>
                         </div>
                         <div class="btn-group" style="margin-top:20px">
@@ -3657,9 +3773,7 @@
             (async () => {
                 try {
                     if (tipo === 'unica') {
-                        if (isIndividual && individualId) {
-                            await App.supabase.from('eventos_individuais').delete().eq('id', individualId);
-                        } else {
+                        if (isRecorrente && regraId) {
                             let dataExcecao = dataParaString(ano, mes, dia);
                             await App.supabase.from('excecoes_recorrencia').insert({
                                 user_id: App.currentUser.id,
@@ -3668,6 +3782,10 @@
                                 acao: 'excluir',
                                 added_by: App.usuarioAtual || 'desconhecido'
                             });
+                        } else if (isIndividual && individualId) {
+                            await App.supabase.from('eventos_individuais').delete().eq('id', individualId);
+                        } else {
+                            await App.supabase.from('eventos').delete().eq('id', id);
                         }
                     } else if (tipo === 'futuras') {
                         let dataFim = dataParaString(ano, mes, dia - 1);
@@ -3675,10 +3793,34 @@
                             .from('regras_eventos')
                             .update({ data_fim: dataFim })
                             .eq('id', regraId);
+                        
+                        // Excluir eventos individuais futuros
+                        await App.supabase
+                            .from('eventos_individuais')
+                            .delete()
+                            .eq('regra_id', regraId)
+                            .gte('data_original', dataParaString(ano, mes, dia));
                     } else if (tipo === 'todas') {
-                        await App.supabase.from('regras_eventos').delete().eq('id', regraId);
-                        await App.supabase.from('eventos_individuais').delete().eq('regra_id', regraId);
-                        await App.supabase.from('excecoes_recorrencia').delete().eq('regra_id', regraId);
+                        if (isRecorrente && regraId) {
+                            await App.supabase.from('regras_eventos').delete().eq('id', regraId);
+                            await App.supabase.from('eventos_individuais').delete().eq('regra_id', regraId);
+                            await App.supabase.from('excecoes_recorrencia').delete().eq('regra_id', regraId);
+                        } else if (isIndividual && individualId) {
+                            await App.supabase.from('eventos_individuais').delete().eq('regra_id', regraId);
+                            await App.supabase.from('regras_eventos').update({ data_fim: dataParaString(ano, mes, dia - 1) }).eq('id', regraId);
+                        } else {
+                            // Evento único com múltiplos dias
+                            let evento = App.dataCache.eventos.find(e => e.id === id);
+                            if (evento && evento.data_inicio && evento.data_fim) {
+                                await App.supabase
+                                    .from('eventos')
+                                    .delete()
+                                    .eq('user_id', App.currentUser.id)
+                                    .eq('data_inicio', evento.data_inicio);
+                            } else {
+                                await App.supabase.from('eventos').delete().eq('id', id);
+                            }
+                        }
                     }
 
                     await registrarHistorico('exclusao_evento', `Evento excluído (${tipo})`, { id, usuario: App.usuarioAtual });
