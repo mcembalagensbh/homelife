@@ -1605,8 +1605,19 @@
             padding: 12px;
             border-top: 1px solid #eee;
             text-align: center;
-            font-size: 11px;
+            font-size: 12px;
             color: var(--gray);
+        }
+
+        .assinatura-footer a {
+            color: var(--purple);
+            text-decoration: none;
+            display: block;
+            margin: 4px 0;
+        }
+
+        .assinatura-footer a:hover {
+            text-decoration: underline;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -1663,11 +1674,17 @@
             <div class="side-menu-item" onclick="abrirNotificacoes();fecharSideMenu()"><i class="fas fa-bell"></i> Notificações</div>
             <div class="side-menu-item" onclick="abrirMenuSeguranca();fecharSideMenu()"><i class="fas fa-lock"></i> Segurança</div>
             <div class="side-menu-item" onclick="abrirUltimasAcoes();fecharSideMenu()"><i class="fas fa-history"></i> Últimas Ações</div>
+            <div class="side-menu-item" onclick="abrirPoliticasTermos();fecharSideMenu()"><i class="fas fa-file-contract"></i> Políticas e Termos</div>
             <div class="side-menu-item" onclick="abrirManual();fecharSideMenu()"><i class="fas fa-book"></i> Manual</div>
             <div class="side-menu-item" onclick="abrirModalAssinatura();fecharSideMenu()"><i class="fas fa-crown"></i> <span id="menuAssinaturaStatus">Premium</span></div>
             <div class="side-menu-item" onclick="window.location.href='mailto:hcdtec.mylife@gmail.com'"><i class="fas fa-question-circle"></i> Ajuda</div>
             <div class="assinatura-footer">
-                Um app do Grupo<br>Mundo Carol Ltda
+                Esse é um APP do Grupo Mundo Carol Ltda.<br>
+                Conheça outras empresas do grupo<br>
+                <a href="https://www.mundocarol.com.br" target="_blank">www.mundocarol.com.br</a>
+                <a href="https://www.mcembalagens.com.br" target="_blank">www.mcembalagens.com.br</a>
+                <a href="https://www.cactodeouro.com.br" target="_blank">www.cactodeouro.com.br</a>
+                <a href="https://www.hcdtec.com.br" target="_blank">www.hcdtec.com.br</a>
             </div>
         </div>
 
@@ -1828,7 +1845,6 @@
             selectedYear: new Date().getFullYear(),
             saldoSenha: '1234',
             acessoNovaSenha: '',
-            saldoAutenticado: false,
             modalHasChanges: false,
             pendingDelete: null,
             saldoCentral: { id: null, valor: 0 },
@@ -1915,7 +1931,7 @@
             const saldoElement = document.getElementById('btnSaldoHeader');
             const valorElement = document.getElementById('saldoHeaderValue');
             
-            if (App.exibirSaldoHeader && App.saldoCentral) {
+            if (App.saldoCentral) {
                 saldoElement.style.display = 'flex';
                 valorElement.textContent = formatCurrency(App.saldoCentral.valor);
             } else {
@@ -2210,6 +2226,17 @@
                 </div>
             `;
             abrirModal('Meu Premium', 'fa-crown', conteudo);
+        }
+
+        function abrirPoliticasTermos() {
+            let conteudo = `
+                <iframe src="https://mcembalagensbh.github.io/mylife/politicas.html" 
+                        style="width:100%; height:60vh; border:none;"></iframe>
+                <div style="text-align:center; margin-top:16px">
+                    <button class="btn btn-primary" onclick="fecharModal()">Fechar</button>
+                </div>
+            `;
+            abrirModal('Políticas e Termos', 'fa-file-contract', conteudo);
         }
 
         async function gerarLinkPagamento(plano) {
@@ -3087,11 +3114,6 @@
         }
 
         async function renderizarSaldos(content) {
-            if (!App.saldoAutenticado) {
-                content.innerHTML = '<div class="empty-state"><i class="fas fa-lock"></i><p style="margin:16px 0">Área protegida por senha</p><button class="btn btn-primary" onclick="autenticarSaldos()"><i class="fas fa-unlock-alt"></i> Autenticar</button></div>';
-                return;
-            }
-
             let saldos = App.dataCache.saldos || [];
             let podeEditar = App.assinaturaAtiva;
             let html = '<div class="items-list">';
@@ -3101,19 +3123,13 @@
                 let dataAtualizacao = new Date(central.data || new Date());
                 dataAtualizacao.setDate(dataAtualizacao.getDate() + 1);
                 
-                let toggleIcon = App.exibirSaldoHeader ? 'fa-eye' : 'fa-eye-slash';
-                let toggleText = App.exibirSaldoHeader ? 'Ocultar' : 'Mostrar';
-                
                 html += `<div style="padding:16px;background:linear-gradient(135deg,var(--purple),var(--purple-dark));color:#fff;border-radius:8px;margin-bottom:12px">
                     <div style="display:flex;justify-content:space-between;align-items:center">
                         <div style="font-size:.9em;opacity:.9">Saldo Central</div>
-                        <div class="toggle-saldo ${App.exibirSaldoHeader ? 'active' : ''}" onclick="toggleExibirSaldoHeader()">
-                            <i class="fas ${toggleIcon}"></i> ${toggleText} no cabeçalho
-                        </div>
                     </div>
                     <div style="font-size:1.8em;font-weight:700">${formatCurrency(central.valor)}</div>
                     <div style="font-size:.8em;margin-top:4px">Atualizado: ${dataAtualizacao.toLocaleDateString('pt-BR')}</div>
-                    <div style="font-size:.7em;margin-top:2px;opacity:0.8">* Dados dos últimos 3 meses são mantidos</div>
+                    <div style="font-size:.7em;margin-top:2px;opacity:0.8">* Dados dos últimos 60 dias são mantidos no extrato</div>
                     ${podeEditar ? `
                     <div class="btn-group" style="margin-top:12px">
                         <button class="btn btn-sm btn-success" onclick="abrirAdicionarValorSaldo('${central.id}')"><i class="fas fa-plus"></i> Adicionar</button>
@@ -3456,11 +3472,11 @@
                     <label class="form-label"><i class="fas fa-barcode"></i> Código de Barras / Chave PIX</label>
                     <input type="text" id="contaCodigoEdit" class="form-input" value="${conta.codigo_pagamento || ''}" placeholder="Digite ou cole o código">
                 </div>
-                ${!isRecorrente ? `
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-calendar-day"></i> Dia do Vencimento</label>
-                    <input type="number" id="contaDiaEdit" class="form-input" min="1" max="31" value="${dia}" inputmode="numeric">
+                    <input type="number" id="contaDiaEdit" class="form-input" min="1" max="31" value="${isRecorrente ? conta.dia_vencimento : dia}" inputmode="numeric">
                 </div>
+                ${!isRecorrente ? `
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-calendar-alt"></i> Mês/Ano</label>
                     <div style="display:flex;gap:8px">
@@ -3483,33 +3499,45 @@
             let descricao = document.getElementById('contaDescricaoEdit')?.value.trim();
             let valor = parseCurrency(document.getElementById('contaValorEdit')?.value);
             let codigo = document.getElementById('contaCodigoEdit')?.value.trim() || null;
+            let diaNovo = parseInt(document.getElementById('contaDiaEdit')?.value);
             
             if (!descricao || !valor) {
                 showToast('Preencha todos os campos', 'warning');
                 return;
             }
 
+            if (!dataValida(ano, mes, diaNovo)) {
+                showToast('Dia inválido para o mês selecionado', 'warning');
+                return;
+            }
+
             try {
                 if (isRecorrente && regraId) {
+                    // Para recorrente, atualiza a regra (as ocorrências futuras serão recalculadas automaticamente)
                     await App.supabase.from('regras_contas').update({
                         descricao_base: descricao,
                         valor: valor,
-                        codigo_pagamento: codigo
+                        codigo_pagamento: codigo,
+                        dia_vencimento: diaNovo
                     }).eq('id', regraId);
                 } else {
-                    let diaNovo = parseInt(document.getElementById('contaDiaEdit')?.value) || dia;
-                    let mesNovo = parseInt(document.getElementById('contaMesEdit')?.value) || mes;
-                    let anoNovo = parseInt(document.getElementById('contaAnoEdit')?.value) || ano;
+                    // Para única, deleta a antiga e cria uma nova
+                    await App.supabase.from('contas').delete().eq('id', id);
                     
-                    await App.supabase.from('contas').update({
+                    let dataInicio = dataParaString(ano, mes, diaNovo);
+                    await App.supabase.from('contas').insert({
+                        user_id: App.currentUser.id,
                         descricao: descricao,
                         valor: valor,
-                        valor_original: valor,
+                        valor_pago: 0,
                         dia: diaNovo,
-                        mes: mesNovo,
-                        ano: anoNovo,
+                        mes: mes,
+                        ano: ano,
+                        data: dataInicio,
+                        status: 'pendente',
+                        added_by: App.usuarioAtual || 'desconhecido',
                         codigo_pagamento: codigo
-                    }).eq('id', id);
+                    });
                 }
 
                 await registrarHistorico('edicao_conta', `Conta editada: ${descricao}`, { id, usuario: App.usuarioAtual });
@@ -3992,6 +4020,7 @@
 
             try {
                 if (isRecorrente && regraId) {
+                    // Para recorrente, atualiza a regra (as ocorrências futuras serão recalculadas automaticamente)
                     await App.supabase.from('regras_eventos').update({
                         titulo_base: titulo,
                         descricao: desc || '',
@@ -4002,21 +4031,14 @@
                         data_inicio: dataInicioStr,
                         data_fim: dataFimStr
                     }).eq('id', regraId);
-                    
-                    await App.supabase.from('eventos_individuais')
-                        .update({
-                            titulo: titulo,
-                            descricao: desc || '',
-                            hora: hora || null,
-                            local: local || null,
-                            icone: icone,
-                            cor_icone: corIcone
-                        })
-                        .eq('regra_id', regraId);
-                        
                 } else if (isIndividual && individualId) {
+                    // Para individual, deleta o antigo e cria um novo
+                    await App.supabase.from('eventos_individuais').delete().eq('id', individualId);
+                    
                     let dataInicio = new Date(dataInicioStr + 'T12:00:00');
-                    await App.supabase.from('eventos_individuais').update({
+                    await App.supabase.from('eventos_individuais').insert({
+                        user_id: App.currentUser.id,
+                        regra_id: regraId,
                         titulo: titulo,
                         descricao: desc || '',
                         dia: dataInicio.getDate(),
@@ -4026,59 +4048,47 @@
                         local: local || null,
                         icone: icone,
                         cor_icone: corIcone,
+                        data_original: dataInicioStr,
                         data_inicio: dataInicioStr,
-                        data_fim: dataFimStr
-                    }).eq('id', individualId);
+                        data_fim: dataFimStr,
+                        added_by: App.usuarioAtual || 'desconhecido'
+                    });
                 } else {
-                    let dataInicio = new Date(dataInicioStr + 'T12:00:00');
+                    // Para único com múltiplos dias, deleta todos os antigos e cria novos
+                    await App.supabase.from('eventos').delete().eq('data_inicio', dataInicioStr).eq('data_fim', dataFimStr);
                     
-                    if (dataFimStr && dataFimStr !== dataInicioStr) {
-                        let dataFim = new Date(dataFimStr + 'T12:00:00');
+                    let dataInicio = new Date(dataInicioStr + 'T12:00:00');
+                    let dataFim = dataFimStr ? new Date(dataFimStr + 'T12:00:00') : null;
+                    
+                    if (dataFim) {
                         let dataAtual = new Date(dataInicio);
-                        
                         while (dataAtual <= dataFim) {
                             let anoAtual = dataAtual.getFullYear();
                             let mesAtual = dataAtual.getMonth() + 1;
                             let diaAtual = dataAtual.getDate();
                             
-                            let eventoExistente = App.dataCache.eventos.find(e => 
-                                e.dia === diaAtual && e.mes === mesAtual && e.ano === anoAtual
-                            );
-                            
-                            if (eventoExistente) {
-                                await App.supabase.from('eventos').update({
-                                    titulo: titulo,
-                                    descricao: desc || '',
-                                    hora: hora || null,
-                                    local: local || null,
-                                    icone: icone,
-                                    cor_icone: corIcone,
-                                    data_inicio: dataInicioStr,
-                                    data_fim: dataFimStr
-                                }).eq('id', eventoExistente.id);
-                            } else {
-                                await App.supabase.from('eventos').insert({
-                                    user_id: App.currentUser.id,
-                                    titulo: titulo,
-                                    descricao: desc || '',
-                                    dia: diaAtual,
-                                    mes: mesAtual,
-                                    ano: anoAtual,
-                                    hora: hora || null,
-                                    local: local || null,
-                                    icone: icone,
-                                    cor_icone: corIcone,
-                                    data_inicio: dataInicioStr,
-                                    data_fim: dataFimStr,
-                                    is_recorrente: false,
-                                    added_by: App.usuarioAtual || 'desconhecido'
-                                });
-                            }
+                            await App.supabase.from('eventos').insert({
+                                user_id: App.currentUser.id,
+                                titulo: titulo,
+                                descricao: desc || '',
+                                dia: diaAtual,
+                                mes: mesAtual,
+                                ano: anoAtual,
+                                hora: hora || null,
+                                local: local || null,
+                                icone: icone,
+                                cor_icone: corIcone,
+                                data_inicio: dataInicioStr,
+                                data_fim: dataFimStr,
+                                is_recorrente: false,
+                                added_by: App.usuarioAtual || 'desconhecido'
+                            });
                             
                             dataAtual.setDate(dataAtual.getDate() + 1);
                         }
                     } else {
-                        await App.supabase.from('eventos').update({
+                        await App.supabase.from('eventos').insert({
+                            user_id: App.currentUser.id,
                             titulo: titulo,
                             descricao: desc || '',
                             dia: dataInicio.getDate(),
@@ -4089,8 +4099,10 @@
                             icone: icone,
                             cor_icone: corIcone,
                             data_inicio: dataInicioStr,
-                            data_fim: dataFimStr
-                        }).eq('id', id);
+                            data_fim: null,
+                            is_recorrente: false,
+                            added_by: App.usuarioAtual || 'desconhecido'
+                        });
                     }
                 }
 
@@ -4877,7 +4889,7 @@
                     
                     <div style="margin-bottom:20px">
                         <h4 style="color:var(--purple-dark);margin-bottom:8px"><i class="fas fa-wallet"></i> Saldo e Gastos</h4>
-                        <p><strong>Saldo:</strong> Acesse a área de Saldos clicando no valor no menu superior. É protegido por senha (padrão: 1234). Você pode ocultar/mostrar o saldo do cabeçalho.</p>
+                        <p><strong>Saldo:</strong> Acesse a área de Saldos clicando no valor no menu superior. Você pode adicionar, retirar ou atualizar o saldo diretamente.</p>
                         <p><strong>Gastos:</strong> No botão "Gastos" na barra inferior, registre seus gastos diários com categorias. Eles são automaticamente debitados do saldo central.</p>
                     </div>
                     
@@ -4902,8 +4914,8 @@
                     </div>
                     
                     <div style="margin-bottom:20px">
-                        <h4 style="color:var(--purple-dark);margin-bottom:8px"><i class="fas fa-trash"></i> Limpeza Automática</h4>
-                        <p>Dados com mais de 3 meses são automaticamente excluídos para economizar espaço no banco de dados. Isso inclui gastos, contas pagas e eventos passados.</p>
+                        <h4 style="color:var(--purple-dark);margin-bottom:8px"><i class="fas fa-file-contract"></i> Políticas e Termos</h4>
+                        <p>No menu lateral, acesse "Políticas e Termos" para visualizar os termos de uso e políticas do aplicativo.</p>
                     </div>
                     
                     <div class="btn-group" style="margin-top:20px">
@@ -5073,12 +5085,48 @@
             }
 
             try {
-                await App.supabase.from('gastos').update({
+                // Deleta o antigo e cria um novo
+                await App.supabase.from('gastos').delete().eq('id', id);
+                
+                let gastoAntigo = App.dataCache.gastos.find(g => g.id === id);
+                if (gastoAntigo && App.saldoCentral.id) {
+                    // Devolve o valor antigo ao saldo
+                    let { data: saldoAtual } = await App.supabase.from('saldos').select('valor').eq('id', App.saldoCentral.id).single();
+                    if (saldoAtual) {
+                        let novoValor = saldoAtual.valor + gastoAntigo.valor;
+                        await App.supabase.from('saldos').update({ valor: novoValor }).eq('id', App.saldoCentral.id);
+                        App.saldoCentral.valor = novoValor;
+                        atualizarSaldoHeader();
+                    }
+                }
+
+                // Cria o novo gasto
+                let { mes, ano } = getMesAnoAtual();
+                let data = dataParaString(ano, mes, new Date().getDate());
+                await App.supabase.from('gastos').insert({
+                    user_id: App.currentUser.id,
                     descricao: desc,
                     valor: valor,
-                    categoria: cat
-                }).eq('id', id);
+                    categoria: cat,
+                    dia: new Date().getDate(),
+                    mes: mes,
+                    ano: ano,
+                    data: data,
+                    added_by: App.usuarioAtual || 'desconhecido'
+                });
 
+                // Subtrai o novo valor do saldo
+                if (App.saldoCentral.id) {
+                    let { data: saldoAtual } = await App.supabase.from('saldos').select('valor').eq('id', App.saldoCentral.id).single();
+                    if (saldoAtual) {
+                        let novoValor = saldoAtual.valor - valor;
+                        await App.supabase.from('saldos').update({ valor: novoValor }).eq('id', App.saldoCentral.id);
+                        App.saldoCentral.valor = novoValor;
+                        atualizarSaldoHeader();
+                    }
+                }
+
+                await registrarHistorico('edicao_gasto', `Gasto editado: ${desc}`, { id, usuario: App.usuarioAtual });
                 showToast('Gasto atualizado!', 'success');
                 fecharModal();
                 await carregarDados(true);
@@ -5634,27 +5682,32 @@
             let saldo = App.dataCache.saldos.find(s => s.id === id);
             if (!saldo) return;
 
-            let tresMesesAtras = new Date();
-            tresMesesAtras.setMonth(tresMesesAtras.getMonth() - 3);
-            tresMesesAtras.setHours(0, 0, 0, 0);
+            let sessentaDiasAtras = new Date();
+            sessentaDiasAtras.setDate(sessentaDiasAtras.getDate() - 60);
+            sessentaDiasAtras.setHours(0, 0, 0, 0);
 
             let movimentacoes = [];
 
+            // Pagamentos de contas
             App.dataCache.contas.forEach(c => {
-                if (c.data_pagamento && new Date(c.data_pagamento) >= tresMesesAtras) {
-                    movimentacoes.push({
-                        data: c.data_pagamento,
-                        tipo: 'pagamento_conta',
-                        descricao: `Pagamento: ${c.descricao}`,
-                        valor: -c.valor_pago,
-                        usuario: c.added_by || 'desconhecido'
-                    });
+                if (c.data_pagamento) {
+                    let dataPag = new Date(c.data_pagamento);
+                    if (dataPag >= sessentaDiasAtras) {
+                        movimentacoes.push({
+                            data: c.data_pagamento,
+                            tipo: 'pagamento_conta',
+                            descricao: `Pagamento: ${c.descricao}`,
+                            valor: -c.valor_pago,
+                            usuario: c.added_by || 'desconhecido'
+                        });
+                    }
                 }
             });
 
+            // Gastos
             App.dataCache.gastos.forEach(g => {
                 let dataGasto = new Date(g.ano, g.mes - 1, g.dia, 12, 0, 0);
-                if (dataGasto >= tresMesesAtras) {
+                if (dataGasto >= sessentaDiasAtras) {
                     movimentacoes.push({
                         data: dataGasto,
                         tipo: 'gasto',
@@ -5665,14 +5718,15 @@
                 }
             });
 
+            // Adições/retiradas do saldo (do histórico)
             App.dataCache.historico.forEach(h => {
                 let dataHist = new Date(h.data);
-                if (dataHist >= tresMesesAtras) {
+                if (dataHist >= sessentaDiasAtras && h.tipo && h.tipo.includes('saldo')) {
                     movimentacoes.push({
                         data: dataHist,
-                        tipo: 'outro',
+                        tipo: h.tipo,
                         descricao: h.descricao,
-                        valor: 0,
+                        valor: h.valor || 0,
                         usuario: h.usuario || 'desconhecido'
                     });
                 }
@@ -5681,7 +5735,7 @@
             movimentacoes.sort((a, b) => new Date(b.data) - new Date(a.data));
 
             if (movimentacoes.length === 0) {
-                abrirModal(`Extrato de ${saldo.nome || 'Saldo'}`, 'fa-history', '<div class="empty-state"><p>Nenhuma movimentação nos últimos 3 meses</p></div>');
+                abrirModal(`Extrato de ${saldo.nome || 'Saldo'}`, 'fa-history', '<div class="empty-state"><p>Nenhuma movimentação nos últimos 60 dias</p></div>');
                 return;
             }
 
@@ -5699,16 +5753,7 @@
                 </div>`;
             });
             html += '</div>';
-            abrirModal(`Extrato de ${saldo.nome || 'Saldo'} (3 meses)`, 'fa-history', html);
-        }
-
-        function autenticarSaldos() {
-            let senha = prompt('Senha de 4 dígitos:');
-            if (senha === App.saldoSenha) {
-                App.saldoAutenticado = true;
-                App.currentFilter = 'saldos';
-                mostrarConteudo();
-            } else if (senha) showToast('Senha incorreta', 'error');
+            abrirModal(`Extrato de ${saldo.nome || 'Saldo'} (60 dias)`, 'fa-history', html);
         }
 
         function resetarParaHoje() {
@@ -5911,7 +5956,6 @@
                     if (confirm('Deseja realmente sair?')) {
                         App.supabase.auth.signOut();
                         App.currentUser = null;
-                        App.saldoAutenticado = false;
                         App.usuarioAtual = null;
                         document.getElementById('authContainer').style.display = 'flex';
                         document.getElementById('mainContainer').style.display = 'none';
@@ -5945,16 +5989,8 @@
                 });
 
                 document.getElementById('btnSaldoHeader').addEventListener('click', () => {
-                    if (!App.exibirSaldoHeader) {
-                        showToast('Saldo oculto no cabeçalho', 'info');
-                        return;
-                    }
-                    let senha = prompt('Senha de 4 dígitos:');
-                    if (senha === App.saldoSenha) {
-                        App.saldoAutenticado = true;
-                        App.currentFilter = 'saldos';
-                        mostrarConteudo();
-                    } else if (senha) showToast('Senha incorreta', 'error');
+                    App.currentFilter = 'saldos';
+                    mostrarConteudo();
                 });
 
                 document.getElementById('btnUsuarioHeader').addEventListener('click', verificarUsuario);
@@ -5987,17 +6023,8 @@
                 });
 
                 document.getElementById('navSaldos').addEventListener('click', () => {
-                    if (!App.saldoAutenticado) {
-                        let senha = prompt('Senha de 4 dígitos:');
-                        if (senha === App.saldoSenha) {
-                            App.saldoAutenticado = true;
-                            App.currentFilter = 'saldos';
-                            mostrarConteudo();
-                        } else if (senha) showToast('Senha incorreta', 'error');
-                    } else {
-                        App.currentFilter = 'saldos';
-                        mostrarConteudo();
-                    }
+                    App.currentFilter = 'saldos';
+                    mostrarConteudo();
                     fecharAddMenu();
                 });
 
