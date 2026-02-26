@@ -127,9 +127,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // 🔧 SUBSTITUA PELOS SEUS DADOS DO SUPABASE
-        const SUPABASE_URL = 'https://seuprojeto.supabase.co';
-        const SUPABASE_ANON_KEY = 'sua-chave-anon-publica';
+        // 🔐 SUAS CREDENCIAIS DO SUPABASE
+        const SUPABASE_URL = 'https://rirvrrlgjetsgwhqqfvq.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJpcnZycmxnamV0c2d3aHFxZnZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDM2MzgsImV4cCI6MjA4NjIxOTYzOH0.1T5eQnQXMCRqOSxtYFIHMedAF_D0Jo4Mg36LZHLJ2ds';
         
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -141,7 +141,6 @@
                 showMessage('Link inválido ou expirado. Solicite um novo.', 'error');
                 return;
             }
-            // Se chegou aqui, está autenticado - pode redefinir a senha
         })();
 
         window.updatePassword = async function() {
@@ -166,9 +165,9 @@
                 
                 showMessage('✅ Senha atualizada com sucesso! Redirecionando...', 'success');
                 
-                // Redirecionar para o login após 2 segundos
+                // Redirecionar para o login do seu site
                 setTimeout(() => {
-                    window.location.href = '/mylife/'; // Ajuste se necessário
+                    window.location.href = 'https://mylife.app.br/';
                 }, 2000);
                 
             } catch (error) {
