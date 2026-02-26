@@ -1843,38 +1843,40 @@
     <div id="toast" class="toast" style="display:none"></div>
 
     <script>
-        // Configuração do Supabase
-        const SUPABASE_URL = 'https://rirvrrlgjetsgwhqqfvq.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJpcnZycmxnamV0c2d3aHFxZnZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDM2MzgsImV4cCI6MjA4NjIxOTYzOH0.1T5eQnQXMCRqOSxtYFIHMedAF_D0Jo4Mg36LZHLJ2ds';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+       // ===== INÍCIO DO SCRIPT - COLOQUE ISSO PRIMEIRO =====
+const SUPABASE_URL = 'https://rirvrrlgjetsgwhqqfvq.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJpcnZycmxnamV0c2d3aHFxZnZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDM2MzgsImV4cCI6MjA4NjIxOTYzOH0.1T5eQnQXMCRqOSxtYFIHMedAF_D0Jo4Mg36LZHLJ2ds';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// ===== FIM DA PARTE QUE DEVE IR NO INÍCIO =====
 
         // FUNÇÃO PARA RECUPERAR SENHA
-        async function handleForgotPassword() {
-            // Pede o e-mail ao usuário
-            const email = prompt("Digite seu e-mail para recuperar a senha:");
-            if (!email) return;
+       // FUNÇÃO PARA RECUPERAR SENHA - COLOQUE ISSO EM QUALQUER LUGAR DENTRO DO SCRIPT
+async function handleForgotPassword() {
+    // Pede o e-mail ao usuário
+    const email = prompt("Digite seu e-mail para recuperar a senha:");
+    if (!email) return;
 
-            // Validação básica de e-mail
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                alert('Por favor, digite um e-mail válido.');
-                return;
-            }
+    // Validação básica de e-mail
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert('Por favor, digite um e-mail válido.');
+        return;
+    }
 
-            try {
-                // Envia o e-mail de recuperação
-                const { error } = await App.supabase.auth.resetPasswordForEmail(email, {
-                    redirectTo: 'https://mylife.app.br/redefinir-senha.html'
-                });
+    try {
+        // USA App.supabase (que agora está configurado corretamente)
+        const { error } = await App.supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: 'https://mylife.app.br/redefinir-senha.html'
+        });
 
-                if (error) throw error;
-                
-                alert('✅ E-mail de recuperação enviado! Verifique sua caixa de entrada (e a pasta de spam).');
-                
-            } catch (error) {
-                alert('Erro ao enviar: ' + error.message);
-            }
-        }
+        if (error) throw error;
+        
+        alert('✅ E-mail de recuperação enviado! Verifique sua caixa de entrada (e a pasta de spam).');
+        
+    } catch (error) {
+        alert('Erro ao enviar: ' + error.message);
+    }
+}
 
         const CONFIG = {
             supabase: {
