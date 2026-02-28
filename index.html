@@ -2517,7 +2517,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             let diffMs = dataExp.getTime() - hoje.getTime();
             let diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-           let diasRestantes = diffDias - 1;  // <-- VOLTA COM -1
+           let diasRestantes = diffDias;  // <-- VOLTA COM -1
             
             if (diasRestantes < 0) {
                 menuItem.innerHTML = `Premium <span class="assinatura-badge assinatura-expirada">Expirada</span>`;
@@ -2641,8 +2641,6 @@ function abrirModalAssinatura() {
     }
     
     // 🔴 CORREÇÃO DA DATA: Subtrai 1 dia
-    let dataOriginal = new Date(App.dataExpiracao);
-  dataOriginal.setDate(dataOriginal.getDate() - 1);  // <-- VOLTA COM -1
     let dataExpiracao = dataOriginal.toLocaleDateString('pt-BR');
     
     let conteudo = `
@@ -2741,8 +2739,7 @@ function abrirModalAssinatura() {
 // 🎁 MODAL PARA PLANO GRÁTIS (com dias e opções de pagamento)
 function abrirModalAssinaturaGratis() {
     // 🔴 CORREÇÃO DA DATA: Subtrai 1 dia
-    let dataOriginal = new Date(App.dataExpiracao);
-    dataOriginal.setDate(dataOriginal.getDate() - 1);  // <-- VOLTA COM -1
+   
     let dataExpiracao = dataOriginal.toLocaleDateString('pt-BR');
     
     // Calcula dias restantes
@@ -2754,7 +2751,7 @@ function abrirModalAssinaturaGratis() {
     
     let diffMs = dataExp.getTime() - hoje.getTime();
     let diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    let diasRestantes = diffDias - 1;
+    let diasRestantes = diffDias;
     
     let diasTexto = diasRestantes < 0 ? 'Expirado' : 
                     diasRestantes === 0 ? 'Hoje' :
