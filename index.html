@@ -7094,6 +7094,7 @@ window.deletarItemLista = deletarItemLista;
                         carregarDados(true);
                     } else {
                         await carregarDados(true);
+                        atualizarStatusAssinaturaMenu();
 
                         let hoje = new Date();
                         App.currentMonthOffset = 0;
