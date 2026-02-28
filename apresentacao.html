@@ -132,7 +132,7 @@
             border: 1px solid #e2e8f0;
         }
 
-        /* PAIN POINTS - OTIMIZADO PARA CELULAR */
+        /* PAIN POINTS */
         .pain-points {
             display: flex;
             flex-direction: column;
@@ -184,7 +184,6 @@
             margin-top: 3px;
         }
 
-        /* Destaque para a última */
         .pain-row.highlight {
             background: linear-gradient(135deg, #e8eefc, #f0f3ff);
             border-color: #4158D0;
@@ -208,7 +207,7 @@
             background: linear-gradient(90deg, #4158D0, #e2e8f0);
         }
 
-        /* Features em grid 2 colunas */
+        /* Features grid */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -527,7 +526,7 @@
             transform: translateY(-3px);
         }
 
-        /* Link do app */
+        /* Link do app / suporte */
         .app-link {
             text-align: center;
             margin: 10px 0 5px;
@@ -550,6 +549,70 @@
         .app-link a:hover {
             background: #4158D0;
             color: white;
+        }
+
+        /* Suporte email */
+        .support-email {
+            display: inline-block;
+            background: #f0f3fa;
+            border-radius: 30px;
+            padding: 8px 16px;
+            margin: 5px 0 10px;
+            font-size: 12px;
+            border: 1px solid #d9e2ef;
+        }
+        .support-email i {
+            color: #4158D0;
+            margin-right: 5px;
+        }
+        .support-email a {
+            color: #1e293b;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .support-email a:hover {
+            text-decoration: underline;
+            color: #4158D0;
+        }
+
+        /* Destaque usuarios ilimitados */
+        .unlimited-users {
+            background: linear-gradient(135deg, #fdf4ff, #f0f3ff);
+            border-radius: 40px;
+            padding: 12px 18px;
+            margin: 12px 0 8px;
+            border: 1px dashed #4158D0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .unlimited-users i {
+            background: #4158D0;
+            color: white;
+            border-radius: 50%;
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        /* Aviso multi dispositivos */
+        .multi-device {
+            background: #e8f0fe;
+            border-radius: 30px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 5px;
+            border: 1px solid #cddcf8;
+        }
+        .multi-device i {
+            color: #4158D0;
         }
     </style>
 </head>
@@ -587,7 +650,23 @@
                 </a>
             </div>
 
-            <!-- PAIN POINTS - SUAS 5 FRASES EM DESTAQUE -->
+            <!-- SUPORTE EMAIL -->
+            <div class="support-email">
+                <i class="fas fa-envelope"></i> 
+                <a href="mailto:hcdtec.mylife@gmail.com">hcdtec.mylife@gmail.com</a>
+            </div>
+
+            <!-- DESTAQUE: USUÁRIOS ILIMITADOS E MULTI-DISPOSITIVOS -->
+            <div class="unlimited-users">
+                <i class="fas fa-infinity"></i>
+                <span>1 assinatura = <strong>usuários ilimitados</strong> (marido, esposa, filhos, todos)</span>
+            </div>
+            <div class="multi-device">
+                <i class="fas fa-mobile-alt"></i> <i class="fas fa-laptop"></i>
+                Acesso pelo celular ou computador. Use em vários dispositivos sem limites.
+            </div>
+
+            <!-- PAIN POINTS -->
             <div class="pain-points">
                 <div class="pain-row">
                     <div class="pain-icon"><i class="fas fa-exclamation-triangle"></i></div>
@@ -600,14 +679,14 @@
                     <div class="pain-icon"><i class="fas fa-calendar-times"></i></div>
                     <div class="pain-text">
                         Cansado de esquecer eventos importantes da família?
-                        <small>Calendário compartilhado • Aniversários • Consultas</small>
+                        <small>Calendário intuitivo • Todos veem simultaneamente • Aniversários, consultas</small>
                     </div>
                 </div>
                 <div class="pain-row">
                     <div class="pain-icon"><i class="fas fa-question-circle"></i></div>
                     <div class="pain-text">
                         Quer saber se seu marido/esposa marcou algo para vocês?
-                        <small>Sincronização em tempo real • Visualização imediata</small>
+                        <small>Sincronização em tempo real • Calendário compartilhado</small>
                     </div>
                 </div>
                 <div class="pain-row">
@@ -626,7 +705,7 @@
                 </div>
             </div>
 
-            <!-- Funcionalidades (2 colunas) -->
+            <!-- Funcionalidades (com destaque para calendário e saldo) -->
             <div class="section-title">
                 <i class="fas fa-cube"></i> FUNCIONALIDADES
                 <span class="section-line"></span>
@@ -644,11 +723,12 @@
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon-small"><i class="fas fa-calendar-alt"></i></div>
-                    <h4>Eventos</h4>
+                    <h4>Calendário compartilhado</h4>
                     <div class="feature-badges">
                         <span class="badge"><i class="fas fa-check"></i> Ícones</span>
                         <span class="badge"><i class="fas fa-check"></i> Cores</span>
-                        <span class="badge"><i class="fas fa-check"></i> Multi-dias</span>
+                        <span class="badge"><i class="fas fa-check"></i> Todos veem</span>
+                        <span class="badge"><i class="fas fa-check"></i> Tempo real</span>
                     </div>
                 </div>
                 <div class="feature-card">
@@ -677,32 +757,33 @@
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon-small"><i class="fas fa-wallet"></i></div>
-                    <h4>Saldo Central</h4>
+                    <h4>Saldo da casa</h4>
                     <div class="feature-badges">
                         <span class="badge"><i class="fas fa-check"></i> Automático</span>
+                        <span class="badge"><i class="fas fa-check"></i> Cada um lança</span>
                         <span class="badge"><i class="fas fa-check"></i> Extrato</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Diferenciais -->
+            <!-- Diferenciais (sem notificações entre membros) -->
             <div class="diffs">
                 <div class="diffs-row">
                     <div class="diff-item">
                         <i class="fas fa-users"></i>
-                        <span>Múltiplos usuários <small>Marido, esposa</small></span>
+                        <span>Múltiplos usuários <small>Marido, esposa, filhos</small></span>
                     </div>
                     <div class="diff-item">
                         <i class="fas fa-history"></i>
                         <span>Registro de ações <small>Quem fez</small></span>
                     </div>
                     <div class="diff-item">
-                        <i class="fas fa-bell"></i>
-                        <span>Notificações <small>Entre membros</small></span>
-                    </div>
-                    <div class="diff-item">
                         <i class="fas fa-sync"></i>
                         <span>Sincronização <small>Tempo real</small></span>
+                    </div>
+                    <div class="diff-item">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Celular/PC <small>Sem limites</small></span>
                     </div>
                 </div>
             </div>
@@ -725,6 +806,13 @@
                     <div class="stat-number">+5h</div>
                     <div class="stat-label">Economia</div>
                 </div>
+            </div>
+
+            <!-- CADASTRO MEGA SIMPLIFICADO - DESTAQUE -->
+            <div style="background:#e0f2fe; border-radius: 40px; padding: 14px 18px; margin: 20px 0 10px; display: flex; align-items: center; gap: 12px; border:1px solid #b8dff0;">
+                <i class="fas fa-bolt" style="background:#4158D0; color:white; border-radius: 30px; padding: 10px; font-size: 16px;"></i>
+                <div><strong style="font-size: 15px;">Cadastro em 15 segundos</strong><br>
+                <span style="font-size: 12px;">Só pedimos: nome, e-mail e senha. Acesse na hora!</span></div>
             </div>
 
             <!-- Planos -->
@@ -760,22 +848,22 @@
                 </div>
             </div>
 
-            <!-- CTA -->
+            <!-- CTA reforçando 30 dias grátis sem cartão -->
             <div class="cta">
                 <h3>30 dias grátis</h3>
-                <p>Sem cartão • Sem compromisso</p>
+                <p><i class="fas fa-credit-card" style="opacity:0.8;"></i> Sem cartão • Sem compromisso • Cadastro em 15s</p>
                 <a href="https://mylife.app.br" target="_blank" rel="noopener noreferrer" class="btn-cta">
-                    <i class="fas fa-rocket"></i> COMEÇAR GRÁTIS
+                    <i class="fas fa-rocket"></i> CRIAR CONTA GRÁTIS
                 </a>
             </div>
 
-            <!-- Footer -->
+            <!-- Footer com políticas corrigidas -->
             <div class="footer">
                 <div class="footer-links">
                     <a href="https://mylife.app.br" target="_blank" rel="noopener noreferrer">Site</a>
-                    <a href="https://mylife.app.br/suporte" target="_blank" rel="noopener noreferrer">Suporte</a>
-                    <a href="https://mylife.app.br/termos" target="_blank" rel="noopener noreferrer">Termos</a>
-                    <a href="https://mylife.app.br/privacidade" target="_blank" rel="noopener noreferrer">Privacidade</a>
+                    <a href="mailto:hcdtec.mylife@gmail.com">Suporte</a>
+                    <a href="https://mylife.app.br/politicas.html" target="_blank" rel="noopener noreferrer">Termos</a>
+                    <a href="https://mylife.app.br/politicas.html" target="_blank" rel="noopener noreferrer">Privacidade</a>
                 </div>
                 <div class="social">
                     <i class="fab fa-instagram" onclick="window.open('https://instagram.com/mylife.app.br', '_blank')"></i>
@@ -784,7 +872,7 @@
                 </div>
                 <div>My Life • 2024 • v2.0</div>
                 <div style="font-size: 10px; opacity: 0.7;">
-                    <i class="fas fa-link"></i> mylife.app.br
+                    <i class="fas fa-link"></i> mylife.app.br | <i class="fas fa-envelope"></i> hcdtec.mylife@gmail.com
                 </div>
             </div>
         </div>
