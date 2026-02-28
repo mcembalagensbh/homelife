@@ -2553,15 +2553,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 }
 
-   function atualizarStatusAssinaturaMenu() {
+  function atualizarStatusAssinaturaMenu() {
     let menuItem = document.getElementById('menuAssinaturaStatus');
     if (!menuItem) return;
     
-    // 🔥 SIMULAÇÃO: Depois virá do banco
-    // Mude aqui para testar: 'gratis', 'mensal' ou 'anual'
-    let tipoPlano = 'gratis'; 
+    let plano = App.plano || 'gratis';
     
-    if (tipoPlano === 'gratis') {
+    if (plano === 'gratis') {
         if (App.assinaturaAtiva && App.dataExpiracao) {
             let hoje = new Date();
             hoje.setHours(0, 0, 0, 0);
@@ -2571,7 +2569,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             let diffMs = dataExp.getTime() - hoje.getTime();
             let diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-            let diasRestantes = diffDias - 1; // Ajuste
+            
+            // ✅ REMOVA O -1 DAQUI
+            let diasRestantes = diffDias;  // ANTES ERA: diffDias - 1
             
             if (diasRestantes < 0) {
                 menuItem.innerHTML = `Premium <span class="assinatura-badge assinatura-expirada">Expirada</span>`;
@@ -2583,10 +2583,10 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             menuItem.innerHTML = `Premium <span class="assinatura-badge assinatura-expirada">Expirada</span>`;
         }
-    } else if (tipoPlano === 'mensal') {
-        menuItem.innerHTML = `Premium <span class="assinatura-badge" style="background:#3498db; font-weight:600">Mensal</span>`;
-    } else if (tipoPlano === 'anual') {
-        menuItem.innerHTML = `Premium <span class="assinatura-badge" style="background:#f39c12; font-weight:600">Anual</span>`;
+    } else if (plano === 'mensal') {
+        menuItem.innerHTML = `Premium <span class="assinatura-badge" style="background:#3498db">Mensal</span>`;
+    } else if (plano === 'anual') {
+        menuItem.innerHTML = `Premium <span class="assinatura-badge" style="background:#f39c12">Anual</span>`;
     }
 }
         function podeExecutarAcao() {
