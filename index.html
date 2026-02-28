@@ -2500,7 +2500,7 @@ document.addEventListener('DOMContentLoaded', function() {
         App.plano = 'gratis';
     }
 }
-    function atualizarStatusAssinaturaMenu() {
+   function atualizarStatusAssinaturaMenu() {
     let menuItem = document.getElementById('menuAssinaturaStatus');
     if (!menuItem) return;
     
@@ -2517,8 +2517,15 @@ document.addEventListener('DOMContentLoaded', function() {
             let diffMs = dataExp.getTime() - hoje.getTime();
             let diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
             
-            // ✅ REMOVA O -1 DAQUI
-            let diasRestantes = diffDias;  // ANTES ERA: diffDias - 1
+            // 🔥 LOGS PARA DEBUG
+            console.log("🔍 MENU - HOJE:", hoje.toLocaleDateString('pt-BR'));
+            console.log("🔍 MENU - DATA EXP (banco):", dataExp.toLocaleDateString('pt-BR'));
+            console.log("🔍 MENU - diffMs:", diffMs);
+            console.log("🔍 MENU - diffDias:", diffDias);
+            
+            let diasRestantes = diffDias;  // SEM O -1
+            
+            console.log("🔍 MENU - diasRestantes:", diasRestantes);
             
             if (diasRestantes < 0) {
                 menuItem.innerHTML = `Premium <span class="assinatura-badge assinatura-expirada">Expirada</span>`;
