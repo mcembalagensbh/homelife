@@ -915,39 +915,21 @@
             font-size: .85em
         }
 
-        .loading-spinner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    color: white;
-    font-size: 1.3em;
-    font-weight: 600;
+      .loading-spinner {
+    text-align: center;
+    padding: 30px;
+    color: var(--gray);
+    display: none;
 }
 
 .loading-spinner i {
-    font-size: 4em;
-    margin-bottom: 20px;
-    color: var(--warning);
-    animation: spin 1s linear infinite;
-    text-shadow: 0 0 20px rgba(255, 193, 7, 0.5);
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: var(--purple);
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.loading-spinner div {
+    font-size: 14px;
 }
 
         .empty-state {
@@ -2891,25 +2873,16 @@ function abrirSuporteWhatsApp() {
 
 
 // ============================================
-// FUNÇÕES DE LOADING MELHORADAS
+// FUNÇÕES DE LOADING - VERSÃO ORIGINAL
 // ============================================
-// ============================================
-// FUNÇÕES DE LOADING MELHORADAS
-// ============================================
-function mostrarLoading(mensagem = 'Atualizando edições...') {
+function mostrarLoading(mensagem = 'Carregando...') {
     let loading = document.getElementById('loadingState');
     if (loading) {
         loading.innerHTML = `
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;">
-                <i class="fas fa-spinner fa-spin" style="font-size: 4em; margin-bottom: 20px; color: var(--warning); text-shadow: 0 0 20px rgba(255, 193, 7, 0.5);"></i>
-                <div style="background: rgba(255, 255, 255, 0.15); padding: 12px 30px; border-radius: 50px; backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 20px rgba(0,0,0,0.3); letter-spacing: 1px; text-align: center;">
-                    ${mensagem}
-                </div>
-            </div>
+            <i class="fas fa-spinner fa-spin"></i>
+            <div>${mensagem}</div>
         `;
-        loading.style.display = 'flex';
-        loading.style.alignItems = 'center';
-        loading.style.justifyContent = 'center';
+        loading.style.display = 'block';
     }
 }
 
@@ -2922,7 +2895,7 @@ function esconderLoading() {
 
 // Modifique a função mostrarConteudo para usar o novo loading
 async function mostrarConteudo() {
-    mostrarLoading('Atualizando edições...'); // ← NOVO
+    mostrarLoading('Carregando...'); // ← NOVO
     
     document.getElementById('contentArea').style.display = 'none';
     await carregarDados(false);
